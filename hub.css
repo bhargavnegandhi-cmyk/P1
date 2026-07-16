@@ -1,0 +1,82 @@
+/* Hub-specific additions on top of the shared design tokens */
+@import url('fonts.css');
+
+:root{
+  --paper: #FBF8F1;
+  --paper-dim: #F3EEE3;
+  --ink: #1C1B29;
+  --ink-soft: #4A4763;
+  --indigo: #2B2560;
+  --indigo-deep: #201C49;
+  --amber: #E8A33D;
+  --amber-deep: #C77F1E;
+  --green: #2F8F6B;
+  --red: #D6573F;
+  --line: #E3DCC9;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Sora', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.6; -webkit-font-smoothing:antialiased; }
+h1,h2,h3{ font-family:var(--font-display); color:var(--indigo-deep); margin:0 0 .4em; font-weight:600; }
+
+.topbar{
+  padding:20px 8vw; display:flex; align-items:center; gap:12px;
+  border-bottom:1px solid var(--line);
+}
+.brand-mark{
+  width:32px; height:32px; border-radius:50%;
+  background:conic-gradient(from 180deg, var(--red), var(--amber), var(--green));
+  position:relative; flex:0 0 32px;
+}
+.brand-mark::after{ content:""; position:absolute; inset:6px; background:var(--paper); border-radius:50%; }
+.brand-name{ font-family:var(--font-display); font-weight:600; font-size:1.1rem; color:var(--indigo-deep); }
+
+.hub-hero{
+  padding:64px 8vw 40px;
+  background:radial-gradient(circle at 88% 10%, rgba(232,163,61,.16), transparent 45%), var(--paper);
+}
+.eyebrow{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--amber-deep); font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{ content:""; width:26px; height:2px; background:var(--amber-deep); display:inline-block; }
+.hub-hero h1{ font-size:clamp(2.1rem, 4vw, 3.2rem); max-width:20ch; line-height:1.08; }
+.hub-hero p{ font-size:1.1rem; color:var(--ink-soft); max-width:64ch; margin-top:14px; }
+
+.cards{
+  padding:20px 8vw 80px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+  gap:26px;
+}
+.card{
+  background:#fff; border:1px solid var(--line); border-radius:16px;
+  padding:28px; text-decoration:none; color:var(--ink); display:flex; flex-direction:column;
+  transition:transform .18s ease, box-shadow .18s ease; position:relative; overflow:hidden;
+}
+.card:hover{ transform:translateY(-4px); box-shadow:0 14px 34px rgba(43,37,96,.14); }
+.card.disabled{ opacity:.55; cursor:default; }
+.card.disabled:hover{ transform:none; box-shadow:none; }
+.card-num{
+  font-family:var(--font-mono); font-size:.78rem; color:#fff; background:var(--indigo);
+  padding:4px 10px; border-radius:6px; display:inline-block; width:fit-content; margin-bottom:16px;
+}
+.card h2{ font-size:1.4rem; margin-bottom:8px; }
+.card p{ color:var(--ink-soft); font-size:.95rem; flex:1; margin:0 0 18px; }
+.card-topics{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+.card-topics span{
+  font-family:var(--font-mono); font-size:.7rem; background:var(--paper-dim); border:1px solid var(--line);
+  border-radius:20px; padding:3px 10px; color:var(--ink-soft);
+}
+.card-cta{ font-family:var(--font-mono); font-size:.85rem; font-weight:600; color:var(--indigo); display:flex; align-items:center; gap:6px; }
+.card:hover .card-cta{ color:var(--amber-deep); }
+.card-progress-track{ height:5px; border-radius:4px; background:var(--paper-dim); overflow:hidden; margin-bottom:14px; }
+.card-progress-fill{ height:100%; background:linear-gradient(90deg, var(--red), var(--amber), var(--green)); width:0%; }
+.card-status{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:14px; }
+.soon-badge{
+  position:absolute; top:20px; right:20px; font-family:var(--font-mono); font-size:.68rem;
+  background:var(--paper-dim); color:var(--ink-soft); border:1px solid var(--line); padding:3px 9px; border-radius:20px;
+}
+.footer{ padding:30px 8vw 70px; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line); }

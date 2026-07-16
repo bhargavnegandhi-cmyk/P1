@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Foundations for CFA Quant — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">x² → √x</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Math Foundations<br>for CFA Quant</span>
+    </a>
+    <div class="brand-sub">Module 0A · Before You Start</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">The Building Blocks</div>
+    <ul class="toc">
+      <li><a href="#sec-exponents" data-sec="sec-exponents"><span class="num">01</span>Exponents &amp; Roots</a></li>
+      <li><a href="#sec-logs" data-sec="sec-logs"><span class="num">02</span>Logarithms</a></li>
+      <li><a href="#sec-summation" data-sec="sec-summation"><span class="num">03</span>Summation Notation</a></li>
+    </ul>
+
+    <div class="toc-group-label">Working With Formulas</div>
+    <ul class="toc">
+      <li><a href="#sec-algebra" data-sec="sec-algebra"><span class="num">04</span>Rearranging Equations</a></li>
+      <li><a href="#sec-sets" data-sec="sec-sets"><span class="num">05</span>Sets &amp; Set Notation</a></li>
+      <li><a href="#sec-functions" data-sec="sec-functions"><span class="num">06</span>Functions &amp; the Cartesian Plane</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">Module 0 · The Math CFA Assumes You Already Have</div>
+      <h1>The toolbox behind every formula in this course.</h1>
+      <p class="lede">The CFA curriculum doesn't teach exponents, logarithms, or summation notation — it assumes you walked in already knowing them, the way a cooking class assumes you know how to hold a knife. If it's been a few years since school or college math, this module rebuilds exactly the pieces the other six modules lean on constantly, with no finance required to follow along — the finance connections come after each concept clicks on its own.</p>
+    </header>
+
+    <!-- =========================================================
+         01 EXPONENTS & ROOTS
+    ========================================================== -->
+    <section class="section" id="sec-exponents">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Exponents &amp; Roots</h2>
+          <p class="subhead">Compounding is nothing but repeated multiplication — and an exponent is just shorthand for writing that repetition once instead of N times.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>x³ means "multiply x by itself 3 times": x × x × x. The small raised number — the <strong>exponent</strong> — just counts how many copies of x get multiplied together. That's the entire idea; everything else in this section is a shortcut rule built on top of it.</p>
+
+          <div class="definition">
+            <div class="label">The core exponent rules</div>
+            <p style="margin-bottom:8px;"><strong>Multiplying same base:</strong> xᵃ × xᵇ = xᵃ⁺ᵇ — combine the counts.</p>
+            <p style="margin-bottom:8px;"><strong>Dividing same base:</strong> xᵃ / xᵇ = xᵃ⁻ᵇ — cancel matching copies.</p>
+            <p style="margin-bottom:8px;"><strong>A power of a power:</strong> (xᵃ)ᵇ = xᵃᵇ — multiply the exponents.</p>
+            <p style="margin-bottom:8px;"><strong>Zero exponent:</strong> x⁰ = 1, always (for x ≠ 0) — zero copies multiplied together leaves nothing to change, so it's the multiplicative "do nothing" value, 1.</p>
+            <p style="margin:0;"><strong>Negative exponent:</strong> x⁻ᵃ = 1/xᵃ — a negative exponent means "flip it into the denominator," not "make it negative."</p>
+          </div>
+
+          <p>A <strong>root</strong> — like a square root — is the reverse question: "what number, multiplied by itself, gives me this?" √9 = 3 because 3×3=9. Roots are written as <em>fractional</em> exponents: the square root of x is x^(1/2), the cube root is x^(1/3), and generally the nth root of x is x^(1/n).</p>
+
+          <div class="callout example">
+            <div class="label">Outside example — doubling a grain of rice</div>
+            <p style="margin:0;">Put 1 grain of rice on a chessboard square, then double it on each following square: 2⁰, 2¹, 2², 2³ … By square 10, that's 2⁹ = 512 grains. By square 64, it's 2⁶³ — over 9 quintillion grains, more rice than has ever been harvested in human history. Exponential growth looks tame for the first few steps and then explodes — exactly the shape of compound interest.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Why this matters immediately — Module 1's core formula</div>
+            <p style="margin:0;">FV = PV(1+r)^N is exactly the rice-grain idea: (1+r) is "grow by this factor," and the exponent N just says "do it N times in a row." Flip it upside down — (1+r)⁻ᴺ — and the negative exponent rule above tells you instantly that this equals 1/(1+r)ᴺ, which is exactly the discounting formula PV = FV/(1+r)ᴺ. Same rule, two directions.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">Using the exponent rules, what does x⁻² actually mean?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">−x × x</button>
+              <button class="opt-btn" data-correct="true">1 / x²</button>
+              <button class="opt-btn" data-correct="false">x × (−2)</button>
+            </div>
+            <div class="checkin-feedback">Correct — a negative exponent flips the term into the denominator: x⁻² = 1/x². It has nothing to do with making the value negative.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — exponent explorer</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>x (base)</label><input type="number" id="expX" value="1.08" step="0.01"></div>
+              <div class="tvm-field"><label>n (exponent)</label><input type="number" id="expN" value="5" step="1"></div>
+            </div>
+            <div id="expChart" style="margin:14px 0;"></div>
+            <div class="tvm-result" id="expResult">1.08⁵ = 1.4693</div>
+            <div class="calc-steps" id="expSteps">1.08 × 1.08 × 1.08 × 1.08 × 1.08 = 1.4693</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 LOGARITHMS
+    ========================================================== -->
+    <section class="section" id="sec-logs">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>Logarithms</h2>
+          <p class="subhead">If an exponent answers "what do I get?", a logarithm answers the reverse question: "how many times did I have to multiply?"</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>2³ = 8. The logarithm undoes that: log₂(8) = 3 — "2 raised to what power gives 8?" The answer is 3. A logarithm is always tied to a <strong>base</strong> (here, base 2); ln(x), the <strong>natural log</strong>, is simply the special case with base e (≈2.71828), the constant that shows up naturally whenever something grows continuously. It's the log button CFA formulas reach for almost exclusively.</p>
+
+          <div class="definition">
+            <div class="label">The defining relationship</div>
+            <p style="margin:0;">ln(x) = y &nbsp;means exactly the same thing as&nbsp; eʸ = x. They're two ways of writing the identical fact — logs and exponents are inverses of each other, the same way subtraction undoes addition.</p>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">The three log rules that matter here</div>
+            <div class="formula-body" style="font-size:.9rem;">
+              ln(a × b) = ln(a) + ln(b)<br>
+              ln(a / b) = ln(a) − ln(b)<br>
+              ln(aᵇ) = b × ln(a)
+            </div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">That last rule is the important one — it's what lets you pull an exponent down out of the sky and turn it into ordinary multiplication.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Watch it solve Module 1's "solve for N" formula, step by step</div>
+            <div class="derivation-step">Start: FV = PV(1+r)^N</div>
+            <div class="derivation-arrow">↓ divide both sides by PV</div>
+            <div class="derivation-step">FV / PV = (1+r)^N</div>
+            <div class="derivation-arrow">↓ take ln of both sides</div>
+            <div class="derivation-step">ln(FV/PV) = ln[(1+r)^N]</div>
+            <div class="derivation-arrow">↓ apply the third log rule — bring N down in front</div>
+            <div class="derivation-step">ln(FV/PV) = N × ln(1+r)</div>
+            <div class="derivation-arrow">↓ divide both sides by ln(1+r)</div>
+            <div class="derivation-step">N = ln(FV/PV) / ln(1+r)</div>
+            <p style="margin:10px 0 0; font-size:.9rem;">That's the entire origin of the "solving for N" formula from Module 1 — nothing more than the third log rule, applied once, to drag an exponent down to ground level where you can isolate it.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">Using the log rules, ln(x⁵) simplifies to:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">5 + ln(x)</button>
+              <button class="opt-btn" data-correct="true">5 × ln(x)</button>
+              <button class="opt-btn" data-correct="false">ln(5x)</button>
+            </div>
+            <div class="checkin-feedback">Correct — ln(aᵇ) = b × ln(a), so ln(x⁵) = 5 × ln(x).</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — natural log calculator</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>x</label><input type="number" id="lnX" value="2.71828" step="0.01" min="0.0001"></div>
+            </div>
+            <div class="tvm-result" id="lnResult">ln(2.71828) = 1.0000</div>
+            <div class="calc-steps" id="lnSteps">e¹ ≈ 2.71828, so ln(2.71828) ≈ 1</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 SUMMATION NOTATION
+    ========================================================== -->
+    <section class="section" id="sec-summation">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Summation Notation (Σ)</h2>
+          <p class="subhead">The Greek letter Σ (sigma) is just a compact way to write "add all of these up" — nothing more mysterious than that.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Instead of writing X₁ + X₂ + X₃ + X₄ + X₅ every single time, mathematicians write it once as:</p>
+
+          <div class="callout formula">
+            <div class="label">Reading a summation</div>
+            <div class="formula-body">Σᵢ₌₁⁵ Xᵢ &nbsp;=&nbsp; X₁ + X₂ + X₃ + X₄ + X₅</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">The bottom (i=1) says "start counting at 1." The top (5) says "stop at 5." The Xᵢ says "here's what to add at each step."</p>
+          </div>
+
+          <p>That's the whole mechanism — a Σ is a loop. Below the Σ is where the counter starts; above it is where the counter stops; to the right is the expression evaluated at each step along the way.</p>
+
+          <div class="callout example">
+            <div class="label">Outside example — a grocery receipt</div>
+            <p style="margin:0;">If Pᵢ is the price of the i-th item in your cart and you bought 8 items, your total bill is Σᵢ₌₁⁸ Pᵢ — "add up the price of every item from the 1st through the 8th." That's it; a shopping receipt's "Total" line is a summation you compute every time you check out, whether or not you've ever seen the Σ symbol.</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Two properties worth knowing</div>
+            <p style="margin-bottom:8px;"><strong>Sums split apart:</strong> Σ(Xᵢ + Yᵢ) = ΣXᵢ + ΣYᵢ — you can add term-by-term or add the totals; same answer either way.</p>
+            <p style="margin:0;"><strong>Constants pull out front:</strong> Σ(c × Xᵢ) = c × ΣXᵢ — a constant multiplier can be factored outside the whole sum.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Where this shows up immediately — the mean and variance formulas</div>
+            <p style="margin:0;">X̄ = ΣXᵢ / n from the Summarizing Data module is just "add up every observation, then divide by how many there were" — precisely the grocery-receipt idea, followed by splitting the bill evenly. The variance formula, s² = Σ(Xᵢ − X̄)² / (n−1), adds one more layer: at each step, first subtract the mean and square the result, <em>then</em> add all of those squared values up.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">What does Σᵢ₌₁⁴ Xᵢ² mean?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">(X₁ + X₂ + X₃ + X₄)²</button>
+              <button class="opt-btn" data-correct="true">X₁² + X₂² + X₃² + X₄²</button>
+              <button class="opt-btn" data-correct="false">X₁ × X₂ × X₃ × X₄</button>
+            </div>
+            <div class="checkin-feedback">Correct — square each term first, then add: X₁² + X₂² + X₃² + X₄². Squaring the total instead would give a very different (and wrong) number.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — summation calculator</div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:0 0 10px;">Enter numbers, comma-separated.</p>
+            <textarea id="sumInput" rows="2" style="width:100%; font-family:var(--font-mono); font-size:.9rem; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">4, 7, 2, 9, 5</textarea>
+            <div class="tvm-toggle-row" style="margin-top:10px;">
+              <label><input type="radio" name="sumMode" value="plain" checked> ΣXᵢ</label>
+              <label><input type="radio" name="sumMode" value="squared"> ΣXᵢ²</label>
+              <label><input type="radio" name="sumMode" value="deviation"> Σ(Xᵢ − X̄)²</label>
+            </div>
+            <div class="calc-out">
+              <div class="calc-result" id="sumResult">Σ = 27</div>
+              <div class="calc-steps" id="sumSteps">4 + 7 + 2 + 9 + 5 = 27</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 REARRANGING EQUATIONS
+    ========================================================== -->
+    <section class="section" id="sec-algebra">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Rearranging Equations</h2>
+          <p class="subhead">Every "solve for X" formula throughout this toolkit comes from the exact same one rule, applied patiently.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">The one rule</div>
+            <p style="margin:0;">An equation is a balance scale — both sides are equal. Whatever you do to one side (add, subtract, multiply, divide, take a log, take a root), you must do to the <em>other</em> side too, or the balance tips and the equation stops being true. Do that patiently, one step at a time, until the variable you want stands alone.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">A simple worked example</div>
+            <div class="derivation-step">Start: 3x + 6 = 21</div>
+            <div class="derivation-arrow">↓ subtract 6 from both sides</div>
+            <div class="derivation-step">3x = 15</div>
+            <div class="derivation-arrow">↓ divide both sides by 3</div>
+            <div class="derivation-step">x = 5</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">The same rule, applied to Module 1's annuity payment formula</div>
+            <p style="margin:0 0 8px;">Start from the present value of an annuity, and isolate the payment A:</p>
+            <div class="derivation-step">PV = A × [1 − (1+r)⁻ᴺ] / r</div>
+            <div class="derivation-arrow">↓ divide both sides by the bracketed term</div>
+            <div class="derivation-step">A = PV / {[1 − (1+r)⁻ᴺ] / r}</div>
+            <p style="margin:10px 0 0; font-size:.9rem;">Nothing new happened here beyond "divide both sides by the same thing" — the exact same single move as the simple x-example above, just with a longer expression standing in for a plain number.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:8px;">The most common mistake</div>
+            <p style="margin:0;">Applying an operation to only <em>part</em> of one side. In PV = A × [1 − (1+r)⁻ᴺ] / r, you must divide the <em>entire right-hand side</em> by the bracketed term — not just the A. Whatever you do, it has to apply to every term on that side of the balance, not a piece of it.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">Solve for r: FV = PV(1+r). What is r?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">r = FV/PV</button>
+              <button class="opt-btn" data-correct="true">r = FV/PV − 1</button>
+              <button class="opt-btn" data-correct="false">r = FV − PV</button>
+            </div>
+            <div class="checkin-feedback">Correct — divide both sides by PV to get FV/PV = 1+r, then subtract 1 from both sides: r = FV/PV − 1.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>A useful mental checklist</strong> when rearranging any formula: (1) What am I solving for? Circle it. (2) What's the very last operation applied to it, reading left to right? (3) Undo that operation first, on both sides. (4) Repeat, working from the outside in, until the circled variable stands completely alone.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 SETS & SET NOTATION
+    ========================================================== -->
+    <section class="section" id="sec-sets">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Sets &amp; Basic Set Notation</h2>
+          <p class="subhead">A set is just a collection of things — and the plain-math version of "union" and "intersection" turns out to be exactly what Probability calls "or" and "and."</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">The core vocabulary</div>
+            <p style="margin-bottom:8px;"><strong>Set:</strong> a collection of distinct objects, written in curly braces — e.g., A = {2, 4, 6, 8}.</p>
+            <p style="margin-bottom:8px;"><strong>Union (A ∪ B):</strong> everything in A, or in B, or in both — combine the collections.</p>
+            <p style="margin-bottom:8px;"><strong>Intersection (A ∩ B):</strong> only what's in <em>both</em> A and B at the same time — the overlap.</p>
+            <p style="margin:0;"><strong>Disjoint sets:</strong> two sets with no overlap at all — their intersection is the empty set, ∅.</p>
+          </div>
+
+          <p>A <strong>Venn diagram</strong> draws each set as a circle; the overlapping region is the intersection, and the two circles together are the union. Click each region below to see which set relationship it represents:</p>
+
+          <div class="chart-card">
+            <div id="vennChart"></div>
+            <div class="callout" id="vennExplain" style="margin-top:14px; display:none;"></div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">This is the exact same picture as Probability Concepts</div>
+            <p style="margin:0;">Let A = {stocks that pay a dividend} and B = {stocks with P/E below 15}. A ∪ B ("A union B") is every stock that does at least one of those two things — which is precisely what the Probability module's addition rule, P(A or B), is computing. A ∩ B ("A intersection B") is every stock that does <em>both</em> — precisely the joint probability P(AB) from the multiplication rule. Two mutually exclusive events, in set language, are simply two disjoint sets: A ∩ B = ∅.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">Set A = {2, 4, 6, 8} and Set B = {4, 8, 12}. What is A ∩ B?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">{2, 4, 6, 8, 12}</button>
+              <button class="opt-btn" data-correct="true">{4, 8}</button>
+              <button class="opt-btn" data-correct="false">∅ (empty set)</button>
+            </div>
+            <div class="checkin-feedback">Correct — the intersection is only the elements appearing in both sets: 4 and 8 are in both A and B.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Set language</th><th>Probability language</th></tr>
+              <tr><td>A ∪ B</td><td class="num">"A or B"</td></tr>
+              <tr><td>A ∩ B</td><td class="num">"A and B" (joint)</td></tr>
+              <tr><td>A ∩ B = ∅</td><td class="num">Mutually exclusive</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 FUNCTIONS & THE CARTESIAN PLANE
+    ========================================================== -->
+    <section class="section" id="sec-functions">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Functions &amp; the Cartesian Plane</h2>
+          <p class="subhead">Every chart in this toolkit — every histogram, every scatter plot, every bell curve — is a picture of a function. Here's what that word actually means.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">What a function is</div>
+            <p style="margin:0;">A <strong>function</strong> is a rule that takes an input and produces exactly one output. Written f(x), it means "the output the function f produces when you feed it the input x." Feed a vending machine the code B4, and it always gives you the same snack — never two different things for the same code. That reliability, one output per input, is the entire definition of a function.</p>
+          </div>
+
+          <p>The <strong>Cartesian plane</strong> is just two number lines crossing at a right angle — a horizontal x-axis and a vertical y-axis. Every point on it is described by a pair of numbers (x, y): how far right/left, and how far up/down. Plotting f(x) means: for every input x, go up (or down) to the height y = f(x), and mark a dot there.</p>
+
+          <div class="callout formula">
+            <div class="label">The linear function — the simplest, most common shape</div>
+            <div class="formula-body">y = mx + b</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">b is the y-intercept — where the line crosses the y-axis, when x=0. m is the slope — how many units y rises for every one unit x moves right. A bigger m means a steeper line.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="lineGraphChart"></div>
+            <div class="tvm-grid" style="margin-top:10px; max-width:280px;">
+              <div class="tvm-field"><label>Slope (m)</label><input type="number" id="graphM" value="1.5" step="0.1"></div>
+              <div class="tvm-field"><label>Intercept (b)</label><input type="number" id="graphB" value="1" step="0.5"></div>
+            </div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Where this shows up everywhere ahead</div>
+            <p style="margin:0;">A probability density function, f(x), is exactly this idea — a rule assigning a height to every possible value x, which is precisely what gets plotted as the bell curve in Common Probability Distributions. A cumulative distribution function F(x) is another function, plotted the same way. And when you eventually meet regression analysis, the "line of best fit" through a scatter plot is nothing more than this same y = mx + b, with the slope m and intercept b chosen to fit the data as closely as possible.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">A line has equation y = 4x − 3. What is its slope, and what is its y-intercept?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Slope = −3, intercept = 4</button>
+              <button class="opt-btn" data-correct="true">Slope = 4, intercept = −3</button>
+              <button class="opt-btn" data-correct="false">Slope = 4, intercept = 3</button>
+            </div>
+            <div class="checkin-feedback">Correct — matching y = mx + b, the coefficient on x (4) is the slope, and the constant term (−3) is the y-intercept.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Reading a graph is a skill, not a talent.</strong> Every chart in Organizing &amp; Visualizing Data — the histogram's shape, the scatter plot's slope, the bell curve's peak — is answering the exact same question this section teaches you to ask: for this x, what's the y?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Module 0 — the math foundations behind the CFA Program prerequisite Quantitative Methods readings. Once this feels comfortable, head to <a href="../interest-rates/index.html" style="color:var(--indigo);">Module 1: Interest Rates, PV &amp; FV →</a>
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{ margin:0; background:var(--paper); }
+  .topbar{
+    padding:16px 4vw; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--paper); z-index:10;
+  }
+  .topbar-left{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-name{ font-family:var(--font-display); font-weight:700; font-size:1rem; color:var(--indigo-deep); }
+  .wrap{ max-width:640px; margin:0 auto; padding:32px 5vw 80px; }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--amber-deep); font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:""; width:24px; height:2px; background:var(--amber-deep); display:inline-block; }
+  h1{ font-family:var(--font-display); font-size:clamp(1.6rem,3.2vw,2.2rem); color:var(--indigo-deep); margin:0 0 10px; }
+  .lede{ color:var(--ink-soft); font-size:.95rem; margin:0 0 24px; }
+
+  .controls-row{ display:flex; gap:10px; align-items:center; margin-bottom:20px; flex-wrap:wrap; }
+  .module-select{
+    font-family:var(--font-mono); font-size:.8rem; padding:9px 12px; border-radius:8px; border:1.5px solid var(--line);
+    background:#fff; color:var(--ink); flex:1; min-width:180px;
+  }
+  .shuffle-btn{
+    font-family:var(--font-mono); font-size:.78rem; padding:9px 14px; border-radius:8px; border:1.5px solid var(--line);
+    background:#fff; color:var(--indigo); cursor:pointer; white-space:nowrap;
+  }
+  .shuffle-btn:hover{ background:var(--paper-dim); }
+
+  .deck-progress{
+    font-family:var(--font-mono); font-size:.75rem; color:var(--ink-soft); text-align:center; margin-bottom:14px;
+  }
+  .deck-track{ height:6px; background:var(--paper-dim); border-radius:3px; overflow:hidden; margin-bottom:24px; }
+  .deck-fill{ height:100%; background:var(--indigo); border-radius:3px; transition:width .2s; }
+
+  .card-scene{ perspective:1400px; margin-bottom:20px; }
+  .flashcard{
+    position:relative; width:100%; min-height:280px; cursor:pointer;
+    transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,.2,.2,1);
+  }
+  .flashcard.flipped{ transform:rotateY(180deg); }
+  .card-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:16px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding:32px 28px; box-shadow:0 8px 28px rgba(43,37,96,.12);
+  }
+  .card-front{ background:#fff; border:1.5px solid var(--line); }
+  .card-back{ background:var(--indigo-deep); color:#fff; transform:rotateY(180deg); }
+  .card-tag{
+    font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--amber-deep); margin-bottom:14px; font-weight:700;
+  }
+  .card-back .card-tag{ color:var(--amber); }
+  .card-text{ font-family:var(--font-display); font-size:1.15rem; line-height:1.45; color:var(--ink); }
+  .card-back .card-text{ color:#fff; font-family:var(--font-sans, inherit); font-size:1rem; font-weight:400; line-height:1.6; }
+  .card-hint{
+    position:absolute; bottom:14px; font-family:var(--font-mono); font-size:.68rem; color:var(--ink-soft); opacity:.7;
+  }
+  .card-back .card-hint{ color:#cfc9e8; }
+
+  .nav-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:20px; }
+  .nav-btn{
+    font-family:var(--font-mono); font-size:.8rem; font-weight:600; padding:10px 16px; border-radius:8px;
+    border:1.5px solid var(--line); background:#fff; color:var(--ink); cursor:pointer;
+  }
+  .nav-btn:hover:not(:disabled){ background:var(--paper-dim); }
+  .nav-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .nav-counter{ font-family:var(--font-mono); font-size:.78rem; color:var(--ink-soft); }
+
+  .self-assess-row{ display:flex; gap:10px; }
+  .assess-btn{
+    flex:1; font-family:var(--font-mono); font-size:.82rem; font-weight:700; padding:13px; border-radius:10px;
+    border:none; cursor:pointer; opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  .assess-btn.show{ opacity:1; pointer-events:auto; }
+  .assess-btn.still-learning{ background:#FBE7E2; color:#8a2f1c; }
+  .assess-btn.still-learning:hover{ background:#f5d3ca; }
+  .assess-btn.got-it{ background:#E4F4EC; color:#1c5b41; }
+  .assess-btn.got-it:hover{ background:#d3ecdf; }
+
+  .empty-deck{ text-align:center; padding:60px 20px; color:var(--ink-soft); }
+
+  @media (max-width: 480px){
+    .flashcard{ min-height:240px; }
+    .card-text{ font-size:1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="topbar-left">
+    <span class="brand-mark"></span>
+    <span class="brand-name">CFA Prerequisite — Quant Toolkit</span>
+  </a>
+  <a href="../readiness/index.html" style="font-family:var(--font-mono); font-size:.78rem; color:var(--indigo); text-decoration:none; font-weight:600;">Readiness Dashboard →</a>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow">Active Recall</div>
+  <h1>Flashcards</h1>
+  <p class="lede">162 cards, 2 per concept, across all 9 modules. Tap a card to flip it, then rate yourself honestly — your self-ratings feed the same Readiness Dashboard as every quiz in this toolkit.</p>
+
+  <div class="controls-row">
+    <select class="module-select" id="moduleSelect">
+      <option value="all">All modules (162 cards)</option>
+    </select>
+    <button class="shuffle-btn" id="shuffleBtn">🔀 Shuffle</button>
+  </div>
+
+  <div class="deck-progress" id="deckProgress"></div>
+  <div class="deck-track"><div class="deck-fill" id="deckFill"></div></div>
+
+  <div id="cardArea">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

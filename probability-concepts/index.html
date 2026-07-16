@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probability Concepts — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">P(learn) = 1</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Probability<br>Concepts</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Foundations</div>
+    <ul class="toc">
+      <li><a href="#sec-basics" data-sec="sec-basics"><span class="num">01</span>Random Variables &amp; Events</a></li>
+      <li><a href="#sec-properties" data-sec="sec-properties"><span class="num">02</span>Rules of Probability</a></li>
+      <li><a href="#sec-types" data-sec="sec-types"><span class="num">03</span>Three Ways to Estimate P</a></li>
+      <li><a href="#sec-odds" data-sec="sec-odds"><span class="num">04</span>Odds</a></li>
+    </ul>
+
+    <div class="toc-group-label">Combining Events</div>
+    <ul class="toc">
+      <li><a href="#sec-conditional" data-sec="sec-conditional"><span class="num">05</span>Conditional Probability</a></li>
+      <li><a href="#sec-joint" data-sec="sec-joint"><span class="num">06</span>Joint Probability</a></li>
+      <li><a href="#sec-addition" data-sec="sec-addition"><span class="num">07</span>Addition Rule</a></li>
+      <li><a href="#sec-independence" data-sec="sec-independence"><span class="num">08</span>Independent vs Dependent</a></li>
+      <li><a href="#sec-total" data-sec="sec-total"><span class="num">09</span>Total Probability Rule</a></li>
+    </ul>
+
+    <div class="toc-group-label">Counting</div>
+    <ul class="toc">
+      <li><a href="#sec-counting" data-sec="sec-counting"><span class="num">10</span>Multiplication &amp; Factorial</a></li>
+      <li><a href="#sec-labeling" data-sec="sec-labeling"><span class="num">11</span>Labeling &amp; Combinations</a></li>
+      <li><a href="#sec-permutation" data-sec="sec-permutation"><span class="num">12</span>Permutations</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material</div>
+      <h1>Probability, from first principles to fluency.</h1>
+      <p class="lede">Every rule on this page starts with something you already understand — a coin flip, a weather forecast, a deck of cards — before it gets dressed up in investment language. Work through the modules in order down the left, try the check-ins as you go, and finish with the 20-question quiz.</p>
+
+      <div class="dial-card" style="margin-top:32px; max-width:560px;">
+        <div class="dial-readout">
+          <span class="dial-value" id="dialValue">0.50</span>
+          <span class="dial-word" id="dialWord">Toss-up</span>
+        </div>
+        <p style="margin:0 0 4px; color:var(--ink-soft); font-size:.9rem;">Drag the slider. A probability is nothing more than a number between 0 and 1 that says how likely something is.</p>
+        <input type="range" id="probDial" min="0" max="100" value="50" step="1">
+        <div class="dial-scale"><span>0 — impossible</span><span>1 — certain</span></div>
+        <div class="dial-odds">Stated as odds <em>for</em> the event: <b id="dialOdds">1 to 1</b> &nbsp;·&nbsp; as a percentage: <b id="dialPct">50%</b></div>
+      </div>
+    </header>
+
+    <!-- =========================================================
+         01 RANDOM VARIABLES, OUTCOMES, EVENTS
+    ========================================================== -->
+    <section class="section" id="sec-basics">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Random Variables, Outcomes, and Events</h2>
+          <p class="subhead">The three words underneath every probability sentence you'll ever read.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <p>Roll an ordinary six-sided die. Before it lands, you don't know what number will show — that uncertainty is the whole point. In probability language:</p>
+
+          <div class="definition">
+            <div class="label">Definition</div>
+            <p style="margin-bottom:10px;"><strong>Random variable</strong> — a quantity whose future value is uncertain. <em>"The number on the die"</em> is a random variable. So is <em>"tomorrow's high temperature"</em> or <em>"next quarter's earnings per share."</em></p>
+            <p style="margin-bottom:10px;"><strong>Outcome</strong> — one possible value the random variable can take. Rolling a <em>4</em> is an outcome. A high of <em>31°C</em> is an outcome.</p>
+            <p style="margin-bottom:0;"><strong>Event</strong> — a specified set of outcomes, one or more. "Rolling an even number" is an event built from three outcomes: {2, 4, 6}. An event can also be a single outcome, like "rolling exactly a 4."</p>
+          </div>
+
+          <p>Notice the hierarchy: a random variable can land on many outcomes, and an event is just a bucket we've drawn around some of those outcomes because we care about them together.</p>
+
+          <div class="callout example">
+            <div class="label">Outside example — weather</div>
+            <p style="margin:0;">The random variable is <em>tomorrow's rainfall</em>. One outcome is <em>"12mm of rain."</em> The event <em>"it rains"</em> bundles together every outcome above 0mm — an infinite number of individual outcomes, all swept into one event because that's the question you actually care about.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example</div>
+            <p style="margin:0;">A portfolio manager cares about the random variable <em>portfolio return</em>. A single outcome might be "exactly 10%." But the manager's real concern is usually an event: "the portfolio earns less than 10%," which bundles every return outcome from −100% up to (but not including) 10%.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">You flip a coin three times. "Getting at least two heads" is a:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">A random variable</button>
+              <button class="opt-btn" data-correct="false">A single outcome</button>
+              <button class="opt-btn" data-correct="true">An event</button>
+            </div>
+            <div class="checkin-feedback">Right idea: "at least two heads" bundles together three specific outcomes — HHT, HTH, THH — plus HHH. A group of outcomes you care about together is an event, not a single outcome.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="callout">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:8px;">Quick reference</div>
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Term</th><th>Die-roll example</th></tr>
+              <tr><td>Random variable</td><td class="num">"the number rolled"</td></tr>
+              <tr><td>Outcome</td><td class="num">a 4</td></tr>
+              <tr><td>Event</td><td class="num">{2, 4, 6} = "even"</td></tr>
+            </table>
+          </div>
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.92rem;"><strong>Common mix-up:</strong> people often say "outcome" when they mean "event." The test-taking habit worth building: ask <em>"is this one possible value, or a group of them?"</em> One value → outcome. A group (even one built from a single value) → event.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 TWO DEFINING PROPERTIES OF PROBABILITY
+    ========================================================== -->
+    <section class="section" id="sec-properties">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>The Two Rules Every Probability Must Obey</h2>
+          <p class="subhead">Plus two words that describe how events relate to each other: mutually exclusive and exhaustive.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <p>Whatever method you use to come up with a probability — and Module 03 covers three different methods — the number you land on has to satisfy two non-negotiable rules.</p>
+
+          <div class="definition">
+            <div class="label">The two defining properties</div>
+            <p style="margin-bottom:10px;"><strong>1.</strong> For any event <em>E</em>: 0 ≤ P(E) ≤ 1. A probability can never be negative, and it can never exceed 1. Impossible things score 0; sure things score 1.</p>
+            <p style="margin-bottom:0;"><strong>2.</strong> If you list out events that are <em>mutually exclusive</em> and <em>exhaustive</em>, their probabilities must add up to exactly 1.</p>
+          </div>
+
+          <p>Those two italicized words carry a lot of weight, so let's pin them down with cards instead of formulas:</p>
+
+          <div class="two-col">
+            <div class="callout example" style="margin-top:0;">
+              <div class="label">Mutually exclusive</div>
+              <p style="margin:0;">Only one can happen at a time. Drawing a card that is a heart and drawing a card that is a spade are mutually exclusive — no card is both.</p>
+            </div>
+            <div class="callout example" style="margin-top:0;">
+              <div class="label">Exhaustive</div>
+              <p style="margin:0;">Together, they cover every possibility with nothing left out. "Heart, spade, club, or diamond" is exhaustive — every card belongs to exactly one suit.</p>
+            </div>
+          </div>
+
+          <p style="margin-top:18px;">Put both properties together on a die: the events {1}, {2}, {3}, {4}, {5}, {6} are mutually exclusive (a roll can't be both a 2 and a 5) and exhaustive (every roll is one of them). So P(1)+P(2)+P(3)+P(4)+P(5)+P(6) must equal 1 — and since a fair die treats each face equally, each gets 1/6.</p>
+
+          <div class="callout finance">
+            <div class="label">Finance example</div>
+            <p style="margin:0;">Define A = "the portfolio earns exactly 10%," B = "the portfolio earns below 10%," C = "the portfolio earns above 10%." A, B, and C are mutually exclusive (a return can't be in two of these buckets) and exhaustive (every possible return falls into one of them). So however you estimate them, P(A) + P(B) + P(C) = 1 — always.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">"A stock's return is positive" and "a stock's return is above 5%" — are these two events mutually exclusive?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Yes — a return can't be both</button>
+              <button class="opt-btn" data-correct="true">No — a return of 8% belongs to both events</button>
+            </div>
+            <div class="checkin-feedback">Correct. A return of, say, 8% is both "positive" and "above 5%" simultaneously, so the two events overlap — they are not mutually exclusive.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="callout formula">
+            <div class="label">Formula</div>
+            <div class="formula-body">0 ≤ P(E) ≤ 1<br><br>ΣP(Eᵢ) = 1<br><span style="font-size:.8rem; color:var(--ink-soft);">for mutually exclusive &amp; exhaustive E₁…Eₙ</span></div>
+          </div>
+          <div class="spectrum" style="margin-top:20px;"></div>
+          <div class="spectrum-labels"><span>0<br>impossible</span><span style="text-align:center;">0.5<br>toss-up</span><span style="text-align:right;">1<br>certain</span></div>
+          <p style="font-size:.85rem; color:var(--ink-soft); margin-top:14px;">This spectrum bar shows up throughout the module — every probability you calculate has to land somewhere on it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 THREE WAYS TO ESTIMATE PROBABILITY
+    ========================================================== -->
+    <section class="section" id="sec-types">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Three Ways to Arrive at a Probability</h2>
+          <p class="subhead">Empirical, subjective, and a priori — the source of a number changes how much you should trust it.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <p>Where do these numbers even come from? There are three broad approaches, and analysts should always know which one they're using.</p>
+
+          <div class="definition">
+            <div class="label">Empirical probability</div>
+            <p style="margin:0;">Based on historical frequency — you counted what actually happened. Flip a coin 200 times, get 104 heads, and the empirical probability of heads is 104/200 = 0.52. <strong>Weakness:</strong> it assumes the future behaves like the past, and it's unreliable for rare events you have little history on.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Subjective probability</div>
+            <p style="margin:0;">A personal judgment call, not backed by a formal count or formula. "I think there's a 70% chance my flight is delayed today, based on the storm clouds I can see" is subjective. It's informed, but it's still a belief, not a measurement.</p>
+          </div>
+          <div class="definition">
+            <div class="label">A priori probability</div>
+            <p style="margin:0;">Derived by pure logical reasoning, before observing anything. A fair coin has exactly two equally likely sides, so P(heads) = 1/2 — you reasoned your way there without flipping it once. <span class="pill">a priori + empirical = "objective"</span> because, unlike subjective probability, they don't vary from person to person.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — one question, three answers</div>
+            <p style="margin:0;">"What's the probability of drawing exactly two heads in five coin flips?" <strong>Empirical:</strong> run the experiment 100 times, get two heads 33 times → 0.33. <strong>Subjective:</strong> you guess it's "somewhere around a third" → 0.35, based on gut feel. <strong>A priori:</strong> apply the binomial formula for five fair-coin flips → 0.3125, the mathematically exact answer. All three are legitimate probabilities — they just carry different amounts of rigor.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example</div>
+            <p style="margin:0;">"51 of the 60 stocks in this index pay a dividend, so P(dividend-paying) = 51/60 = 0.85" is empirical. A credit analyst saying "I believe there's a 15% chance this bond defaults, based on my read of management" is subjective. There's rarely a clean a priori probability in investing, because market outcomes aren't symmetric like a coin or die — which is exactly why empirical and subjective estimates matter so much in practice.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">A trader says, "Based on the last 250 trading days, this stock closed higher 140 times, so I estimate a 56% chance it closes higher tomorrow." This is:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">A subjective probability</button>
+              <button class="opt-btn" data-correct="true">An empirical probability</button>
+              <button class="opt-btn" data-correct="false">An a priori probability</button>
+            </div>
+            <div class="checkin-feedback">Right — it's built from a historical frequency count (140 out of 250 days), which is the definition of empirical probability.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Type</th><th>Built from</th></tr>
+              <tr><td>Empirical</td><td>Counted history</td></tr>
+              <tr><td>Subjective</td><td>Personal judgment</td></tr>
+              <tr><td>A priori</td><td>Pure logic / symmetry</td></tr>
+            </table>
+          </div>
+          <div class="callout formula">
+            <div class="label">Objective vs subjective</div>
+            <p style="margin:0; font-size:.92rem;">Empirical and a priori probabilities are grouped together as <strong>objective</strong> — two careful people using the same method land on the same number. Subjective probability can differ from person to person, which is why it's kept in its own category.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 ODDS
+    ========================================================== -->
+    <section class="section" id="sec-odds">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Odds: Probability's Other Language</h2>
+          <p class="subhead">Sportsbooks, racetracks, and CFA exam questions all speak in "3 to 1," not "0.75." Here's the translation.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <p>Odds and probability describe the same underlying likelihood, just packaged differently. <strong>The odds for an event</strong> compare the probability it happens to the probability it doesn't.</p>
+
+          <div class="callout formula">
+            <div class="label">Formulas</div>
+            <div class="formula-body">
+              Odds for E = P(E) / [1 − P(E)]<br>
+              Odds against E = [1 − P(E)] / P(E)<br><br>
+              Given "odds for E = a to b":  P(E) = a / (a + b)<br>
+              Given "odds against E = a to b":  P(E) = b / (a + b)
+            </div>
+          </div>
+
+          <p>Read that carefully — <em>odds against</em> flip the a and b when you convert back to probability. That reversal trips people up more than any other part of this topic.</p>
+
+          <div class="callout example">
+            <div class="label">Outside example — a horse race</div>
+            <p style="margin:0;">A bookmaker quotes a horse at "4 to 1 against." That means the implied probability of winning is 1/(4+1) = 0.20 — a 20% chance. If instead the horse were quoted "4 to 1 <em>for</em>," the implied probability would flip to 4/(4+1) = 0.80. Same numbers, opposite meaning, depending on the word "for" versus "against."</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — passing a course</div>
+            <p style="margin:0 0 8px;">A colleague has a 0.40 probability of passing an exam. What are the odds for passing?</p>
+            <p style="margin:0;">Odds for = 0.40 / 0.60 = 0.667, or "2 to 3." Now flip it: if a second colleague's odds of passing are quoted as "4 to 1," her probability of passing is 4/(4+1) = 0.80.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">The odds against a company winning a lawsuit are quoted as "9 to 1." What's the probability the company wins?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0.90</button>
+              <button class="opt-btn" data-correct="true">0.10</button>
+              <button class="opt-btn" data-correct="false">9.0</button>
+            </div>
+            <div class="checkin-feedback">Correct — for "odds against = a to b," P(E) = b/(a+b) = 1/(9+1) = 0.10. Winning is the underdog outcome here.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="converter">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — odds ⇄ probability</div>
+            <div class="conv-row">
+              <label for="convProb">P(E) =</label>
+              <input type="number" id="convProb" min="0" max="1" step="0.01" value="0.25">
+            </div>
+            <div class="conv-out" id="convOut">Odds for E = 0.25 / 0.75 = 0.33, or "1 to 3"<br>Odds against E = "3 to 1"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 CONDITIONAL PROBABILITY
+    ========================================================== -->
+    <section class="section" id="sec-conditional">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Conditional Probability</h2>
+          <p class="subhead">"What's the chance of A?" versus "what's the chance of A, now that I know B happened?" — two very different questions.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <p>An <strong>unconditional (marginal) probability</strong> is a plain, standalone likelihood — P(A), no strings attached. A <strong>conditional probability</strong>, written P(A | B) and read "the probability of A given B," restricts the question: given that we already know B happened, what's now the chance of A?</p>
+
+          <div class="definition">
+            <div class="label">Definition</div>
+            <p style="margin:0;">P(A | B) = P(AB) / P(B), where P(B) ≠ 0. The joint probability of both A and B happening, divided by how often B happens at all.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — a deck of cards</div>
+            <p style="margin:0;">P(card is a King) = 4/52 ≈ 0.077 — unconditional. But P(card is a King | card is a face card) = 4/12 ≈ 0.333 — knowing it's a face card (J, Q, K) already narrows the universe from 52 cards down to 12, and 4 of those 12 are Kings. Conditioning shrinks the sample space you're measuring against.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example</div>
+            <p style="margin:0;">Suppose P(stock return exceeds the risk-free rate) = 0.70 unconditionally. Now condition on "the stock's return is positive," which we know happens 80% of the time and includes every outcome that beats the risk-free rate. P(beats risk-free | positive return) = 0.70/0.80 = 0.875. Learning the return was positive at all makes it more likely — not less — that it also beat the risk-free rate.</p>
+          </div>
+
+          <p>One more nuance worth internalizing early: conditioning doesn't always change your answer. If knowing B tells you nothing new about A, then P(A|B) simply equals P(A) — that special case is called <em>independence</em>, covered in Module 08.</p>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">You roll one fair die. What is P(roll is a 6 | roll is even)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">1/6</button>
+              <button class="opt-btn" data-correct="true">1/3</button>
+              <button class="opt-btn" data-correct="false">1/2</button>
+            </div>
+            <div class="checkin-feedback">Correct. Given "even," the sample space shrinks to {2,4,6} — three equally likely outcomes — and exactly one of them is a 6, so P = 1/3.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout formula" style="margin-top:0;">
+            <div class="label">Formula</div>
+            <div class="formula-body">P(A | B) = P(AB) / P(B)<br><span style="font-size:.8rem; color:var(--ink-soft);">requires P(B) ≠ 0</span></div>
+          </div>
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.92rem;"><strong>Read direction matters:</strong> P(A | B) is not generally equal to P(B | A). "Probability it rained, given the ground is wet" is very different from "probability the ground is wet, given it rained." Keep track of which event is doing the conditioning.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 JOINT PROBABILITY & MULTIPLICATION RULE
+    ========================================================== -->
+    <section class="section" id="sec-joint">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Joint Probability &amp; the Multiplication Rule</h2>
+          <p class="subhead">"What's the chance of A <em>and</em> B, both happening?"</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>joint probability</strong>, written P(AB), is the probability that both A and B occur. Rearranging Module 05's conditional-probability definition gives you the multiplication rule — the standard tool for building a joint probability out of pieces you already know.</p>
+
+          <div class="definition">
+            <div class="label">Multiplication rule for probability</div>
+            <p style="margin:0;">P(AB) = P(A | B) × P(B)   — equivalently, P(AB) = P(B | A) × P(A)</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — two coin flips</div>
+            <p style="margin:0;">P(first flip is heads) = 0.5. Because coin flips don't influence each other, P(second flip is heads | first was heads) is still 0.5. So P(both heads) = 0.5 × 0.5 = 0.25 — matching what you'd get by just listing HH, HT, TH, TT and counting.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — mutual fund performance</div>
+            <p style="margin:0 0 8px;">Among 200 funds ranked as "winners" or "losers" each year, 66% of Year-1 winners repeat as Year-2 winners, and 50% of funds are losers in any given year. What's the joint probability a fund is a loser in <em>both</em> years?</p>
+            <p style="margin:0;">Let A = "Year-2 loser," B = "Year-1 loser." Given P(A | B) = 0.66 and P(B) = 0.50: P(AB) = 0.66 × 0.50 = <strong>0.33</strong>. About a third of all funds are losers in both years — noticeably above the 0.25 you'd expect if performance were pure chance, which hints that performance persists somewhat from year to year.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">P(it rains today) = 0.30. P(you carry an umbrella | it rains) = 0.90. What's P(it rains AND you carry an umbrella)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">1.20</button>
+              <button class="opt-btn" data-correct="true">0.27</button>
+              <button class="opt-btn" data-correct="false">0.90</button>
+            </div>
+            <div class="checkin-feedback">Correct — P(AB) = P(A|B) × P(B) = 0.90 × 0.30 = 0.27.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout formula" style="margin-top:0;">
+            <div class="label">Formula</div>
+            <div class="formula-body">P(AB) = P(A|B) · P(B)<br>= P(B|A) · P(A)</div>
+          </div>
+          <div class="tree" style="padding:20px;">
+            <svg viewBox="0 0 300 180" width="100%" style="max-width:320px; display:block; margin:0 auto;">
+              <text x="150" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4A4763">P(AB) as overlap</text>
+              <circle cx="115" cy="100" r="55" fill="#E8A33D" fill-opacity="0.35" stroke="#C77F1E" stroke-width="2"/>
+              <circle cx="180" cy="100" r="55" fill="#2F8F6B" fill-opacity="0.35" stroke="#2F8F6B" stroke-width="2"/>
+              <text x="90" y="105" font-family="IBM Plex Mono" font-size="13" fill="#1C1B29">A</text>
+              <text x="205" y="105" font-family="IBM Plex Mono" font-size="13" fill="#1C1B29">B</text>
+              <text x="147" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#1C1B29">AB</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         07 ADDITION RULE
+    ========================================================== -->
+    <section class="section" id="sec-addition">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <div>
+          <h2>The Addition Rule</h2>
+          <p class="subhead">"What's the chance of A <em>or</em> B?" — where "or" means at least one of them happens.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>If you naively add P(A) + P(B), you double-count any outcomes the two events share. The addition rule corrects for that overlap by subtracting the joint probability once.</p>
+          <div class="definition">
+            <div class="label">Addition rule for probability</div>
+            <p style="margin:0;">P(A or B) = P(A) + P(B) − P(AB)</p>
+          </div>
+          <p>If A and B are mutually exclusive, P(AB) = 0, and the rule collapses to the simple version you may already know intuitively: P(A or B) = P(A) + P(B).</p>
+
+          <div class="callout example">
+            <div class="label">Outside example — a standard deck</div>
+            <p style="margin:0;">P(card is a King) = 4/52. P(card is a Heart) = 13/52. These overlap at exactly one card, the King of Hearts: P(King and Heart) = 1/52. So P(King or Heart) = 4/52 + 13/52 − 1/52 = 16/52 ≈ 0.308. Forgetting to subtract the overlap would have wrongly counted the King of Hearts twice.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example</div>
+            <p style="margin:0;">Over 150 trading days, the stock index rose on 80 days (P(A) = 0.533) and interest rates fell on 30 days (P(B) = 0.20); both happened together on 15 days (P(AB) = 0.10). P(index rose OR rates fell) = 0.533 + 0.20 − 0.10 = <strong>0.633</strong> — roughly 63% of days had at least one of the two events occur.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c7">
+            <div class="label">Check yourself</div>
+            <div class="q">You roll one die. What's P(roll is even OR roll is greater than 4)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">5/6</button>
+              <button class="opt-btn" data-correct="true">4/6</button>
+              <button class="opt-btn" data-correct="false">1</button>
+            </div>
+            <div class="checkin-feedback">Correct. Even = {2,4,6}, P=3/6. Greater than 4 = {5,6}, P=2/6. Overlap = {6}, P=1/6. So P(even OR >4) = 3/6 + 2/6 − 1/6 = 4/6.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout formula" style="margin-top:0;">
+            <div class="label">Formula</div>
+            <div class="formula-body">P(A or B) = P(A) + P(B) − P(AB)<br><span style="font-size:.8rem; color:var(--ink-soft);">if mutually exclusive: P(AB)=0</span></div>
+          </div>
+          <div class="tree" style="padding:20px;">
+            <svg viewBox="0 0 300 180" width="100%" style="max-width:320px; display:block; margin:0 auto;">
+              <text x="150" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4A4763">Why we subtract P(AB)</text>
+              <circle cx="115" cy="100" r="55" fill="#2B2560" fill-opacity="0.5" stroke="#2B2560" stroke-width="2"/>
+              <circle cx="180" cy="100" r="55" fill="#2B2560" fill-opacity="0.5" stroke="#2B2560" stroke-width="2"/>
+              <text x="88" y="105" font-family="IBM Plex Mono" font-size="12" fill="#fff">A only</text>
+              <text x="195" y="105" font-family="IBM Plex Mono" font-size="12" fill="#fff">B only</text>
+              <text x="147" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#E8A33D" font-weight="bold">counted 2×</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         08 INDEPENDENCE
+    ========================================================== -->
+    <section class="section" id="sec-independence">
+      <div class="section-head">
+        <span class="section-tag">08</span>
+        <div>
+          <h2>Independent vs. Dependent Events</h2>
+          <p class="subhead">Does knowing about B change what you believe about A? If not, they're independent.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Definition</div>
+            <p style="margin:0;">Events A and B are <strong>independent</strong> if and only if P(A | B) = P(A), equivalently P(B | A) = P(B). Knowing one occurred tells you nothing about the other. Otherwise, they're <strong>dependent</strong>.</p>
+          </div>
+
+          <p>Independence has a shortcut version of the multiplication rule: since P(A | B) collapses to just P(A), you can skip conditioning entirely.</p>
+
+          <div class="callout formula">
+            <div class="label">Multiplication rule for independent events</div>
+            <div class="formula-body">P(AB) = P(A) × P(B)</div>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example</div>
+            <p style="margin:0;">Two separate dice rolls are independent — the first roll has zero influence on the second. P(both dice show 6) = (1/6)(1/6) = 1/36. Contrast that with drawing two cards from a deck <em>without replacement</em>: the first draw changes what's left, so those two draws are <strong>dependent</strong> — P(2nd is an Ace | 1st was an Ace) = 3/51, not the plain 4/52.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example — a stock screen</div>
+            <p style="margin:0 0 8px;">You apply five independent screening criteria to 905 stocks, with pass rates of 61.4%, 54.0%, 66.3%, 54.1%, and 34.6%. Under independence, the chance a stock clears <em>all five</em> is the product of the individual probabilities:</p>
+            <p style="margin:0;">0.614 × 0.540 × 0.663 × 0.541 × 0.346 ≈ <strong>0.041</strong> — only about 4%, or roughly 37 stocks out of 905. Even when no single criterion is very strict, requiring several independent conditions at once shrinks the surviving pool fast.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.92rem;"><strong>Don't confuse "independent" with "mutually exclusive."</strong> They're almost opposites. Mutually exclusive events are maximally <em>dependent</em> — if you know one happened, you know for certain the other didn't (P(A|B)=0, not P(A)). True independence means B happening changes nothing about A's likelihood at all.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c8">
+            <div class="label">Check yourself</div>
+            <div class="q">P(A) = 0.30, P(B) = 0.40. If A and B are independent, what is P(AB)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0.70</button>
+              <button class="opt-btn" data-correct="true">0.12</button>
+              <button class="opt-btn" data-correct="false">Cannot be determined</button>
+            </div>
+            <div class="checkin-feedback">Correct — under independence, P(AB) = P(A) × P(B) = 0.30 × 0.40 = 0.12.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th></th><th>Independent</th><th>Mutually exclusive</th></tr>
+              <tr><td>Meaning</td><td class="num">P(A|B)=P(A)</td><td class="num">P(AB)=0</td></tr>
+              <tr><td>Can both happen?</td><td>Sometimes, unaffected</td><td>Never</td></tr>
+              <tr><td>Dice example</td><td>Two separate rolls</td><td>Rolling a 2 <em>and</em> a 5 on one roll</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         09 TOTAL PROBABILITY RULE
+    ========================================================== -->
+    <section class="section" id="sec-total">
+      <div class="section-head">
+        <span class="section-tag">09</span>
+        <div>
+          <h2>The Total Probability Rule</h2>
+          <p class="subhead">Break a hard question into scenarios, solve each easy piece, then reassemble the answer as a weighted average.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Often you can't estimate P(A) directly, but you <em>can</em> estimate it separately under a few different scenarios. If those scenarios are mutually exclusive and exhaustive — they cover every possibility with no overlap — the total probability rule lets you stitch the pieces back into one overall answer.</p>
+
+          <div class="definition">
+            <div class="label">Two-scenario version</div>
+            <p style="margin:0;">P(A) = P(A | S)·P(S) + P(A | S<sup>C</sup>)·P(S<sup>C</sup>)</p>
+          </div>
+          <div class="definition">
+            <div class="label">General, n-scenario version</div>
+            <p style="margin:0;">P(A) = P(A|S₁)P(S₁) + P(A|S₂)P(S₂) + … + P(A|Sₙ)P(Sₙ), where S₁…Sₙ are mutually exclusive and exhaustive.</p>
+          </div>
+
+          <p>In plain terms: the overall probability of A is a <strong>weighted average</strong> of its probability under each scenario, weighted by how likely each scenario is.</p>
+
+          <div class="callout example">
+            <div class="label">Outside example — two factories</div>
+            <p style="margin:0;">A toy company gets 60% of its units from Factory 1 (2% defect rate) and 40% from Factory 2 (5% defect rate). What's the overall probability a random toy is defective? P(defect) = 0.02×0.60 + 0.05×0.40 = 0.012 + 0.020 = <strong>0.032</strong>, a 3.2% overall defect rate — a blend of the two factories' rates, weighted by how much each one supplies.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example — forecasting EPS</div>
+            <p style="margin:0 0 8px;">You know: P(EPS rises next quarter) = 0.55 overall; P(prior quarter's EPS rose) = 0.55; and P(EPS rises | prior quarter fell) = 0.40. What must P(EPS rises | prior quarter rose) be, for these numbers to stay internally consistent?</p>
+            <p style="margin:0;">0.55 = P(A|S)(0.55) + 0.40(0.45) → P(A|S) = [0.55 − 0.18] / 0.55 ≈ <strong>0.673</strong>. Since this conditional probability (67.3%) is well above the unconditional 55%, the data implies some persistence — an EPS increase tends to be followed by another increase.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c9">
+            <div class="label">Check yourself</div>
+            <div class="q">40% of a bond portfolio is investment-grade (2% default rate), 60% is high-yield (8% default rate). What is the overall default rate?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0.050</button>
+              <button class="opt-btn" data-correct="true">0.056</button>
+              <button class="opt-btn" data-correct="false">0.100</button>
+            </div>
+            <div class="checkin-feedback">Correct — 0.02×0.40 + 0.08×0.60 = 0.008 + 0.048 = 0.056, or 5.6%.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tree">
+            <svg viewBox="0 0 320 200" width="100%">
+              <text x="160" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4A4763">Total probability tree</text>
+              <line x1="30" y1="30" x2="110" y2="90" stroke="#2B2560" stroke-width="1.5"/>
+              <line x1="30" y1="30" x2="110" y2="170" stroke="#2B2560" stroke-width="1.5"/>
+              <circle cx="30" cy="30" r="4" fill="#2B2560"/>
+              <text x="8" y="15" font-family="IBM Plex Mono" font-size="10" fill="#1C1B29">start</text>
+              <text x="60" y="52" font-family="IBM Plex Mono" font-size="10" fill="#4A4763">P(S)</text>
+              <text x="60" y="140" font-family="IBM Plex Mono" font-size="10" fill="#4A4763">P(Sᶜ)</text>
+              <circle cx="110" cy="90" r="4" fill="#E8A33D"/>
+              <circle cx="110" cy="170" r="4" fill="#E8A33D"/>
+              <text x="118" y="80" font-family="IBM Plex Mono" font-size="10" fill="#1C1B29">S</text>
+              <text x="118" y="160" font-family="IBM Plex Mono" font-size="10" fill="#1C1B29">Sᶜ</text>
+              <line x1="110" y1="90" x2="200" y2="60" stroke="#2F8F6B" stroke-width="1.5"/>
+              <line x1="110" y1="90" x2="200" y2="110" stroke="#2F8F6B" stroke-width="1.5"/>
+              <line x1="110" y1="170" x2="200" y2="145" stroke="#2F8F6B" stroke-width="1.5"/>
+              <line x1="110" y1="170" x2="200" y2="190" stroke="#2F8F6B" stroke-width="1.5"/>
+              <text x="205" y="58" font-family="IBM Plex Mono" font-size="9" fill="#1C1B29">A|S</text>
+              <text x="205" y="112" font-family="IBM Plex Mono" font-size="9" fill="#1C1B29">Aᶜ|S</text>
+              <text x="205" y="143" font-family="IBM Plex Mono" font-size="9" fill="#1C1B29">A|Sᶜ</text>
+              <text x="205" y="192" font-family="IBM Plex Mono" font-size="9" fill="#1C1B29">Aᶜ|Sᶜ</text>
+            </svg>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin-top:4px;">P(A) sums every path through the tree that ends in A.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         10 COUNTING: MULTIPLICATION RULE & FACTORIAL
+    ========================================================== -->
+    <section class="section" id="sec-counting">
+      <div class="section-head">
+        <span class="section-tag">10</span>
+        <div>
+          <h2>Principles of Counting — Multiplication Rule &amp; Factorial</h2>
+          <p class="subhead">Before you can find an a priori probability, you often need to count how many possibilities exist in the first place.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>When outcomes are equally likely, a priori probability = (favorable outcomes) / (total outcomes). Counting those outcomes by hand gets unmanageable fast, so a small toolkit of counting shortcuts does the heavy lifting.</p>
+
+          <div class="definition">
+            <div class="label">Multiplication rule for counting</div>
+            <p style="margin:0;">If task 1 can be done n₁ ways, task 2 (given task 1) can be done n₂ ways, … task k can be done n<sub>k</sub> ways, then all k tasks together can be done n₁ × n₂ × … × n<sub>k</sub> ways.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — building an outfit</div>
+            <p style="margin:0;">3 shirts, 4 pairs of pants, 2 pairs of shoes → 3 × 4 × 2 = 24 different complete outfits. Each choice is independent of the others, so you just multiply straight through.</p>
+          </div>
+
+          <p>A special, very common case: assigning every member of a group to its own unique slot, one at a time. The first item has n choices, the next has (n−1) remaining, and so on down to 1. That chain of shrinking choices is <strong>n factorial</strong>.</p>
+
+          <div class="definition">
+            <div class="label">Factorial</div>
+            <p style="margin:0;">n! = n × (n−1) × (n−2) × … × 1, and by convention 0! = 1.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example</div>
+            <p style="margin:0;">You need to assign 3 analysts, one each, to cover 3 different industries. The first analyst can be assigned 3 ways, the second (only 2 industries left) 2 ways, the last analyst just 1 way: 3 × 2 × 1 = 3! = <strong>6</strong> possible assignments.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c10">
+            <div class="label">Check yourself</div>
+            <div class="q">A restaurant menu has 4 starters, 6 mains, and 3 desserts. How many different 3-course meals can you build (one item from each course)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">13</button>
+              <button class="opt-btn" data-correct="true">72</button>
+              <button class="opt-btn" data-correct="false">24</button>
+            </div>
+            <div class="checkin-feedback">Correct — multiplication rule for counting: 4 × 6 × 3 = 72.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — factorial calculator</div>
+            <div class="conv-row">
+              <label for="factN">n =</label>
+              <input type="number" id="factN" min="0" max="18" step="1" value="5">
+            </div>
+            <div class="calc-out">
+              <div class="calc-result" id="factResult">5! = 120</div>
+              <div class="calc-steps" id="factSteps">5 × 4 × 3 × 2 × 1 = 120</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         11 LABELING & COMBINATIONS
+    ========================================================== -->
+    <section class="section" id="sec-labeling">
+      <div class="section-head">
+        <span class="section-tag">11</span>
+        <div>
+          <h2>Labeling Problems &amp; the Combination Formula</h2>
+          <p class="subhead">When order doesn't matter — sorting items into groups, or choosing a subset from a larger pool.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Sometimes you're not lining objects up one after another — you're sorting them into labeled buckets, where the order <em>within</em> a bucket doesn't matter. That's a <strong>labeling problem</strong>, and its general formula is the multinomial formula.</p>
+
+          <div class="definition">
+            <div class="label">Multinomial formula (general labeling)</div>
+            <p style="margin:0;">Ways to label n objects into k groups of sizes n₁, n₂, …, n<sub>k</sub> (where n₁+n₂+…+n<sub>k</sub>=n):<br><br>n! / (n₁! × n₂! × … × n<sub>k</sub>!)</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — sorting a class</div>
+            <p style="margin:0;">A teacher wants to split 10 students into a 4-person group, a 3-person group, and a 3-person group for a project. Number of ways = 10! / (4!×3!×3!) = 3,628,800 / (24×6×6) = <strong>4,200</strong> distinct ways to form the three teams.</p>
+          </div>
+
+          <p>The special case where there are only <em>two</em> labels — "in the group" and "not in the group" — is so common it gets its own name: the <strong>combination formula</strong>.</p>
+
+          <div class="definition">
+            <div class="label">Combination formula ("n choose r")</div>
+            <p style="margin:0;">ₙCᵣ = n! / [(n−r)! × r!]  — the number of ways to choose r objects from n, when order does <em>not</em> matter.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example — option pricing paths</div>
+            <p style="margin:0;">In a binomial model with 5 up/down price moves, how many distinct sequences contain exactly 3 up-moves? Order of the moves doesn't matter for the final price, only the count — so use ₅C₃ = 5!/(2!×3!) = 120/12 = <strong>10</strong> equally likely sequences.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c11">
+            <div class="label">Check yourself</div>
+            <div class="q">A committee of 3 people is chosen from a pool of 8 candidates, with no distinct roles. How many different committees are possible?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">336</button>
+              <button class="opt-btn" data-correct="true">56</button>
+              <button class="opt-btn" data-correct="false">24</button>
+            </div>
+            <div class="checkin-feedback">Correct — order doesn't matter for committee membership, so use ₈C₃ = 8!/(5!×3!) = 56.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — combination calculator</div>
+            <div class="conv-row">
+              <label for="combN">n =</label>
+              <input type="number" id="combN" min="0" max="20" step="1" value="5">
+            </div>
+            <div class="conv-row">
+              <label for="combR">r =</label>
+              <input type="number" id="combR" min="0" max="20" step="1" value="3">
+            </div>
+            <div class="calc-out">
+              <div class="calc-result" id="combResult">₅C₃ = 10</div>
+              <div class="calc-steps" id="combSteps">5! / (2! × 3!) = 10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         12 PERMUTATIONS
+    ========================================================== -->
+    <section class="section" id="sec-permutation">
+      <div class="section-head">
+        <span class="section-tag">12</span>
+        <div>
+          <h2>Permutations — When Order Matters</h2>
+          <p class="subhead">Same idea as a combination, but now who's first, second, and third actually matters.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>permutation</strong> is an ordered subset of objects. Choosing "1st place, 2nd place, 3rd place" from a group is a permutation problem — swap two winners' positions and you get a genuinely different result, unlike a combination.</p>
+
+          <div class="definition">
+            <div class="label">Permutation formula</div>
+            <p style="margin:0;">ₙPᵣ = n! / (n−r)! — the number of ways to choose and arrange r objects from n, when order <em>does</em> matter.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — a race podium</div>
+            <p style="margin:0;">8 runners compete; only gold, silver, and bronze matter (in order). ₈P₃ = 8!/5! = 8×7×6 = <strong>336</strong> possible podium arrangements. Compare that to ₈C₃ = 56 if you only cared <em>which three</em> runners medaled, regardless of order — permutations are always larger, since each combination can be arranged r! different ways.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Finance example — annual report awards</div>
+            <p style="margin:0;">A panel of judges picks 1st-, 2nd-, and 3rd-place winners from 5 finalist companies' annual reports. Because rank matters, this is a permutation: ₅P₃ = 5!/2! = 5×4×3 = <strong>60</strong> possible ways to hand out the three placements — six times more than the ₅C₃ = 10 ways you'd get if the judges were just picking 3 winners with no ranking.</p>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">The relationship between them</div>
+            <div class="formula-body">ₙPᵣ = ₙCᵣ × r!</div>
+            <p style="margin:12px 0 0; font-size:.88rem; color:var(--ink-soft);">Every combination of r items can be reordered r! ways, which is exactly the gap between "how many groups" and "how many ordered groups."</p>
+          </div>
+
+          <div class="checkin" data-checkin="c12">
+            <div class="label">Check yourself</div>
+            <div class="q">4 finalists remain for Gold, Silver, and Bronze medals. How many different medal outcomes are possible?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">4</button>
+              <button class="opt-btn" data-correct="true">24</button>
+              <button class="opt-btn" data-correct="false">64</button>
+            </div>
+            <div class="checkin-feedback">Correct — ₄P₃ = 4!/1! = 24. (Or reason directly: 4 choices for gold × 3 remaining for silver × 2 remaining for bronze = 24.)</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — permutation calculator</div>
+            <div class="conv-row">
+              <label for="permN">n =</label>
+              <input type="number" id="permN" min="0" max="20" step="1" value="5">
+            </div>
+            <div class="conv-row">
+              <label for="permR">r =</label>
+              <input type="number" id="permR" min="0" max="20" step="1" value="3">
+            </div>
+            <div class="calc-out">
+              <div class="calc-result" id="permResult">₅P₃ = 60</div>
+              <div class="calc-steps" id="permSteps">5! / 2! = 60</div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:16px;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Question shape</th><th>Use</th></tr>
+              <tr><td>"How many ways to arrange / rank / order…"</td><td class="num">Permutation</td></tr>
+              <tr><td>"How many ways to choose / select a group…"</td><td class="num">Combination</td></tr>
+              <tr><td>"How many ways to label everyone into named groups…"</td><td class="num">Multinomial</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Built as a companion study tool for the CFA Program prerequisite Quantitative Methods reading on Probability Concepts. Work through it alongside your primary curriculum — this isn't a replacement for official CFA Institute materials.
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

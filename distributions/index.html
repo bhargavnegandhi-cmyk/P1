@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Probability Distributions — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">f(x) → F(x)</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Common Probability<br>Distributions</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Foundations</div>
+    <ul class="toc">
+      <li><a href="#sec-basics" data-sec="sec-basics"><span class="num">01</span>Random Variables &amp; Distributions</a></li>
+      <li><a href="#sec-discreteuniform" data-sec="sec-discreteuniform"><span class="num">02</span>Discrete Uniform</a></li>
+      <li><a href="#sec-continuousuniform" data-sec="sec-continuousuniform"><span class="num">03</span>Continuous Uniform</a></li>
+    </ul>
+
+    <div class="toc-group-label">Binary Outcomes</div>
+    <ul class="toc">
+      <li><a href="#sec-binomial" data-sec="sec-binomial"><span class="num">04</span>The Binomial Distribution</a></li>
+      <li><a href="#sec-binomialapp" data-sec="sec-binomialapp"><span class="num">05</span>Mean, Variance &amp; Applications</a></li>
+    </ul>
+
+    <div class="toc-group-label">The Normal Distribution</div>
+    <ul class="toc">
+      <li><a href="#sec-normal" data-sec="sec-normal"><span class="num">06</span>Properties of the Normal</a></li>
+      <li><a href="#sec-normalprob" data-sec="sec-normalprob"><span class="num">07</span>The Empirical Rule</a></li>
+      <li><a href="#sec-standardize" data-sec="sec-standardize"><span class="num">08</span>Standardizing &amp; Z-Scores</a></li>
+    </ul>
+
+    <div class="toc-group-label">Sampling Distributions</div>
+    <ul class="toc">
+      <li><a href="#sec-tdist" data-sec="sec-tdist"><span class="num">09</span>Student's t-Distribution</a></li>
+      <li><a href="#sec-chisq" data-sec="sec-chisq"><span class="num">10</span>Chi-Square &amp; F-Distributions</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material</div>
+      <h1>Every outcome has a shape.</h1>
+      <p class="lede">A probability distribution is just a complete map of every possible outcome and how likely each one is. This module builds that map for the five distributions investment analysts reach for constantly — starting with a coin flip and ending with the curves behind option pricing, portfolio risk, and statistical testing.</p>
+    </header>
+
+    <!-- =========================================================
+         01 RANDOM VARIABLES & DISTRIBUTIONS
+    ========================================================== -->
+    <section class="section" id="sec-basics">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Random Variables &amp; Probability Distributions</h2>
+          <p class="subhead">Two views of the same information: "what's the chance of exactly this?" and "what's the chance of this or less?"</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A random variable is <strong>discrete</strong> if you can count its possible outcomes — even if the list goes on forever — and <strong>continuous</strong> if you can't, because between any two possible values there's always another one. The number of "yes" votes at a board meeting is discrete; a stock's daily return is continuous.</p>
+
+          <div class="definition">
+            <div class="label">Two views of a distribution</div>
+            <p style="margin-bottom:8px;"><strong>Probability function</strong> — the chance of one exact outcome. For discrete variables, p(x) = P(X = x), the probability mass function. For continuous variables, f(x), the probability density function (pdf) — but note a continuous variable's probability of hitting any single exact value is always 0; only ranges have positive probability.</p>
+            <p style="margin:0;"><strong>Cumulative distribution function (cdf)</strong> — the chance of that outcome <em>or less</em>: F(x) = P(X ≤ x). It accumulates the probability function up through x.</p>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">The two properties every probability function must satisfy</div>
+            <div class="formula-body">0 ≤ p(x) ≤ 1 &nbsp;&nbsp;and&nbsp;&nbsp; Σ p(x) over all x = 1</div>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example — rolling a die</div>
+            <p style="margin:0;">p(3) = 1/6 — the pdf value at 3. F(3) = P(X ≤ 3) = p(1)+p(2)+p(3) = 3/6 = 50% — the cdf at 3. Note the jump: F only changes at the six possible outcomes, since nothing lies between them for a discrete variable.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — EAA Index daily returns (continuous)</div>
+            <p style="margin:0;">Binning five years of daily returns: 0.1% of days fell in the −5% to −4% bin, 0.6% in the −4% to −3% bin, and 1.8% in the −3% to −2% bin. The cdf at −2% sums these: F(−2%) = 0.1% + 0.6% + 1.8% = <strong>2.5%</strong> — the probability of a return below −2%, treating the historical pdf as a guide for the future.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">A corporate bond's credit rating (AAA, AA, A, …) versus its exact market price — which is the continuous random variable?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">The credit rating</button>
+              <button class="opt-btn" data-correct="true">The market price</button>
+              <button class="opt-btn" data-correct="false">Both are continuous</button>
+            </div>
+            <div class="checkin-feedback">Correct — price can take on essentially any value in a range (continuous), while a rating is one of a finite, countable list of categories (discrete, technically ordinal categorical here).</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Concept</th><th>Discrete</th><th>Continuous</th></tr>
+              <tr><td>Probability function</td><td class="num">p(x)</td><td class="num">f(x)</td></tr>
+              <tr><td>P(single exact value)</td><td class="num">can be &gt; 0</td><td class="num">always 0</td></tr>
+              <tr><td>cdf</td><td class="num">F(x), step function</td><td class="num">F(x), smooth curve</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 DISCRETE UNIFORM DISTRIBUTION
+    ========================================================== -->
+    <section class="section" id="sec-discreteuniform">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>The Discrete Uniform Distribution</h2>
+          <p class="subhead">The simplest distribution of all: every outcome is equally likely.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>With n equally likely outcomes, each one simply gets probability 1/n. That's the entire distribution — nothing more to specify.</p>
+
+          <div class="callout formula">
+            <div class="label">Discrete uniform pdf</div>
+            <div class="formula-body">p(x) = 1/n &nbsp;for each of the n possible outcomes</div>
+          </div>
+
+          <p>Reading a cdf table lets you answer range questions two equivalent ways — by summing individual probabilities, or by subtracting two cumulative values:</p>
+
+          <div class="callout example">
+            <div class="label">Worked example — outcomes 1 through 8</div>
+            <p style="margin:0 0 8px;">With n = 8, p(x) = 1/8 = 0.125 for every outcome. What's P(4 ≤ X ≤ 6)?</p>
+            <p style="margin:0;">Direct sum: p(4)+p(5)+p(6) = 0.375. Or via the cdf: F(6) − F(3) = 0.750 − 0.375 = <strong>0.375</strong> — same answer either way. Watch the boundary carefully: P(4 &lt; X ≤ 6) instead uses F(6) − F(4) = 0.250, since it excludes 4 itself.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">A discrete uniform random variable has 10 equally likely outcomes: 1 through 10. What is P(X ≤ 4)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0.10</button>
+              <button class="opt-btn" data-correct="true">0.40</button>
+              <button class="opt-btn" data-correct="false">0.25</button>
+            </div>
+            <div class="checkin-feedback">Correct — F(4) = 4 × (1/10) = 0.40, since 4 of the 10 equally likely outcomes are ≤ 4.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — discrete uniform explorer</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>n outcomes (1 to n)</label><input type="number" id="duN" value="8" min="2" step="1"></div>
+              <div class="tvm-field"><label>x₁</label><input type="number" id="duX1" value="4" step="1"></div>
+              <div class="tvm-field"><label>x₂</label><input type="number" id="duX2" value="6" step="1"></div>
+            </div>
+            <div id="duChart" style="margin:14px 0;"></div>
+            <div class="tvm-result" id="duResult">P(4 ≤ X ≤ 6) = 0.375</div>
+            <div class="calc-steps" id="duSteps">F(6) − F(3) = 0.750 − 0.375 = 0.375</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 CONTINUOUS UNIFORM DISTRIBUTION
+    ========================================================== -->
+    <section class="section" id="sec-continuousuniform">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>The Continuous Uniform Distribution</h2>
+          <p class="subhead">Same idea, stretched across a continuous range — a flat line instead of equal spikes.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Between limits a and b, the density is constant — a flat horizontal line — because every value in the range is equally likely. Probability over any sub-interval is simply that interval's <em>share of the total width</em>.</p>
+
+          <div class="callout formula">
+            <div class="label">Continuous uniform pdf &amp; cdf</div>
+            <div class="formula-body">
+              f(x) = 1/(b − a) &nbsp;for a ≤ x ≤ b, else 0<br>
+              F(x) = (x − a)/(b − a) &nbsp;for a ≤ x ≤ b
+            </div>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">Mean &amp; variance</div>
+            <div class="formula-body">μ = (a + b)/2 &nbsp;&nbsp;&nbsp; σ² = (b − a)² / 12</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a loan covenant breach</div>
+            <p style="margin:0 0 8px;">Interest charges are a fixed $25M; EBITDA is equally likely to fall anywhere from $40M to $60M. The interest coverage ratio (EBITDA/interest) is therefore continuous uniform between a = 1.6 and b = 2.4. What's the probability the ratio falls below the 2.0 covenant trigger?</p>
+            <p style="margin:0;">F(2.0) = (2.0 − 1.6)/(2.4 − 1.6) = 0.4/0.8 = <strong>50%</strong>. Mean = (1.6+2.4)/2 = 2.0; variance = (0.8)²/12 = 0.0533, so σ ≈ 0.231 — though note standard deviation is a less natural risk measure here than for a bell-shaped distribution, since a uniform distribution has no "typical" clustering near the mean.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">X is continuous uniform between 10 and 30. What is P(X ≤ 15)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0.15</button>
+              <button class="opt-btn" data-correct="true">0.25</button>
+              <button class="opt-btn" data-correct="false">0.50</button>
+            </div>
+            <div class="checkin-feedback">Correct — F(15) = (15−10)/(30−10) = 5/20 = 0.25.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — continuous uniform explorer</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>a</label><input type="number" id="cuA" value="1.6" step="0.1"></div>
+              <div class="tvm-field"><label>b</label><input type="number" id="cuB" value="2.4" step="0.1"></div>
+              <div class="tvm-field"><label>x</label><input type="number" id="cuX" value="2.0" step="0.1"></div>
+            </div>
+            <div id="cuChart" style="margin:14px 0;"></div>
+            <div class="tvm-result" id="cuResult">F(2.0) = 0.500</div>
+            <div class="calc-steps" id="cuSteps">(2.0−1.6)/(2.4−1.6) = 0.500 · μ=2.000 · σ²=0.0533</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 BINOMIAL DISTRIBUTION
+    ========================================================== -->
+    <section class="section" id="sec-binomial">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>The Binomial Distribution</h2>
+          <p class="subhead">The distribution behind every "success or failure, how many times?" question.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Start with the simplest possible random variable: a <strong>Bernoulli trial</strong>, which succeeds with probability p and fails with probability 1−p. Flip that same coin n times, independently, and count the successes — that count is a <strong>binomial random variable</strong>, written X ~ B(n, p).</p>
+
+          <div class="definition">
+            <div class="label">The two assumptions behind the binomial model</div>
+            <p style="margin-bottom:8px;"><strong>1.</strong> The probability of success, p, is constant across all trials.</p>
+            <p style="margin:0;"><strong>2.</strong> The trials are independent of each other.</p>
+          </div>
+
+          <p>To land on exactly x successes in n trials, any specific sequence with x successes has probability p<sup>x</sup>(1−p)<sup>n−x</sup>. Multiply by the number of different sequences that produce x successes — the combination formula from counting — and you get the full binomial probability function:</p>
+
+          <div class="callout formula">
+            <div class="label">Binomial probability function</div>
+            <div class="formula-body">p(x) = P(X = x) = [n! / ((n−x)! x!)] · p<sup>x</sup> (1−p)<sup>n−x</sup></div>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example — a 4-period binomial stock tree</div>
+            <p style="margin:0 0 8px;">A stock moves up or down each of 4 independent periods, p = 0.50 either way. How many distinct paths produce exactly 3 up-moves? ₄C₃ = 4!/(1!3!) = 4 — the sequences uud u, uudu, uduu, duuu (each with probability 0.5⁴ = 0.0625).</p>
+            <p style="margin:0;">p(3) = 4 × 0.0625 = <strong>25%</strong>. The distribution is perfectly symmetric here because p = 0.50 — it becomes skewed whenever p departs from 0.50.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="binomialTreeChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">A binomial tree for n = 4 periods. Each node splits into an up-move and a down-move; the number of distinct paths reaching each ending node is exactly the combination formula ₄Cₓ.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">In a binomial model with n = 5 and p = 0.5, how many distinct sequences produce exactly 2 successes?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">5</button>
+              <button class="opt-btn" data-correct="true">10</button>
+              <button class="opt-btn" data-correct="false">2</button>
+            </div>
+            <div class="checkin-feedback">Correct — ₅C₂ = 5!/(3!2!) = 10.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — binomial probability calculator</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>n (trials)</label><input type="number" id="binN" value="4" min="1" max="30" step="1"></div>
+              <div class="tvm-field"><label>p (success)</label><input type="number" id="binP" value="0.5" min="0" max="1" step="0.01"></div>
+              <div class="tvm-field"><label>x (successes)</label><input type="number" id="binX" value="3" min="0" step="1"></div>
+            </div>
+            <div id="binChart" style="margin:14px 0;"></div>
+            <div class="tvm-result" id="binResult">p(3) = 0.2500</div>
+            <div class="calc-steps" id="binSteps">₄C₃ × 0.5³ × 0.5¹ = 4 × 0.0625 = 0.2500</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 BINOMIAL MEAN, VARIANCE & APPLICATIONS
+    ========================================================== -->
+    <section class="section" id="sec-binomialapp">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Binomial Mean, Variance &amp; Real Applications</h2>
+          <p class="subhead">Two clean formulas, and two everyday uses: auditing trading desks and forecasting bond defaults.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">Mean &amp; variance of a binomial random variable</div>
+            <div class="formula-body">E(X) = np &nbsp;&nbsp;&nbsp; Var(X) = np(1 − p)</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">A Bernoulli variable is just the special case n = 1: mean p, variance p(1−p).</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — expected bond defaults</div>
+            <p style="margin:0 0 8px;">A high-yield portfolio holds 25 bonds, each with an independent 10.7% annual default probability. Expected defaults: E(X) = np = 25 × 0.107 = <strong>2.675</strong>, roughly 3 bonds.</p>
+            <p style="margin:0;">Variance = np(1−p) = 25 × 0.107 × 0.893 = 2.389, so σ ≈ 1.55. A rough "2-sigma" band around the mean runs from about 0 to 6 defaults — though in reality, bond defaults tend to cluster together during downturns, violating the independence assumption and understating true tail risk.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example — auditing a block broker</div>
+            <p style="margin:0 0 8px;">A broker's trades were profitable 5 times and unprofitable 3 times out of 8 total trades last month. If the broker were truly giving you fair-priced trades on average (p = 0.50), how likely is a result <em>this good or better</em> (5 or more profitable trades) just by chance?</p>
+            <p style="margin:0;">P(X ≥ 5) = p(5)+p(6)+p(7)+p(8) = 0.219+0.109+0.031+0.004 = <strong>36.3%</strong>. That's a substantial chance of seeing this result even from a perfectly fair broker — not strong evidence you're getting better-than-fair pricing, just yet.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">A binomial random variable has n = 10 and p = 0.30. What are its mean and variance?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Mean = 3.0, Variance = 3.0</button>
+              <button class="opt-btn" data-correct="true">Mean = 3.0, Variance = 2.1</button>
+              <button class="opt-btn" data-correct="false">Mean = 0.3, Variance = 0.21</button>
+            </div>
+            <div class="checkin-feedback">Correct — E(X) = np = 10(0.3) = 3.0. Var(X) = np(1−p) = 10(0.3)(0.7) = 2.1.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — mean &amp; variance</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>n</label><input type="number" id="bmN" value="25" min="1" step="1"></div>
+              <div class="tvm-field"><label>p</label><input type="number" id="bmP" value="0.107" min="0" max="1" step="0.001"></div>
+            </div>
+            <div class="stat-readout-row" id="bmOut">
+              <div class="stat-readout"><div class="k">Mean</div><div class="v">2.675</div></div>
+              <div class="stat-readout"><div class="k">Variance</div><div class="v">2.389</div></div>
+              <div class="stat-readout"><div class="k">Std Dev</div><div class="v">1.546</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 NORMAL DISTRIBUTION PROPERTIES
+    ========================================================== -->
+    <section class="section" id="sec-normal">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Properties of the Normal Distribution</h2>
+          <p class="subhead">The bell curve — the single most-used distribution in investment work.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>The normal distribution's importance traces back to the <strong>central limit theorem</strong>: the sum or mean of many independent random variables tends toward a normal distribution, regardless of the shape of the original variables. That single fact is why the bell curve shows up everywhere in statistics.</p>
+
+          <div class="definition">
+            <div class="label">Defining characteristics</div>
+            <p style="margin-bottom:8px;"><strong>Two parameters, completely describe it:</strong> mean μ and variance σ². Written X ~ N(μ, σ²).</p>
+            <p style="margin-bottom:8px;"><strong>Symmetric:</strong> skewness = 0. Mean = median = mode.</p>
+            <p style="margin-bottom:8px;"><strong>Kurtosis = 3</strong> (excess kurtosis = 0) — the reference point for "normal" tail thickness.</p>
+            <p style="margin:0;"><strong>Closed under linear combination:</strong> a weighted sum of normal random variables is itself normally distributed — which is exactly why a portfolio of normally-distributed stock returns is itself normally distributed.</p>
+          </div>
+
+          <p>A single normal variable has a <strong>univariate</strong> distribution. A group of related variables — say, returns on 30 stocks — has a <strong>multivariate</strong> distribution, which additionally requires knowing every pairwise <strong>correlation</strong> between them.</p>
+
+          <div class="callout formula">
+            <div class="label">Parameters needed for a multivariate normal distribution of n assets</div>
+            <div class="formula-body" style="font-size:.9rem;">n means &nbsp;+&nbsp; n variances &nbsp;+&nbsp; n(n−1)/2 distinct pairwise correlations</div>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>A real caveat:</strong> actual equity returns usually show kurtosis above 3 — "fat tails" — meaning extreme moves happen more often than the normal distribution predicts. The normal model also fits quarterly and annual returns better than daily or weekly returns, and it isn't suitable for asset <em>prices</em> at all (which can't go below zero) — that's what the lognormal distribution is for.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">A portfolio's return is a weighted average of 20 individual stock returns, each of which is normally distributed (jointly). What can you say about the portfolio's return distribution?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">It is also normally distributed</button>
+              <button class="opt-btn" data-correct="false">It cannot be determined without simulation</button>
+              <button class="opt-btn" data-correct="false">It is only normal if all 20 stocks are uncorrelated</button>
+            </div>
+            <div class="checkin-feedback">Correct — a linear combination (weighted average) of jointly normal random variables is always normally distributed, regardless of the correlations between them.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div id="twoNormalsChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">Two normal distributions, same mean (μ=0), different standard deviations. The tighter curve (σ=1) concentrates far more probability near the mean than the wider one (σ=2).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         07 THE EMPIRICAL RULE
+    ========================================================== -->
+    <section class="section" id="sec-normalprob">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <div>
+          <h2>Probabilities Using the Normal Distribution — the Empirical Rule</h2>
+          <p class="subhead">Four numbers worth memorizing — they answer most "how likely is this outcome" questions at a glance.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">The empirical rule</div>
+            <div class="formula-body" style="font-size:.92rem;">
+              ~50% of observations fall within μ ± (2/3)σ<br>
+              ~68% of observations fall within μ ± 1σ<br>
+              ~95% of observations fall within μ ± 2σ &nbsp;<span style="color:var(--ink-soft); font-size:.8rem;">(precisely, ±1.96σ)</span><br>
+              ~99% of observations fall within μ ± 3σ &nbsp;<span style="color:var(--ink-soft); font-size:.8rem;">(precisely, ±2.58σ)</span>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div id="empiricalRuleChart"></div>
+            <div class="sigma-btn-row" id="sigmaBtnRow">
+              <button class="sigma-btn" data-k="1">±1σ (68%)</button>
+              <button class="sigma-btn active" data-k="2">±2σ (95%)</button>
+              <button class="sigma-btn" data-k="3">±3σ (99%)</button>
+            </div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a portfolio's return range</div>
+            <p style="margin:0;">A portfolio has mean return 12% and standard deviation 22%, assumed normal. About 95% of yearly outcomes should fall between 12% − 2(22%) = <strong>−32%</strong> and 12% + 2(22%) = <strong>56%</strong> — a genuinely wide range, reflecting real equity volatility.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c7">
+            <div class="label">Check yourself</div>
+            <div class="q">A fund has a normally distributed return with mean 8% and standard deviation 15%. Approximately what interval captures 68% of outcomes?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">−22% to 38%</button>
+              <button class="opt-btn" data-correct="true">−7% to 23%</button>
+              <button class="opt-btn" data-correct="false">8% to 15%</button>
+            </div>
+            <div class="checkin-feedback">Correct — the ±1σ interval is 8% ± 15% = −7% to 23%, capturing about 68% of outcomes.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;">Nearly all of a normal distribution's probability (99.7%) sits within 3 standard deviations of the mean — which is exactly why standard deviation is such a useful, compact way to describe risk for anything roughly bell-shaped.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         08 STANDARDIZING & Z-SCORES
+    ========================================================== -->
+    <section class="section" id="sec-standardize">
+      <div class="section-head">
+        <span class="section-tag">08</span>
+        <div>
+          <h2>Standardizing a Random Variable &amp; the Standard Normal</h2>
+          <p class="subhead">Translate any normal variable into a universal scale, and one table (or one calculator) answers every probability question.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Every normal distribution is different — different mean, different spread — which makes them hard to compare directly or look up in a single table. The fix: convert any X ~ N(μ, σ²) into <strong>Z</strong>, the number of standard deviations X sits from its own mean. Z always follows the <strong>standard normal distribution</strong>, N(0,1), no matter what X's original mean and variance were.</p>
+
+          <div class="callout formula">
+            <div class="label">Standardization (the Z-score)</div>
+            <div class="formula-body">Z = (X − μ) / σ</div>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example</div>
+            <p style="margin:0;">X ~ N(5, 1.5²). What's Z for X = 9.5? Z = (9.5 − 5)/1.5 = <strong>3.00</strong>. The probability of observing X ≤ 9.5 is identical to the probability of observing Z ≤ 3.00 on the standard normal — that shared number is what makes standardization so useful.</p>
+          </div>
+
+          <p>A handful of standard-normal percentile points come up constantly enough to be worth memorizing:</p>
+          <table class="exhibit" style="margin:14px 0;">
+            <tr><th>Percentile</th><th>Z value</th><th>Meaning</th></tr>
+            <tr><td>90th</td><td class="num">1.28</td><td>10% remains in the right tail</td></tr>
+            <tr><td>95th</td><td class="num">1.65</td><td>5% remains in the right tail</td></tr>
+            <tr><td>99th</td><td class="num">2.33</td><td>1% remains in the right tail</td></tr>
+          </table>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a portfolio VaR-style question</div>
+            <p style="margin:0 0 8px;">Portfolio return ~ N(12%, 22%²). What's the probability return exceeds 20%?</p>
+            <p style="margin:0;">Z = (20% − 12%)/22% = 0.364. P(Z > 0.364) = 1 − P(Z ≤ 0.364) = 1 − 0.6419 = <strong>35.8%</strong>.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c8">
+            <div class="label">Check yourself</div>
+            <div class="q">X ~ N(50, 10²). What is the Z-score for X = 65?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0.65</button>
+              <button class="opt-btn" data-correct="true">1.50</button>
+              <button class="opt-btn" data-correct="false">6.50</button>
+            </div>
+            <div class="checkin-feedback">Correct — Z = (65 − 50)/10 = 1.50.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — Z-score &amp; normal probability calculator</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>X</label><input type="number" id="zX" value="20" step="0.1"></div>
+              <div class="tvm-field"><label>μ (mean)</label><input type="number" id="zMu" value="12" step="0.1"></div>
+              <div class="tvm-field"><label>σ (std dev)</label><input type="number" id="zSigma" value="22" step="0.1"></div>
+            </div>
+            <div class="stat-readout-row" id="zOut">
+              <div class="stat-readout"><div class="k">Z-score</div><div class="v">0.364</div></div>
+              <div class="stat-readout"><div class="k">P(X≤x)</div><div class="v">64.19%</div></div>
+              <div class="stat-readout"><div class="k">P(X&gt;x)</div><div class="v">35.81%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         09 STUDENT'S T-DISTRIBUTION
+    ========================================================== -->
+    <section class="section" id="sec-tdist">
+      <div class="section-head">
+        <span class="section-tag">09</span>
+        <div>
+          <h2>Student's t-Distribution</h2>
+          <p class="subhead">The normal distribution's more cautious cousin — used whenever you're estimating, not just assuming, the standard deviation.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>The t-distribution is symmetric and bell-shaped, just like the normal — but with fatter tails, meaning it assigns more probability to extreme outcomes. It's defined by a single parameter: <strong>degrees of freedom (df)</strong>.</p>
+
+          <div class="definition">
+            <div class="label">Where degrees of freedom comes from</div>
+            <p style="margin:0;">The sample variance formula, s² = Σ(Xᵢ − X̄)²/(n−1), divides by n−1 because once the sample mean is fixed, only n−1 of the n observations are free to vary — the last one is determined by the requirement that they average to X̄. That n−1 is the degrees of freedom.</p>
+          </div>
+
+          <p>While Z = (X̄ − μ)/(σ/√n) is exactly standard normal, swap in the <em>estimated</em> standard deviation s instead of the true σ, and the ratio t = (X̄ − μ)/(s/√n) follows a t-distribution with n−1 degrees of freedom instead — the extra uncertainty from estimating s (rather than knowing it) is exactly what fattens the tails.</p>
+
+          <div class="chart-card">
+            <div id="tDistChart"></div>
+            <div class="tvm-grid" style="margin-top:10px; max-width:220px;">
+              <div class="tvm-field"><label>Degrees of freedom</label><input type="number" id="tDf" value="4" min="1" max="30" step="1"></div>
+            </div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">Drag the degrees of freedom down and watch the tails fatten relative to the standard normal (dashed). As df grows, the t-distribution converges to the normal.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c9">
+            <div class="label">Check yourself</div>
+            <div class="q">As the degrees of freedom of a t-distribution increase, what happens to its shape?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">It becomes more skewed</button>
+              <button class="opt-btn" data-correct="true">It converges toward the standard normal distribution</button>
+              <button class="opt-btn" data-correct="false">Its mean shifts away from zero</button>
+            </div>
+            <div class="checkin-feedback">Correct — as sample size (and therefore df) grows, the t-distribution's tails thin out and it approaches the standard normal shape.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Why it matters in practice:</strong> in real statistical work, you almost never know the true population standard deviation — you estimate it from the sample. That's precisely when the t-distribution, not the normal, is the technically correct tool, especially with smaller samples.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         10 CHI-SQUARE & F-DISTRIBUTIONS
+    ========================================================== -->
+    <section class="section" id="sec-chisq">
+      <div class="section-head">
+        <span class="section-tag">10</span>
+        <div>
+          <h2>Chi-Square &amp; F-Distributions</h2>
+          <p class="subhead">Two more df-driven distributions, both bounded below by zero and both essential for hypothesis testing.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">The chi-square distribution</div>
+            <p style="margin:0;">The distribution of a sum of k squared independent standard normal random variables. Because it's built from squared terms, it can never be negative — and unlike the normal or t, it's <strong>asymmetric</strong>, with a long right tail. Its single parameter is degrees of freedom, k. As k grows, the shape gradually becomes more bell-like.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="chiSqChart"></div>
+            <div class="tvm-grid" style="margin-top:10px; max-width:220px;">
+              <div class="tvm-field"><label>Degrees of freedom</label><input type="number" id="chiDf" value="3" min="1" max="15" step="1"></div>
+            </div>
+          </div>
+
+          <div class="definition">
+            <div class="label">The F-distribution</div>
+            <p style="margin:0;">Also asymmetric and bounded below by zero, the F-distribution is what you get from the <em>ratio</em> of two chi-square variables, each divided by its own degrees of freedom: F = (χ₁²/m) / (χ₂²/n). It therefore needs <em>two</em> degrees-of-freedom parameters — numerator (m) and denominator (n) — and, like chi-square, becomes more bell-shaped as both grow large.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Where these show up</div>
+            <p style="margin:0;">Both distributions are workhorses of statistical inference rather than models for asset returns directly: chi-square underlies tests about a single variance, and the F-distribution underlies tests comparing two variances or testing overall significance in regression — topics covered in depth in the sampling, estimation, and hypothesis testing modules that follow this one.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c10">
+            <div class="label">Check yourself</div>
+            <div class="q">Which of these distributions can take on negative values?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">The chi-square distribution</button>
+              <button class="opt-btn" data-correct="false">The F-distribution</button>
+              <button class="opt-btn" data-correct="true">None of them — both are bounded below by zero</button>
+            </div>
+            <div class="checkin-feedback">Correct — both are built from squared (chi-square) or ratio-of-squared (F) terms, so neither can ever be negative.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th></th><th>Symmetric?</th><th>df parameters</th></tr>
+              <tr><td>Normal</td><td class="num">Yes</td><td class="num">—</td></tr>
+              <tr><td>Student's t</td><td class="num">Yes</td><td class="num">1</td></tr>
+              <tr><td>Chi-square</td><td class="num">No</td><td class="num">1</td></tr>
+              <tr><td>F</td><td class="num">No</td><td class="num">2</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Built as a companion study tool for the CFA Program prerequisite Quantitative Methods reading on Common Probability Distributions. Work through it alongside your primary curriculum — this isn't a replacement for official CFA Institute materials.
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summarizing Data (Part 2) — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">Σ → X̄</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Summarizing<br>Data</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods · Part 2 of 2</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Central Tendency</div>
+    <ul class="toc">
+      <li><a href="#sec-central" data-sec="sec-central"><span class="num">01</span>Mean, Median, Mode</a></li>
+      <li><a href="#sec-outliers" data-sec="sec-outliers"><span class="num">02</span>Outliers, Trimmed &amp; Winsorized Means</a></li>
+      <li><a href="#sec-othermeans" data-sec="sec-othermeans"><span class="num">03</span>Weighted, Geometric &amp; Harmonic Mean</a></li>
+    </ul>
+
+    <div class="toc-group-label">Spread &amp; Shape</div>
+    <ul class="toc">
+      <li><a href="#sec-quantiles" data-sec="sec-quantiles"><span class="num">04</span>Quantiles</a></li>
+      <li><a href="#sec-dispersion" data-sec="sec-dispersion"><span class="num">05</span>Measures of Dispersion</a></li>
+      <li><a href="#sec-downside" data-sec="sec-downside"><span class="num">06</span>Downside Deviation &amp; CV</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+
+    <div class="toc-group-label">This Module</div>
+    <ul class="toc">
+      <li><a href="../organizing-viz/index.html" style="color:#C9C2EE;"><span class="num">◂</span>Part 1: Organizing &amp; Visualizing</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material · Part 2 of 2</div>
+      <h1>Boil the whole dataset down to a handful of honest numbers.</h1>
+      <p class="lede">Part 1 organized and charted the data. Part 2 finishes the job: a typical value (central tendency), how spread out the data really is (dispersion), and how to handle the outliers and skew that can quietly distort both. Every formula here comes straight from real datasets you've already seen — the EAA Equity Index, country stock returns, and a set of mutual fund portfolios.</p>
+    </header>
+
+    <!-- =========================================================
+         01 MEASURES OF CENTRAL TENDENCY
+    ========================================================== -->
+    <section class="section" id="sec-central">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Measures of Central Tendency — Mean, Median, Mode</h2>
+          <p class="subhead">Three different answers to "what's a typical value in this dataset?" — each with its own strengths and blind spots.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Arithmetic mean</div>
+            <p style="margin:0;">Sum every observation, divide by the count. Uses <em>all</em> the information in the sample — and is therefore also the most sensitive to extreme values.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Median</div>
+            <p style="margin:0;">The middle value once sorted. Odd n: the (n+1)/2 position. Even n: the average of the two middle positions. Unaffected by extreme values — a genuine advantage when a distribution isn't symmetric.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Mode</div>
+            <p style="margin:0;">The most frequently occurring value. A dataset can be unimodal, bimodal, trimodal, or have no mode at all. It's the only central-tendency measure that works on nominal (unordered categorical) data.</p>
+          </div>
+
+          <p>There's a useful physical intuition behind the arithmetic mean: it behaves like the <strong>center of gravity</strong> of the data. Picture nine observations — 2, 4, 4, 6, 10, 10, 12, 12, 12 — stacked on a bar at their respective positions, each stack as tall as its frequency. Balance that bar on a single fulcrum, and it only balances when the fulcrum sits exactly at the mean, 72/9 = 8.</p>
+
+          <div class="chart-card">
+            <div id="cogChart"></div>
+          </div>
+
+          <p>That balancing property comes from a fact that's always true, for any dataset: <strong>the sum of deviations from the mean always equals zero</strong> — the positive and negative distances cancel out exactly. That single property is the foundation everything in the rest of this module builds on: variance, skewness, and kurtosis are all, at their core, different ways of measuring those same deviations.</p>
+
+          <div class="callout formula">
+            <div class="label">Why deviations always sum to zero</div>
+            <div class="formula-body" style="font-size:.85rem;">Σ(Xᵢ − X̄) = ΣXᵢ − nX̄ = ΣXᵢ − ΣXᵢ = 0</div>
+          </div>
+
+          <div class="callout example">
+            <div class="label">When mean, median, and mode disagree — reading skewness</div>
+            <p style="margin:0 0 8px;">In a perfectly symmetric distribution, mean = median = mode, and <strong>skewness</strong> — a measure of the lack of symmetry — is exactly zero. Once a distribution leans one way, the three measures pull apart in a predictable order.</p>
+          </div>
+          <div class="chart-card">
+            <div id="skewChart"></div>
+            <div class="test-tabs" id="skewTabs" style="margin-top:12px;">
+              <button class="test-tab active" data-skew="left">Left-skewed (negative)</button>
+              <button class="test-tab" data-skew="sym">Symmetric</button>
+              <button class="test-tab" data-skew="right">Right-skewed (positive)</button>
+            </div>
+          </div>
+          <p style="font-size:.9rem;">Right (positive) skew — a long tail of unusually large values — pulls the mean above the median, which sits above the mode. Left (negative) skew does the reverse. This module doesn't compute skewness itself, but recognizing the pattern from how mean and median compare is often enough to flag it.</p>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">Which measure of central tendency is the only one that can be computed for purely nominal (unordered) categorical data, like hedge fund strategy type?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Arithmetic mean</button>
+              <button class="opt-btn" data-correct="false">Median</button>
+              <button class="opt-btn" data-correct="true">Mode</button>
+            </div>
+            <div class="checkin-feedback">Correct — the mode just needs to count which category is most common, which works even without any ordering or arithmetic on the categories.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — mean / median / mode</div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:0 0 10px;">Edit the comma-separated list below (defaults to the nine-number center-of-gravity example).</p>
+            <textarea id="cmInput" rows="2" style="width:100%; font-family:var(--font-mono); font-size:.9rem; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">2, 4, 4, 6, 10, 10, 12, 12, 12</textarea>
+            <div class="stat-readout-row" id="cmOut">
+              <div class="stat-readout"><div class="k">Mean</div><div class="v">8.00</div></div>
+              <div class="stat-readout"><div class="k">Median</div><div class="v">10</div></div>
+              <div class="stat-readout"><div class="k">Mode</div><div class="v">12</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 OUTLIERS, TRIMMED & WINSORIZED MEANS
+    ========================================================== -->
+    <section class="section" id="sec-outliers">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>Outliers, Trimmed Means &amp; Winsorized Means</h2>
+          <p class="subhead">The arithmetic mean's biggest weakness — and three legitimate ways to handle it.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Because every observation counts equally toward the arithmetic mean, a single extreme value can drag it a long way from where most of the data actually sits.</p>
+
+          <div class="callout example">
+            <div class="label">The classic illustration</div>
+            <p style="margin:0;">Take the seven numbers 1, 2, 3, 4, 5, 6, 1,000. The mean is 1,021/7 ≈ 145.86 — a number nowhere near where six of the seven observations actually sit. The median, unmoved by the outlier, is a far more representative 4.</p>
+          </div>
+
+          <p>In practice, an extreme value might be perfectly legitimate (a rare but real event), or it might signal a data error, or an observation that actually belongs to a different population entirely. The first step is always to investigate — inspect the raw data, or use the visualization tools from Part 1 — and clean any genuine errors. After that, there are three defensible options:</p>
+
+          <div class="definition">
+            <div class="label">Three ways to handle a confirmed, legitimate outlier</div>
+            <p style="margin-bottom:8px;"><strong>Option 1 — do nothing:</strong> keep the data as-is. Appropriate when the value is a real, correct observation and you want the mean to reflect the whole distribution honestly.</p>
+            <p style="margin-bottom:8px;"><strong>Option 2 — trim it:</strong> compute a <strong>trimmed mean</strong> by discarding a stated percentage of the highest and lowest values, then averaging what remains. A 5% trimmed mean drops the lowest 2.5% and highest 2.5%, then averages the middle 95% — the same principle judges use when they discard a contestant's highest and lowest scores.</p>
+            <p style="margin:0;"><strong>Option 3 — cap it:</strong> compute a <strong>winsorized mean</strong> by <em>replacing</em> (rather than deleting) extreme values with a specified cutoff value, then averaging the restated data. A 95% winsorized mean sets the bottom 2.5% of values to the 2.5th percentile value, and the top 2.5% to the 97.5th percentile value.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — five years of EAA Index daily returns (n=1,258)</div>
+            <table class="exhibit" style="margin:10px 0;">
+              <tr><th></th><th>Arithmetic Mean</th><th>5% Trimmed Mean</th><th>95% Winsorized Mean</th></tr>
+              <tr><td>Mean</td><td class="num">0.035%</td><td class="num">0.048%</td><td class="num">0.038%</td></tr>
+              <tr><td>Observations used</td><td class="num">1,258</td><td class="num">1,194</td><td class="num">1,258</td></tr>
+            </table>
+            <p style="margin:0; font-size:.9rem;">The trimmed mean drops any return below −1.934% or above 1.671% (the extreme 2.5% on each side), leaving 1,194 observations. The winsorized mean instead caps every return outside that same range at exactly −1.934% or 1.671%, keeping all 1,258 observations. Both adjusted means land above the raw arithmetic mean here — the discarded/capped extreme returns were skewing it downward more than the typical day would suggest.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">A 5% winsorized mean, compared to a 5% trimmed mean on the same dataset, will use:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">The same number of original observations, since none are deleted</button>
+              <button class="opt-btn" data-correct="false">Fewer observations, since extreme values are removed</button>
+              <button class="opt-btn" data-correct="false">More observations than the original dataset</button>
+            </div>
+            <div class="checkin-feedback">Correct — winsorizing replaces extreme values rather than deleting them, so the full original sample size is preserved; trimming, by contrast, genuinely removes observations.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — trimmed &amp; winsorized mean</div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:0 0 10px;">Edit the list (defaults to the seven-number outlier example), then set a trim/winsorize percentage per side.</p>
+            <textarea id="trimInput" rows="2" style="width:100%; font-family:var(--font-mono); font-size:.9rem; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">1, 2, 3, 4, 5, 6, 1000</textarea>
+            <div class="conv-row" style="margin-top:10px;"><label for="trimPct">Trim % (each side)</label><input type="number" id="trimPct" value="14.3" min="0" max="49" step="0.1"></div>
+            <div class="stat-readout-row" id="trimOut">
+              <div class="stat-readout"><div class="k">Raw mean</div><div class="v">145.86</div></div>
+              <div class="stat-readout"><div class="k">Trimmed mean</div><div class="v">4.00</div></div>
+              <div class="stat-readout"><div class="k">Winsorized mean</div><div class="v">5.71</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 OTHER CONCEPTS OF MEAN
+    ========================================================== -->
+    <section class="section" id="sec-othermeans">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Weighted, Geometric &amp; Harmonic Mean</h2>
+          <p class="subhead">The arithmetic mean assumes every observation counts equally. In investments, that assumption often doesn't hold.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Weighted mean</div>
+            <p style="margin:0;">Each observation gets its own weight (weights sum to 1). The arithmetic mean is just the special case where every weight equals 1/n.</p>
+          </div>
+          <div class="callout finance">
+            <div class="label">Worked example — a portfolio return</div>
+            <p style="margin:0 0 8px;">$70M in equities (return 8%) and $30M in bonds (return 3%): weight 0.70 on stocks, 0.30 on bonds.</p>
+            <p style="margin:0;">Portfolio return = 0.70(8%) + 0.30(3%) = 5.6% + 0.9% = <strong>6.5%</strong> — not the naive (8%+3%)/2 = 5.5%, which would wrongly treat both asset classes as equally important.</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Geometric mean</div>
+            <p style="margin:0;">The nth root of the product of n observations. Used to average rates of change or compute compound growth. For returns, add 1 to each decimal return first (so negative returns don't break the math), take the nth root of the product, then subtract 1.</p>
+          </div>
+          <div class="callout example">
+            <div class="label">Worked example — compounding returns</div>
+            <p style="margin:0 0 8px;">A stock returns 7.8%, 6.3%, and −1.5% over three years. Geometric mean = <span class="mono">[(1.078)(1.063)(0.985)]^(1/3) − 1 = 1.041189 − 1 ≈ 4.12%</span>.</p>
+            <p style="margin:0;">Compare to the arithmetic mean of (7.8 + 6.3 − 1.5)/3 = 4.20%. The geometric mean is always ≤ the arithmetic mean (equal only when there's zero variability) — and it's the geometric mean that correctly answers "what single constant annual rate would have produced the same final wealth?"</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Harmonic mean</div>
+            <p style="margin:0;">The reciprocal of the average of the reciprocals. Appropriate for averaging rates or ratios that are repeatedly applied to a fixed quantity — the classic case being cost averaging (investing a fixed dollar amount at different share prices).</p>
+          </div>
+          <div class="callout example">
+            <div class="label">Worked example — cost averaging</div>
+            <p style="margin:0 0 8px;">You invest €1,000 each month for 2 months, at share prices of €10 and €15. Month 1 buys 100 shares, month 2 buys 66.67 shares — 166.67 shares total for €2,000, an average price of €12.00 per share.</p>
+            <p style="margin:0;">That €12.00 is exactly the harmonic mean of 10 and 15: 2/[(1/10)+(1/15)] = €12.00 — lower than the naive arithmetic average of €12.50, because harmonic averaging automatically gives more weight to the cheaper (more heavily-bought) price.</p>
+          </div>
+
+          <p>A useful fact tying all three together: for the same dataset, <strong>harmonic mean ≤ geometric mean ≤ arithmetic mean</strong>, unless every observation is identical (in which case all three are equal).</p>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">Three peer companies trade at P/Es of 45, 15, and 15. Which type of mean best dampens the influence of the 45 outlier when summarizing "typical" P/E?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Arithmetic mean</button>
+              <button class="opt-btn" data-correct="true">Harmonic mean</button>
+              <button class="opt-btn" data-correct="false">They give the same answer</button>
+            </div>
+            <div class="checkin-feedback">Correct — the harmonic mean here is about 19.3, versus an arithmetic mean of 25. Since P/E is a ratio, the harmonic mean is the textbook-appropriate choice and it naturally downweights the large outlier.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — arithmetic vs. geometric vs. harmonic</div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:0 0 10px;">Enter positive numbers (e.g., P/E ratios or 1+return values), comma-separated.</p>
+            <textarea id="meansInput" rows="2" style="width:100%; font-family:var(--font-mono); font-size:.9rem; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">45, 15, 15</textarea>
+            <div class="stat-readout-row" id="meansOut">
+              <div class="stat-readout"><div class="k">Arithmetic</div><div class="v">25.00</div></div>
+              <div class="stat-readout"><div class="k">Geometric</div><div class="v">22.62</div></div>
+              <div class="stat-readout"><div class="k">Harmonic</div><div class="v">19.29</div></div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:16px;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:10px;">Which mean should I use?</div>
+            <div class="decision-flow" id="decisionFlow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 QUANTILES
+    ========================================================== -->
+    <section class="section" id="sec-quantiles">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Quantiles</h2>
+          <p class="subhead">The median splits data in half. Quantiles are the more general family of dividing lines — quarters, fifths, tenths, hundredths.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>The <strong>y-th percentile</strong> is the value at or below which y% of observations lie. Quartiles (quarters), quintiles (fifths), and deciles (tenths) are just percentiles with convenient names: the first quartile Q1 is the 25th percentile, Q2 (the median) is the 50th, Q3 is the 75th. The <strong>interquartile range</strong> IQR = Q3 − Q1 measures the spread of the middle 50% of the data.</p>
+
+          <div class="callout formula">
+            <div class="label">Locating a percentile in a sorted array</div>
+            <div class="formula-body">Ly = (n + 1) × y/100</div>
+            <p style="margin:12px 0 0; font-size:.88rem; color:var(--ink-soft);">If Ly is a whole number, that's the exact position in the sorted array. If not, linearly interpolate between the two surrounding positions.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — 5 years of EAA Index daily returns (n = 1,258)</div>
+            <p style="margin:0 0 8px;">Ranking all 1,258 daily returns from lowest to highest and locating key percentiles gives:</p>
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Quantile</th><th>Value</th></tr>
+              <tr><td>Minimum</td><td class="num">−4.108%</td></tr>
+              <tr><td>Q1 (25th pctile)</td><td class="num">−0.293%</td></tr>
+              <tr><td>Median (50th pctile)</td><td class="num">0.044%</td></tr>
+              <tr><td>Q3 (75th pctile)</td><td class="num">0.460%</td></tr>
+              <tr><td>Maximum</td><td class="num">5.001%</td></tr>
+            </table>
+            <p style="margin:10px 0 0; font-size:.9rem;">IQR = 0.460 − (−0.293) = 0.753%. Notice the median (0.044%) is barely above zero even though the mean was slightly higher (0.035% for the raw mean, from Module 02) — a reminder that mean and median can diverge more sharply in more skewed datasets.</p>
+          </div>
+
+          <p>A <strong>box-and-whisker plot</strong> visualizes exactly this five-number summary. The "box" spans Q1 to Q3 (with the median marked inside), and "whiskers" extend out to the fences — often set at 1.5×IQR beyond the box — with anything past the fences flagged as a potential outlier.</p>
+
+          <div class="chart-card">
+            <div id="boxplotChart"></div>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">In a sorted array of 39 observations, what is L25 (the location of the 25th percentile)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">9.75</button>
+              <button class="opt-btn" data-correct="true">10</button>
+              <button class="opt-btn" data-correct="false">25</button>
+            </div>
+            <div class="checkin-feedback">Correct — Ly = (39+1) × 25/100 = 40 × 0.25 = 10 exactly, so the 25th percentile is simply the 10th value in the sorted array.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — percentile locator</div>
+            <div class="conv-row"><label for="pctN">n =</label><input type="number" id="pctN" value="39" min="1" step="1"></div>
+            <div class="conv-row"><label for="pctY">y (%) =</label><input type="number" id="pctY" value="25" min="0" max="100" step="1"></div>
+            <div class="calc-out">
+              <div class="calc-result" id="pctResult">L25 = 10</div>
+              <div class="calc-steps" id="pctSteps">(39 + 1) × 25/100 = 10 → whole number, use the 10th sorted value directly</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 MEASURES OF DISPERSION
+    ========================================================== -->
+    <section class="section" id="sec-dispersion">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Measures of Dispersion</h2>
+          <p class="subhead">If the mean tells you the reward, dispersion tells you the risk — how spread out the data really is.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Range</div>
+            <p style="margin:0;">Maximum − Minimum. Trivially easy to compute, but uses only two data points and says nothing about the shape in between.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Mean absolute deviation (MAD)</div>
+            <p style="margin:0;">Average of the <em>absolute</em> deviations from the mean. Solves the "deviations always sum to zero" problem (from Module 01) by stripping out the sign rather than squaring.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Sample variance &amp; standard deviation</div>
+            <p style="margin:0;">Variance squares each deviation from the mean (also fixing the sign-cancellation problem) and divides by n − 1, not n — this correction (the "degrees of freedom" adjustment) makes the sample variance an unbiased estimate of the population variance. Standard deviation is just √variance, which brings the units back to match the original data.</p>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">Formulas</div>
+            <div class="formula-body">
+              Range = Max − Min<br>
+              MAD = Σ|Xᵢ − X̄| / n<br>
+              s² = Σ(Xᵢ − X̄)² / (n − 1)<br>
+              s = √s²
+            </div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — Year 3 country index returns (n = 11)</div>
+            <p style="margin:0 0 8px;">Returns: 6.1, −1.5, 3.5, 6.2, 3.0, −1.0, −1.2, 3.4, 3.2, −0.9, 1.2 (mean = 2.0%). Sum of squared deviations = 81.64.</p>
+            <p style="margin:0;">Sample variance = 81.64 / 10 = 8.164. Sample standard deviation = √8.164 ≈ <strong>2.857%</strong>.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">Why does the sample variance formula divide by (n − 1) instead of n?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">It's an arbitrary convention with no statistical purpose</button>
+              <button class="opt-btn" data-correct="true">It corrects for using an estimated sample mean, making s² an unbiased estimator of the population variance</button>
+              <button class="opt-btn" data-correct="false">It only matters when n is small</button>
+            </div>
+            <div class="checkin-feedback">Correct — once you've used the data to estimate the mean, only n − 1 observations are free to vary independently; dividing by n − 1 (the degrees of freedom) corrects for that.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — dispersion calculator</div>
+            <textarea id="dispInput" rows="2" style="width:100%; font-family:var(--font-mono); font-size:.9rem; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">6.1, -1.5, 3.5, 6.2, 3.0, -1.0, -1.2, 3.4, 3.2, -0.9, 1.2</textarea>
+            <div class="stat-readout-row" id="dispOut">
+              <div class="stat-readout"><div class="k">Range</div><div class="v">7.7</div></div>
+              <div class="stat-readout"><div class="k">MAD</div><div class="v">2.44</div></div>
+              <div class="stat-readout"><div class="k">Variance</div><div class="v">8.16</div></div>
+              <div class="stat-readout"><div class="k">Std Dev</div><div class="v">2.86</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 DOWNSIDE DEVIATION & COEFFICIENT OF VARIATION
+    ========================================================== -->
+    <section class="section" id="sec-downside">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Downside Deviation &amp; Coefficient of Variation</h2>
+          <p class="subhead">Standard deviation treats upside and downside surprises the same way. Investors usually don't.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Target (semi)deviation</div>
+            <p style="margin:0;">Only looks at observations that fall <em>below</em> a chosen target — squares those shortfalls, sums them, divides by n − 1, and takes the square root. It answers "how much downside risk relative to my minimum acceptable return?" rather than "how much risk overall?"</p>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">Formula</div>
+            <div class="formula-body">s_target = √[ Σ(Xᵢ − B)² / (n − 1) ]&nbsp;&nbsp;for all Xᵢ ≤ B<br><span style="font-size:.8rem; color:var(--ink-soft);">B = the target</span></div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — monthly portfolio returns</div>
+            <p style="margin:0 0 8px;">Twelve months of returns: 5, 3, −1, −4, 4, 2, 0, 4, 3, 0, 6, 5 (%). Full-sample standard deviation ≈ 2.96%.</p>
+            <p style="margin:0;">Against a 3% target return, only 5 months fall below target, giving a target semideviation of 2.76%. Against a lower, easier-to-clear 2% target, only 4 months fall short, giving a <em>smaller</em> semideviation of 2.20% — raise the bar (the target) and, mechanically, semideviation rises too, since more observations now count as "below."</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Coefficient of variation (CV)</div>
+            <p style="margin:0;">CV = s / X̄ — standard deviation expressed <em>per unit</em> of mean. Because it's unitless, it's the right tool for comparing dispersion across datasets with very different scales or units — e.g., two industries' returns on assets with very different average magnitudes.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example — comparing two industries</div>
+            <p style="margin:0;">Industry A's returns on assets have a similar spread to Industry B's in absolute terms, but Industry B's average return is much lower — so the <em>same</em> dollar of dispersion represents proportionally far more risk per unit of return in Industry B. The coefficient of variation captures that instantly, while comparing the two raw standard deviations side by side would miss it entirely.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">Fund X has mean return 4% and standard deviation 8%. Fund Y has mean return 12% and standard deviation 18%. Which fund has more risk per unit of return (higher CV)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Fund X (CV = 2.00)</button>
+              <button class="opt-btn" data-correct="false">Fund Y (CV = 1.50)</button>
+              <button class="opt-btn" data-correct="false">They're equal</button>
+            </div>
+            <div class="checkin-feedback">Correct — CV(X) = 8/4 = 2.00 vs. CV(Y) = 18/12 = 1.50. Even though Fund Y has the larger raw standard deviation, Fund X carries more risk per unit of expected return.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — target semideviation &amp; CV</div>
+            <textarea id="ddInput" rows="2" style="width:100%; font-family:var(--font-mono); font-size:.9rem; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">5, 3, -1, -4, 4, 2, 0, 4, 3, 0, 6, 5</textarea>
+            <div class="conv-row" style="margin-top:10px;"><label for="ddTarget">Target =</label><input type="number" id="ddTarget" value="3" step="0.5"></div>
+            <div class="stat-readout-row" id="ddOut">
+              <div class="stat-readout"><div class="k">Mean</div><div class="v">2.25</div></div>
+              <div class="stat-readout"><div class="k">Std Dev</div><div class="v">2.96</div></div>
+              <div class="stat-readout"><div class="k">Target Semidev</div><div class="v">2.76</div></div>
+              <div class="stat-readout"><div class="k">CV</div><div class="v">1.32</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Part 2 of 2 for the CFA Program prerequisite Quantitative Methods reading on Organizing, Visualizing, and Describing Data. <a href="../organizing-viz/index.html" style="color:var(--indigo);">← Back to Part 1: Organizing &amp; Visualizing Data</a>
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

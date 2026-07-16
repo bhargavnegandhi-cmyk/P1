@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interest Rates, Present Value &amp; Future Value — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">PV ⇄ FV</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Interest Rates,<br>PV &amp; FV</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Foundations</div>
+    <ul class="toc">
+      <li><a href="#sec-rates" data-sec="sec-rates"><span class="num">01</span>Interest Rates</a></li>
+      <li><a href="#sec-fvlump" data-sec="sec-fvlump"><span class="num">02</span>Future Value of a Lump Sum</a></li>
+      <li><a href="#sec-compounding" data-sec="sec-compounding"><span class="num">03</span>Compounding Frequency &amp; EAR</a></li>
+    </ul>
+
+    <div class="toc-group-label">Series of Cash Flows</div>
+    <ul class="toc">
+      <li><a href="#sec-fvannuity" data-sec="sec-fvannuity"><span class="num">04</span>Future Value of an Annuity</a></li>
+      <li><a href="#sec-pvlump" data-sec="sec-pvlump"><span class="num">05</span>Present Value of a Lump Sum</a></li>
+      <li><a href="#sec-pvannuity" data-sec="sec-pvannuity"><span class="num">06</span>Present Value of an Annuity</a></li>
+      <li><a href="#sec-perpetuity" data-sec="sec-perpetuity"><span class="num">07</span>Perpetuities</a></li>
+    </ul>
+
+    <div class="toc-group-label">Solving for the Unknown</div>
+    <ul class="toc">
+      <li><a href="#sec-solving" data-sec="sec-solving"><span class="num">08</span>Rates, Growth &amp; Number of Periods</a></li>
+      <li><a href="#sec-payment" data-sec="sec-payment"><span class="num">09</span>Size of Annuity Payments</a></li>
+      <li><a href="#sec-additivity" data-sec="sec-additivity"><span class="num">10</span>Equivalence &amp; Additivity</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material</div>
+      <h1>A dollar today is not a dollar tomorrow.</h1>
+      <p class="lede">Every valuation an analyst ever does — a bond, a stock, a pension liability, a mortgage — is really just this one idea applied over and over: move money through time, honestly. This module builds that skill from a single $100 deposit up to full annuity and perpetuity valuation, with a real interactive time-value calculator you can use for every problem below.</p>
+    </header>
+
+    <!-- =========================================================
+         01 INTEREST RATES
+    ========================================================== -->
+    <section class="section" id="sec-rates">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Interest Rates — Three Meanings, One Number</h2>
+          <p class="subhead">Before any formula, it helps to know what an interest rate actually represents.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Suppose you'd accept $9,500 today in place of $10,000 a year from now. The $500 gap — $500/$9,500 = 5.26% — is the interest rate, denoted <em>r</em>, that makes the two amounts equivalent in value. That single number can be read three different ways depending on context:</p>
+
+          <div class="definition">
+            <div class="label">Three readings of the same rate</div>
+            <p style="margin-bottom:8px;"><strong>Required rate of return</strong> — the minimum return an investor demands to accept an investment.</p>
+            <p style="margin-bottom:8px;"><strong>Discount rate</strong> — the rate used to pull a future amount back to its value today.</p>
+            <p style="margin:0;"><strong>Opportunity cost</strong> — what you give up by tying your money up in one place instead of the next-best alternative.</p>
+          </div>
+
+          <p>Zoom into where that rate actually comes from, and it's built out of five layers stacked on top of each other:</p>
+
+          <div class="callout formula">
+            <div class="label">The anatomy of an interest rate</div>
+            <div class="formula-body" style="font-size:.92rem;">r = Real risk-free rate + Inflation premium + Default risk premium + Liquidity premium + Maturity premium</div>
+          </div>
+
+          <table class="exhibit" style="margin:14px 0;">
+            <tr><th>Component</th><th>Compensates for</th></tr>
+            <tr><td>Real risk-free rate</td><td>Pure time preference — consuming later instead of now</td></tr>
+            <tr><td>Inflation premium</td><td>Expected loss of purchasing power</td></tr>
+            <tr><td>Default risk premium</td><td>Chance the borrower doesn't pay as promised</td></tr>
+            <tr><td>Liquidity premium</td><td>Difficulty converting the investment to cash quickly at fair value</td></tr>
+            <tr><td>Maturity premium</td><td>Extra price sensitivity of longer-dated debt to rate changes</td></tr>
+          </table>
+
+          <p style="font-size:.9rem; color:var(--ink-soft);">The real risk-free rate plus the inflation premium together make up the <strong>nominal risk-free rate</strong> — approximated in practice by a short-term government bill, like a 90-day US Treasury bill, which carries essentially no default or liquidity premium.</p>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">A bond issued by a small, thinly-traded company carries a higher interest rate than an otherwise identical bond from a large, frequently-traded issuer. The gap is best explained by:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">A higher maturity premium</button>
+              <button class="opt-btn" data-correct="true">A higher liquidity premium</button>
+              <button class="opt-btn" data-correct="false">A lower real risk-free rate</button>
+            </div>
+            <div class="checkin-feedback">Correct — a bond that's hard to sell quickly without moving its price carries a liquidity premium. Thin trading is the classic signal of low liquidity.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout">
+            <p style="margin:0; font-size:.9rem;"><strong>Same word, same idea:</strong> throughout this module, "interest rate," "discount rate," and "required return" are used interchangeably — context tells you which lens you're using, but the underlying number is identical.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 FUTURE VALUE OF A LUMP SUM
+    ========================================================== -->
+    <section class="section" id="sec-fvlump">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>Future Value of a Single Cash Flow</h2>
+          <p class="subhead">The engine behind every time-value problem: compounding.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Invest $100 today (PV = $100) at 5% for one year, and you'll have $105 — the original $100 plus $5 of interest. Leave it another year, and you don't just earn another $5; you earn 5% on the full $105, giving $110.25. That extra $0.25 is interest earned <em>on</em> interest — the phenomenon of <strong>compounding</strong>.</p>
+
+          <div class="callout formula">
+            <div class="label">Future value formula</div>
+            <div class="formula-body">FV<sub>N</sub> = PV(1 + r)<sup>N</sup></div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">r and N must be defined in the same time units — an annual rate needs N in years, a monthly rate needs N in months.</p>
+          </div>
+
+          <div id="timeline1" class="chart-card" style="margin:16px 0;"></div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — the power of compounding</div>
+            <p style="margin:0;">$5,000,000 invested for 5 years at 7% compounded annually: FV = $5,000,000(1.07)<sup>5</sup> = $5,000,000(1.402552) = <strong>$7,012,758.65</strong>. Stretch that same 7% out over 100 years instead, and $100 grows to roughly $13,150 — but bump the rate to 13%, and 100 years turns $100 into more than <strong>$20 million</strong>. Small differences in rate compound into enormous differences over long horizons.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">$10,000 is invested for 3 years at 6% compounded annually. What is the future value?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">$11,800.00</button>
+              <button class="opt-btn" data-correct="true">$11,910.16</button>
+              <button class="opt-btn" data-correct="false">$12,000.00</button>
+            </div>
+            <div class="checkin-feedback">Correct — FV = $10,000(1.06)³ = $10,000(1.191016) = $11,910.16. The $11,800 answer is simple (non-compounded) interest — a common trap.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tvm-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — lump sum FV / PV solver</div>
+            <p style="font-size:.8rem; color:var(--ink-soft); margin:0 0 10px;">Click which variable to solve for, fill in the other three.</p>
+            <div class="tvm-solve-row" id="lumpSolveRow">
+              <button class="tvm-solve-btn active" data-solve="FV">Solve FV</button>
+              <button class="tvm-solve-btn" data-solve="PV">Solve PV</button>
+              <button class="tvm-solve-btn" data-solve="r">Solve r</button>
+              <button class="tvm-solve-btn" data-solve="N">Solve N</button>
+            </div>
+            <div class="tvm-grid">
+              <div class="tvm-field" id="lumpField-PV"><label>PV</label><input type="number" id="lumpPV" value="100"></div>
+              <div class="tvm-field" id="lumpField-r"><label>r (%/yr)</label><input type="number" id="lumpR" value="5" step="0.1"></div>
+              <div class="tvm-field" id="lumpField-N"><label>N (years)</label><input type="number" id="lumpN" value="2" step="1"></div>
+              <div class="tvm-field solving" id="lumpField-FV"><label>FV</label><input type="number" id="lumpFV" value="" readonly></div>
+            </div>
+            <div class="tvm-result" id="lumpResult">FV = $110.25</div>
+            <div class="calc-steps" id="lumpSteps">100 × (1.05)² = 110.25</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 COMPOUNDING FREQUENCY & EAR
+    ========================================================== -->
+    <section class="section" id="sec-compounding">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Compounding Frequency &amp; the Effective Annual Rate</h2>
+          <p class="subhead">"8% compounded monthly" and "8% compounded annually" are not the same rate — even though both say "8%."</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Banks often quote a <strong>stated annual rate</strong> (r<sub>s</sub>), then compound it more than once a year. With <em>m</em> compounding periods per year, each period earns r<sub>s</sub>/m, and there are m×N periods total over N years:</p>
+
+          <div class="callout formula">
+            <div class="label">Future value with non-annual compounding</div>
+            <div class="formula-body">FV<sub>N</sub> = PV(1 + r<sub>s</sub>/m)<sup>mN</sup></div>
+          </div>
+
+          <p>More frequent compounding always produces a larger ending amount for the same stated rate — because interest starts earning its own interest sooner. Push the compounding frequency to its limit (m → ∞) and you get <strong>continuous compounding</strong>:</p>
+
+          <div class="callout formula">
+            <div class="label">Continuous compounding</div>
+            <div class="formula-body">FV<sub>N</sub> = PV · e<sup>r<sub>s</sub>N</sup></div>
+          </div>
+
+          <div class="chart-card">
+            <div id="compoundingChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">The future value of $1 at a stated 8% annual rate, under six compounding frequencies. Notice how quickly the gains from more frequent compounding shrink — daily is already almost indistinguishable from continuous.</p>
+          </div>
+
+          <p>Because the stated rate alone doesn't tell you the true annual growth, we convert it into the <strong>effective annual rate (EAR)</strong> — the rate that, compounded just once a year, gives the same ending value:</p>
+
+          <div class="callout formula">
+            <div class="label">Effective annual rate</div>
+            <div class="formula-body">
+              EAR = (1 + r<sub>s</sub>/m)<sup>m</sup> − 1  &nbsp;(discrete compounding)<br>
+              EAR = e<sup>r<sub>s</sub></sup> − 1  &nbsp;(continuous compounding)
+            </div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — comparing two CD offers</div>
+            <p style="margin:0;">Bank A offers 8% compounded semiannually; Bank B offers 8% compounded monthly. EAR(A) = (1.04)² − 1 = <strong>8.16%</strong>. EAR(B) = (1 + 0.08/12)<sup>12</sup> − 1 = <strong>8.30%</strong>. Same stated rate, but Bank B's more frequent compounding makes it the better deal — the EAR is what makes them properly comparable.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">A rate of 12% is compounded quarterly. What is the effective annual rate?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">12.00%</button>
+              <button class="opt-btn" data-correct="true">12.55%</button>
+              <button class="opt-btn" data-correct="false">13.00%</button>
+            </div>
+            <div class="checkin-feedback">Correct — EAR = (1 + 0.12/4)⁴ − 1 = (1.03)⁴ − 1 = 1.1255 − 1 = 12.55%.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tvm-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — EAR calculator</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>Stated rate r<sub>s</sub> (%)</label><input type="number" id="earRs" value="8" step="0.1"></div>
+              <div class="tvm-field"><label>Compounding / yr (m)</label><input type="number" id="earM" value="12" step="1"></div>
+            </div>
+            <div class="tvm-toggle-row"><label><input type="checkbox" id="earContinuous"> Use continuous compounding instead</label></div>
+            <div class="tvm-result" id="earResult">EAR = 8.30%</div>
+            <div class="calc-steps" id="earSteps">(1 + 0.08/12)¹² − 1 = 8.30%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 FUTURE VALUE OF AN ANNUITY
+    ========================================================== -->
+    <section class="section" id="sec-fvannuity">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Future Value of a Series of Cash Flows</h2>
+          <p class="subhead">Most real cash flow streams aren't a single lump sum — they're a sequence of payments.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Vocabulary</div>
+            <p style="margin-bottom:8px;"><strong>Annuity</strong> — a finite set of level, sequential cash flows.</p>
+            <p style="margin-bottom:8px;"><strong>Ordinary annuity</strong> — first payment one period from now (t = 1).</p>
+            <p style="margin:0;"><strong>Annuity due</strong> — first payment immediately (t = 0).</p>
+          </div>
+
+          <p>To find the future value of an ordinary annuity, in principle you'd compound each payment forward to the final date and add them up. Do that algebra once and it collapses into a single closed-form factor:</p>
+
+          <div class="callout formula">
+            <div class="label">Future value of an ordinary annuity</div>
+            <div class="formula-body">FV<sub>N</sub> = A · [ ((1 + r)<sup>N</sup> − 1) / r ]</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">The bracketed term is the future value annuity factor — the future value of $1-per-period, for N periods at rate r.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — retirement contributions</div>
+            <p style="margin:0;">€20,000 invested at the end of each year for 30 years at 9%: FV annuity factor = [(1.09)<sup>30</sup> − 1] / 0.09 = 136.307539. FV = €20,000 × 136.307539 = <strong>€2,726,150.77</strong>.</p>
+          </div>
+
+          <p>When payments are <em>unequal</em>, there's no shortcut — compound each cash flow individually to the same future date, then add:</p>
+
+          <table class="exhibit" style="margin:14px 0;">
+            <caption>A series of unequal cash flows, future value at Year 5, 5% discount rate</caption>
+            <tr><th>Time</th><th>Cash Flow</th><th>Future Value at t=5</th></tr>
+            <tr><td>t=1</td><td class="num">$1,000</td><td class="num">$1,215.51</td></tr>
+            <tr><td>t=2</td><td class="num">$2,000</td><td class="num">$2,315.25</td></tr>
+            <tr><td>t=3</td><td class="num">$4,000</td><td class="num">$4,410.00</td></tr>
+            <tr><td>t=4</td><td class="num">$5,000</td><td class="num">$5,250.00</td></tr>
+            <tr><td>t=5</td><td class="num">$6,000</td><td class="num">$6,000.00</td></tr>
+            <tr><td><strong>Sum</strong></td><td></td><td class="num"><strong>$19,190.76</strong></td></tr>
+          </table>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">$2,000 is deposited at the end of each year for 10 years, earning 6% annually. What is the future value annuity factor?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">6.000</button>
+              <button class="opt-btn" data-correct="true">13.181</button>
+              <button class="opt-btn" data-correct="false">1.791</button>
+            </div>
+            <div class="checkin-feedback">Correct — [(1.06)¹⁰ − 1] / 0.06 = [1.790847 − 1] / 0.06 ≈ 13.181. Multiplying by $2,000 gives an FV of roughly $26,362.</div>
+          </div>
+        </div>
+        <div>
+          <div id="timeline-annuity" class="chart-card" style="margin-top:0;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 PRESENT VALUE OF A LUMP SUM
+    ========================================================== -->
+    <section class="section" id="sec-pvlump">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Present Value of a Single Cash Flow</h2>
+          <p class="subhead">Run the future-value formula backward, and you're discounting instead of compounding.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>If $100 today grows to $105 in a year at 5%, then $100 is exactly the present value of that future $105. Solving FV<sub>N</sub> = PV(1 + r)<sup>N</sup> for PV gives the discounting formula:</p>
+
+          <div class="callout formula">
+            <div class="label">Present value formula</div>
+            <div class="formula-body">PV = FV<sub>N</sub> (1 + r)<sup>−N</sup></div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">The present value factor (1+r)<sup>−N</sup> is simply the reciprocal of the future value factor.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — funding a future payment</div>
+            <p style="margin:0;">An insurer must pay $100,000 in 6 years and can earn 8%. PV = $100,000(1.08)<sup>−6</sup> = $100,000(0.6301696) = <strong>$63,016.96</strong> — that's the amount to invest today.</p>
+          </div>
+
+          <p>Two intuitive relationships fall straight out of the formula:</p>
+          <ul class="tight" style="padding-left:18px;">
+            <li>Holding the discount rate fixed, a payment further in the future has a <em>smaller</em> present value.</li>
+            <li>Holding time fixed, a <em>higher</em> discount rate produces a <em>smaller</em> present value.</li>
+          </ul>
+
+          <p>Non-annual compounding works exactly the same way here as it did for future value — swap in the periodic rate and the matching number of periods:</p>
+          <div class="callout formula">
+            <div class="label">Present value with non-annual compounding</div>
+            <div class="formula-body">PV = FV<sub>N</sub> (1 + r<sub>s</sub>/m)<sup>−mN</sup></div>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">A GIC promises C$5,000,000 in 10 years. At 6% compounded monthly, what should you invest today?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">C$2,791,973</button>
+              <button class="opt-btn" data-correct="true">C$2,748,164</button>
+              <button class="opt-btn" data-correct="false">C$3,000,000</button>
+            </div>
+            <div class="checkin-feedback">Correct — PV = C$5,000,000 × (1.005)⁻¹²⁰ = C$5,000,000 × 0.549633 = C$2,748,163.67. Note the monthly rate (0.5%) and 120 monthly periods.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tvm-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — reuse the lump sum solver above</div>
+            <p style="font-size:.85rem; color:var(--ink-soft); margin:0;">The Module 02 calculator solves PV just as easily as FV — click "Solve PV" there and plug in FV, r, and N.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 PRESENT VALUE OF AN ANNUITY
+    ========================================================== -->
+    <section class="section" id="sec-pvannuity">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Present Value of a Series of Cash Flows</h2>
+          <p class="subhead">What is a stream of future payments worth today? This is the single most-used calculation in valuation.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">Present value of an ordinary annuity</div>
+            <div class="formula-body">PV = A · [ 1 − (1 + r)<sup>−N</sup> ] / r</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — pricing an income stream</div>
+            <p style="margin:0;">An asset pays €1,000 a year for 5 years, first payment in one year, discounted at 12%: PV = €1,000 × [1 − (1.12)⁻⁵]/0.12 = €1,000 × 3.604776 = <strong>€3,604.78</strong>.</p>
+          </div>
+
+          <p>An <strong>annuity due</strong> is just an ordinary annuity shifted one period earlier — the whole stream is worth (1+r) times more, since every payment is discounted one less period:</p>
+
+          <div class="callout formula">
+            <div class="label">Present value of an annuity due</div>
+            <div class="formula-body">PV(due) = A · { [1 − (1 + r)<sup>−N</sup>] / r } · (1 + r)</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — lump sum vs. annuity due retirement benefit</div>
+            <p style="margin:0 0 8px;">Choice A: $2,000,000 today. Choice B: 20 annual payments of $200,000, starting today, at 7%. Split B into "$200,000 now" plus a 19-payment ordinary annuity: PV(ordinary 19-yr annuity) = $200,000 × 10.335595 = $2,067,119.05. Add the immediate $200,000:</p>
+            <p style="margin:0;">Total PV(B) = $200,000 + $2,067,119.05 = <strong>$2,267,119.05</strong> — larger than Choice A's flat $2,000,000, so the annuity option wins.</p>
+          </div>
+
+          <p>When cash flows are <strong>unequal</strong>, discount and sum each one individually — the same brute-force approach as for future value, just run in reverse:</p>
+          <table class="exhibit" style="margin:14px 0;">
+            <caption>A series of unequal cash flows, present value at 5%</caption>
+            <tr><th>Time</th><th>Cash Flow</th><th>Present Value</th></tr>
+            <tr><td>1</td><td class="num">$1,000</td><td class="num">$952.38</td></tr>
+            <tr><td>2</td><td class="num">$2,000</td><td class="num">$1,814.06</td></tr>
+            <tr><td>3</td><td class="num">$4,000</td><td class="num">$3,455.35</td></tr>
+            <tr><td>4</td><td class="num">$5,000</td><td class="num">$4,113.51</td></tr>
+            <tr><td>5</td><td class="num">$6,000</td><td class="num">$4,701.16</td></tr>
+            <tr><td><strong>Sum</strong></td><td></td><td class="num"><strong>$15,036.46</strong></td></tr>
+          </table>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">Which is worth more today at a positive discount rate: an ordinary annuity, or an otherwise-identical annuity due?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">The ordinary annuity — later payments are safer</button>
+              <button class="opt-btn" data-correct="true">The annuity due — its payments are each discounted one less period</button>
+              <button class="opt-btn" data-correct="false">They're always worth exactly the same</button>
+            </div>
+            <div class="checkin-feedback">Correct — every payment in an annuity due arrives one period sooner, so it's discounted less, making the whole stream worth (1+r) times more than the ordinary annuity.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tvm-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — annuity PV / FV solver</div>
+            <div class="tvm-toggle-row">
+              <label><input type="radio" name="annType" value="ordinary" checked> Ordinary annuity</label>
+              <label><input type="radio" name="annType" value="due"> Annuity due</label>
+            </div>
+            <div class="tvm-solve-row" id="annSolveRow">
+              <button class="tvm-solve-btn active" data-solve="PV">Solve PV</button>
+              <button class="tvm-solve-btn" data-solve="FV">Solve FV</button>
+              <button class="tvm-solve-btn" data-solve="A">Solve payment (A)</button>
+              <button class="tvm-solve-btn" data-solve="N">Solve N</button>
+            </div>
+            <div class="tvm-grid">
+              <div class="tvm-field" id="annField-A"><label>Payment A</label><input type="number" id="annA" value="1000"></div>
+              <div class="tvm-field" id="annField-r"><label>r (%/period)</label><input type="number" id="annR" value="12" step="0.1"></div>
+              <div class="tvm-field" id="annField-N"><label>N (periods)</label><input type="number" id="annN" value="5" step="1"></div>
+              <div class="tvm-field solving" id="annField-PV"><label>PV</label><input type="number" id="annPV" value="" readonly></div>
+              <div class="tvm-field" id="annField-FV"><label>FV</label><input type="number" id="annFV" value="" readonly></div>
+            </div>
+            <div class="tvm-result" id="annResult">PV = $3,604.78</div>
+            <div class="calc-steps" id="annSteps">1000 × [1 − (1.12)⁻⁵]/0.12 = 3604.78</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         07 PERPETUITIES
+    ========================================================== -->
+    <section class="section" id="sec-perpetuity">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <div>
+          <h2>Present Value of a Perpetuity</h2>
+          <p class="subhead">An annuity that never stops paying — the model behind preferred stock and level consol bonds.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Let N in the ordinary annuity formula grow without bound, and the term (1+r)<sup>−N</sup> shrinks to zero — leaving a remarkably simple result:</p>
+
+          <div class="callout formula">
+            <div class="label">Present value of a perpetuity</div>
+            <div class="formula-body">PV = A / r</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">Valid only for level, identical, never-ending payments, with the first payment one period from now.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a consol bond</div>
+            <p style="margin:0;">A British consol bond pays £100 a year forever. At a 5% required return: PV = £100 / 0.05 = <strong>£2,000</strong>.</p>
+          </div>
+
+          <p>Perpetuities don't always start paying next period. A <strong>deferred (projected) perpetuity</strong> needs an extra step: value it as of one period before its first payment, then discount that lump sum back to today.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a perpetuity starting later</div>
+            <p style="margin:0 0 8px;">A £100 perpetuity's first payment is at t = 5. Step 1: value it at t = 4 (one period before the first payment) as an ordinary perpetuity: PV<sub>4</sub> = £100/0.05 = £2,000. Step 2: discount that £2,000 back 4 more years to today:</p>
+            <p style="margin:0;">PV<sub>0</sub> = £2,000 × (1.05)⁻⁴ = £2,000 × 0.822702 = <strong>£1,645.40</strong>.</p>
+          </div>
+
+          <p>That same two-step logic gives a slick way to value a plain N-year annuity: it's the <em>difference</em> between two perpetuities — one starting now, one starting right after the annuity would have ended.</p>
+
+          <div class="callout example">
+            <div class="label">An annuity as the difference of two perpetuities</div>
+            <p style="margin:0;">A 4-year, £100 ordinary annuity at 5% = Perpetuity 1 (starts t=1, worth £2,000 today) minus Perpetuity 2 (starts t=5, worth £2,000 at t=4, or £1,645.40 today). PV(annuity) = £2,000 − £1,645.40 = <strong>£354.60</strong>.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c7">
+            <div class="label">Check yourself</div>
+            <div class="q">A perpetuity pays $40 a year forever, first payment in one year, at an 8% discount rate. What's its present value?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">$320</button>
+              <button class="opt-btn" data-correct="true">$500</button>
+              <button class="opt-btn" data-correct="false">$3.20</button>
+            </div>
+            <div class="checkin-feedback">Correct — PV = A/r = $40/0.08 = $500.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tvm-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — perpetuity calculator</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>Payment A</label><input type="number" id="perpA" value="100"></div>
+              <div class="tvm-field"><label>r (%/period)</label><input type="number" id="perpR" value="5" step="0.1"></div>
+              <div class="tvm-field"><label>First payment at t=</label><input type="number" id="perpT" value="1" step="1" min="1"></div>
+            </div>
+            <div class="tvm-result" id="perpResult">PV₀ = $2,000.00</div>
+            <div class="calc-steps" id="perpSteps">PV at t=0: A/r = 100/0.05 = 2000</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         08 SOLVING FOR RATES, GROWTH, N
+    ========================================================== -->
+    <section class="section" id="sec-solving">
+      <div class="section-head">
+        <span class="section-tag">08</span>
+        <div>
+          <h2>Solving for Interest Rates, Growth Rates &amp; Number of Periods</h2>
+          <p class="subhead">So far, r and N were given. In practice, they're often what you're solving for.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Rearranging FV<sub>N</sub> = PV(1 + r)<sup>N</sup> lets you solve for whichever variable is missing. Solved for the rate, this is also how you compute a <strong>growth rate</strong> — the same math, different name:</p>
+
+          <div class="callout formula">
+            <div class="label">Growth rate formula</div>
+            <div class="formula-body">g = (FV<sub>N</sub> / PV)<sup>1/N</sup> − 1</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a five-year growth rate</div>
+            <p style="margin:0;">Hyundai Steel's sales grew from ₩14,146.4B (2012) to ₩19,166.0B (2017) — a 5-year span. g = (19,166.0/14,146.4)<sup>1/5</sup> − 1 = (1.354832)<sup>0.2</sup> − 1 ≈ <strong>6.26%</strong> per year. Over the same period, net profit actually <em>declined</em>, from ₩796.4B to ₩727.5B: g = (727.5/796.4)<sup>1/5</sup> − 1 ≈ <strong>−1.79%</strong> per year — a negative compound growth rate.</p>
+          </div>
+
+          <p>Solve instead for N, and you get the number of periods it takes an investment to reach a target value:</p>
+          <div class="callout formula">
+            <div class="label">Solving for N</div>
+            <div class="formula-body">N = ln(FV/PV) / ln(1 + r)</div>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example — doubling time, and the Rule of 72</div>
+            <p style="margin:0 0 8px;">How long does €10,000,000 take to double at 7%? N = ln(2)/ln(1.07) = <strong>10.24 years</strong>.</p>
+            <p style="margin:0;">A quick mental shortcut, the <strong>Rule of 72</strong>, approximates this without logarithms: divide 72 by the interest rate (as a whole number). Here, 72/7 ≈ 10.3 years — remarkably close to the exact 10.24.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c8">
+            <div class="label">Check yourself</div>
+            <div class="q">An investment grows from $50,000 to $80,000 over 6 years. What is the annual compound growth rate?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">10.00%</button>
+              <button class="opt-btn" data-correct="true">8.14%</button>
+              <button class="opt-btn" data-correct="false">60.00%</button>
+            </div>
+            <div class="checkin-feedback">Correct — g = (80,000/50,000)^(1/6) − 1 = (1.6)^0.1667 − 1 ≈ 8.14%. The 60% figure is total growth, not annualized.</div>
+          </div>
+        </div>
+        <div>
+          <div class="tvm-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — Rule of 72 vs. exact</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>Rate (%/yr)</label><input type="number" id="ruleR" value="7" step="0.1"></div>
+            </div>
+            <div class="stat-readout-row" id="ruleOut">
+              <div class="stat-readout"><div class="k">Rule of 72</div><div class="v">10.29 yrs</div></div>
+              <div class="stat-readout"><div class="k">Exact (ln)</div><div class="v">10.24 yrs</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         09 SIZE OF ANNUITY PAYMENTS
+    ========================================================== -->
+    <section class="section" id="sec-payment">
+      <div class="section-head">
+        <span class="section-tag">09</span>
+        <div>
+          <h2>Solving for the Size of Annuity Payments</h2>
+          <p class="subhead">Mortgages, auto loans, and retirement drawdowns all boil down to one question: what fixed payment matches a given present value?</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Rearranging the ordinary annuity present value formula for A gives the payment size directly:</p>
+          <div class="callout formula">
+            <div class="label">Solving for the annuity payment</div>
+            <div class="formula-body">A = PV / { [1 − (1 + r)<sup>−N</sup>] / r }</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a fixed-rate mortgage</div>
+            <p style="margin:0;">A $120,000 house, $20,000 down, financed with a $100,000, 30-year mortgage at 8% compounded monthly (r = 0.08/12 = 0.006667, N = 360 months): the present value annuity factor works out to about 136.283494, so A = $100,000 / 136.283494 ≈ <strong>$733.76</strong> per month.</p>
+          </div>
+
+          <p>The same rearrangement works for the future-value annuity factor when you're solving for a savings contribution needed to hit a target future value, rather than a loan payment matching a present value.</p>
+
+          <div class="checkin" data-checkin="c9">
+            <div class="label">Check yourself</div>
+            <div class="q">You need a present value of $50,000 to be fully paid off by an ordinary annuity of N=10 annual payments at 6%. The PV annuity factor is 7.360087. What's the required payment?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">$5,000.00</button>
+              <button class="opt-btn" data-correct="true">$6,793.40</button>
+              <button class="opt-btn" data-correct="false">$8,333.33</button>
+            </div>
+            <div class="checkin-feedback">Correct — A = PV / annuity factor = $50,000 / 7.360087 ≈ $6,793.40.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Use the Module 06 solver:</strong> click "Solve payment (A)" in the annuity calculator above, enter PV, r, and N, and it computes the payment directly — the exact same mechanics as pricing a mortgage.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         10 EQUIVALENCE & ADDITIVITY
+    ========================================================== -->
+    <section class="section" id="sec-additivity">
+      <div class="section-head">
+        <span class="section-tag">10</span>
+        <div>
+          <h2>Present &amp; Future Value Equivalence — the Additivity Principle</h2>
+          <p class="subhead">The one rule that ties everything in this module together.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">The cash flow additivity principle</div>
+            <p style="margin:0;">Amounts of money indexed at the <em>same point in time</em> are additive. Put a lump sum, an annuity, and a future value all on the same time index, and you can add, subtract, and substitute freely between them.</p>
+          </div>
+
+          <p>This isn't just a bookkeeping convenience — a lump sum, an annuity, and its future value are all literally the same amount of money, just viewed from different dates. A $4,329.48 deposit today at 5%, for instance, can fund exactly five $1,000 withdrawals, one at the end of each of the next five years, with the account hitting zero right after the last withdrawal:</p>
+
+          <table class="exhibit" style="margin:14px 0;">
+            <caption>How a $4,329.48 lump sum funds a 5-year, $1,000 annuity at 5%</caption>
+            <tr><th>Year</th><th>Start Balance</th><th>Grows to</th><th>Withdrawal</th><th>End Balance</th></tr>
+            <tr><td>1</td><td class="num">$4,329.48</td><td class="num">$4,545.95</td><td class="num">$1,000</td><td class="num">$3,545.95</td></tr>
+            <tr><td>2</td><td class="num">$3,545.95</td><td class="num">$3,723.25</td><td class="num">$1,000</td><td class="num">$2,723.25</td></tr>
+            <tr><td>3</td><td class="num">$2,723.25</td><td class="num">$2,859.41</td><td class="num">$1,000</td><td class="num">$1,859.41</td></tr>
+            <tr><td>4</td><td class="num">$1,859.41</td><td class="num">$1,952.38</td><td class="num">$1,000</td><td class="num">$952.38</td></tr>
+            <tr><td>5</td><td class="num">$952.38</td><td class="num">$1,000.00</td><td class="num">$1,000</td><td class="num">$0.00</td></tr>
+          </table>
+
+          <p>The same idea also lets you combine two cash flow <em>series</em> before valuing them, instead of valuing them separately and adding the results — both routes always agree.</p>
+
+          <div class="callout example">
+            <div class="label">Worked example — combining two series</div>
+            <p style="margin:0 0 10px;">Series A pays $100 at t=1 and t=2. Series B pays $200 at t=1 and t=2. At 2% interest:</p>
+            <p style="margin:0;">FV(A) = $100(1.02) + $100 = $202. FV(B) = $200(1.02) + $200 = $404. FV(A) + FV(B) = <strong>$606</strong>. Now combine the series first — $300 at t=1 and t=2 — and value that instead: $300(1.02) + $300 = <strong>$606</strong>. Same answer either way, exactly as the additivity principle guarantees.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c10">
+            <div class="label">Check yourself</div>
+            <div class="q">The cash flow additivity principle allows you to add or subtract two cash flows only if:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">They are both annuities</button>
+              <button class="opt-btn" data-correct="true">They are indexed to the same point in time</button>
+              <button class="opt-btn" data-correct="false">They use the same currency</button>
+            </div>
+            <div class="checkin-feedback">Correct — money can only be added or subtracted once it's expressed as of the same date; $100 today and $100 in five years are not directly comparable until one is moved to match the other's date.</div>
+          </div>
+        </div>
+        <div>
+          <div id="timeline-additivity" class="chart-card" style="margin-top:0;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Built as a companion study tool for the CFA Program prerequisite Quantitative Methods reading on Interest Rates, Present Value, and Future Value. Work through it alongside your primary curriculum — this isn't a replacement for official CFA Institute materials.
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

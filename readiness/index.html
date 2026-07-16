@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Readiness Dashboard — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{ margin:0; background:var(--paper); }
+  .topbar{
+    padding:16px 4vw; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--paper); z-index:10;
+  }
+  .topbar-left{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-name{ font-family:var(--font-display); font-weight:700; font-size:1rem; color:var(--indigo-deep); }
+  .wrap{ max-width:920px; margin:0 auto; padding:40px 5vw 80px; }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--amber-deep); font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:""; width:24px; height:2px; background:var(--amber-deep); display:inline-block; }
+  h1{ font-family:var(--font-display); font-size:clamp(1.7rem,3.4vw,2.4rem); color:var(--indigo-deep); margin:0 0 10px; }
+  .lede{ color:var(--ink-soft); font-size:1rem; margin:0 0 32px; max-width:75ch; }
+
+  .empty-state{
+    background:#fff; border:1.5px dashed var(--line); border-radius:14px; padding:48px 32px; text-align:center; margin-bottom:32px;
+  }
+  .empty-state p{ color:var(--ink-soft); max-width:50ch; margin:10px auto 20px; }
+  .start-btn{
+    font-family:var(--font-mono); font-size:.85rem; font-weight:700; background:var(--indigo); color:#fff;
+    border:none; padding:12px 22px; border-radius:10px; cursor:pointer; text-decoration:none; display:inline-block;
+  }
+  .start-btn:hover{ background:var(--indigo-deep); }
+
+  .summary-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:32px; }
+  .summary-card{
+    flex:1; min-width:140px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+  }
+  .summary-card .k{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:6px; }
+  .summary-card .v{ font-family:var(--font-display); font-size:1.6rem; font-weight:700; color:var(--indigo-deep); }
+
+  .focus-section{ margin-bottom:36px; }
+  .focus-section h2{ font-family:var(--font-mono); font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--indigo); margin:0 0 14px; }
+  .concept-pill{
+    display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--line); border-radius:20px;
+    padding:7px 14px; margin:0 8px 8px 0; font-size:.82rem;
+  }
+  .concept-pill .dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  .concept-pill .pct{ font-family:var(--font-mono); font-size:.75rem; color:var(--ink-soft); }
+
+  .module-card{
+    background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin-bottom:16px;
+  }
+  .module-card-head{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  .module-card-head h3{ font-family:var(--font-display); font-size:1.15rem; color:var(--indigo-deep); margin:0; }
+  .verdict{
+    font-family:var(--font-mono); font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+    padding:5px 12px; border-radius:20px;
+  }
+  .verdict.ready{ background:#E4F4EC; color:#1c5b41; }
+  .verdict.review{ background:#FFF6E6; color:#C77F1E; }
+  .verdict.notready{ background:#FBE7E2; color:#8a2f1c; }
+  .verdict.unassessed{ background:var(--paper-dim); color:var(--ink-soft); }
+
+  .concept-row{ display:flex; align-items:center; gap:10px; font-size:.82rem; margin-bottom:8px; }
+  .concept-row .name{ width:220px; flex:0 0 auto; color:var(--ink); }
+  .concept-row .track{ flex:1; height:8px; background:var(--paper-dim); border-radius:4px; overflow:hidden; }
+  .concept-row .fill{ height:100%; border-radius:4px; }
+  .concept-row .stat{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); width:70px; text-align:right; }
+
+  .reset-row{ text-align:center; margin-top:36px; }
+  .reset-btn{
+    font-family:var(--font-mono); font-size:.75rem; color:var(--red); background:none; border:1px solid var(--red);
+    padding:8px 16px; border-radius:8px; cursor:pointer; opacity:.75;
+  }
+  .reset-btn:hover{ opacity:1; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="topbar-left">
+    <span class="brand-mark"></span>
+    <span class="brand-name">CFA Prerequisite — Quant Toolkit</span>
+  </a>
+  <a href="../final-review/index.html" style="font-family:var(--font-mono); font-size:.78rem; color:var(--indigo); text-decoration:none; font-weight:600;">Take the Final Review →</a>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow">Diagnostics</div>
+  <h1>Your Readiness Dashboard</h1>
+  <p class="lede">Built from every question and flashcard you've answered anywhere in this toolkit — every module's own quiz, the Final Review, and the flashcard deck — across every attempt, not just your last score. This is a running record, so the more you use this toolkit, the more accurate this picture gets.</p>
+
+  <div id="dashboardContent">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="reset-row">
+    <button class="reset-btn" id="resetBtn">Reset all diagnostics data</button>
+  </div>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sampling &amp; Estimation — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">X̄ → μ</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Sampling &amp;<br>Estimation</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Estimating a Parameter</div>
+    <ul class="toc">
+      <li><a href="#sec-intro" data-sec="sec-intro"><span class="num">01</span>Point Estimates</a></li>
+      <li><a href="#sec-properties" data-sec="sec-properties"><span class="num">02</span>Properties of a Good Estimator</a></li>
+    </ul>
+
+    <div class="toc-group-label">Confidence Intervals</div>
+    <ul class="toc">
+      <li><a href="#sec-cistructure" data-sec="sec-cistructure"><span class="num">03</span>Structure &amp; Interpretation</a></li>
+      <li><a href="#sec-ciknown" data-sec="sec-ciknown"><span class="num">04</span>Known Population Variance</a></li>
+      <li><a href="#sec-ciunknown" data-sec="sec-ciunknown"><span class="num">05</span>Unknown Population Variance</a></li>
+      <li><a href="#sec-samplesize" data-sec="sec-samplesize"><span class="num">06</span>Selecting Sample Size</a></li>
+    </ul>
+
+    <div class="toc-group-label">Sampling-Related Biases</div>
+    <ul class="toc">
+      <li><a href="#sec-datasnooping" data-sec="sec-datasnooping"><span class="num">07</span>Data Snooping Bias</a></li>
+      <li><a href="#sec-selectionbias" data-sec="sec-selectionbias"><span class="num">08</span>Sample Selection &amp; Survivorship</a></li>
+      <li><a href="#sec-lookahead" data-sec="sec-lookahead"><span class="num">09</span>Look-Ahead &amp; Time-Period Bias</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material</div>
+      <h1>You never see the whole population. Here's how to estimate it honestly.</h1>
+      <p class="lede">An index tracks a sample of stocks, not every stock on earth. A survey calls a hundred clients, not all of them. Every number an analyst reports from data is really a guess about something larger and unseen — and this module is about making that guess as honest and as precisely bounded as possible, and about the sneaky ways a sample can lie to you.</p>
+    </header>
+
+    <!-- =========================================================
+         01 POINT ESTIMATES
+    ========================================================== -->
+    <section class="section" id="sec-intro">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Point Estimates of a Population Parameter</h2>
+          <p class="subhead">Two branches of statistical inference ask two different questions.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Two branches of statistical inference</div>
+            <p style="margin-bottom:8px;"><strong>Hypothesis testing</strong> asks: "Does the evidence support a specific claimed value for this parameter?" (covered in the next module)</p>
+            <p style="margin:0;"><strong>Estimation</strong> asks: "What is this parameter's value?" — with no starting claim to test, just a best guess built from sample data.</p>
+          </div>
+
+          <p>Estimation itself comes in two flavors. A <strong>point estimate</strong> is a single best-guess number — the sample mean X̄ used as an estimate of the unknown population mean μ. A <strong>confidence interval</strong> instead gives a range of plausible values, which is usually far more informative, since it also communicates how uncertain the estimate is.</p>
+
+          <div class="definition">
+            <div class="label">Estimator vs. estimate</div>
+            <p style="margin:0;">An <strong>estimator</strong> is the formula itself (e.g., "add up the observations and divide by n") — since it depends on which random sample you happen to draw, the estimator is a random variable with its own <strong>sampling distribution</strong>. An <strong>estimate</strong> is the one fixed number you get from plugging in a specific sample — it has no sampling distribution of its own, because it's already just a number.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — polling</div>
+            <p style="margin:0;">"Percent of registered voters who support Candidate X" is the population parameter. "Ask a random 1,000 voters and compute the percentage" is the estimator. Whatever number that particular poll returns — say, 52% — is the estimate. Poll again with a different random 1,000 voters, and you'd likely get a slightly different estimate; that variability across repeated samples is exactly the sampling distribution.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">An analyst calculates the average P/E ratio of a random sample of 50 stocks and gets 18.3. Is 18.3 an estimator or an estimate?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">An estimator</button>
+              <button class="opt-btn" data-correct="true">An estimate</button>
+            </div>
+            <div class="checkin-feedback">Correct — 18.3 is one fixed number computed from one particular sample. The formula "average the sample" is the estimator; 18.3 is what that formula produced this time — the estimate.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Why indexes matter here:</strong> the S&amp;P 500 doesn't contain every US stock, and the Nikkei 225 doesn't contain every Japanese stock — both are samples used to estimate something about their whole markets. Every statistic built from either index is, technically, an estimate of a broader population parameter.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 PROPERTIES OF A GOOD ESTIMATOR
+    ========================================================== -->
+    <section class="section" id="sec-properties">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>Properties of a Good Estimator</h2>
+          <p class="subhead">Not all formulas for estimating the same parameter are equally trustworthy. Three properties separate the good ones.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Unbiasedness</div>
+            <p style="margin:0;">An estimator is unbiased if the mean of its sampling distribution equals the true parameter it's estimating. The sample mean X̄ is an unbiased estimator of μ. The sample variance s² — <em>using the n−1 divisor</em> — is an unbiased estimator of σ²; dividing by n instead would systematically understate the true variance.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Efficiency</div>
+            <p style="margin:0;">Among all unbiased estimators of a parameter, the efficient one has the smallest sampling-distribution variance — its estimates cluster more tightly around the true value across repeated samples. X̄ is not just unbiased but efficient for μ.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Consistency</div>
+            <p style="margin:0;">A consistent estimator's sampling distribution collapses onto the true parameter value as the sample size grows toward infinity — its standard error shrinks toward zero. Even a <em>biased</em> estimator can be consistent, if that bias vanishes as n grows.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="propertiesChart"></div>
+            <div class="calc-tabs" id="propTabs" style="margin-top:12px;">
+              <button class="calc-tab active" data-prop="unbiased">Unbiased vs. biased</button>
+              <button class="calc-tab" data-prop="efficient">Efficient vs. inefficient</button>
+              <button class="calc-tab" data-prop="consistent">Consistency (n grows)</button>
+            </div>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>A Big Data nuance:</strong> with very large datasets, consistency often matters more than efficiency — since a biased-but-consistent estimator's error shrinks toward zero anyway as more data arrives, while an efficient-but-inconsistent estimator offers no such guarantee.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">An estimator's sampling distribution is centered away from the true population parameter at every sample size, but that gap shrinks toward zero as the sample size grows toward infinity. This estimator is:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Unbiased and consistent</button>
+              <button class="opt-btn" data-correct="true">Biased but consistent</button>
+              <button class="opt-btn" data-correct="false">Biased and inconsistent</button>
+            </div>
+            <div class="checkin-feedback">Correct — bias means the sampling distribution's mean doesn't equal the true parameter at any finite sample size. But if that gap disappears as n → ∞, the estimator is still consistent.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Property</th><th>Holds for</th></tr>
+              <tr><td>Unbiased</td><td class="num">Any sample size</td></tr>
+              <tr><td>Efficient</td><td class="num">Any sample size</td></tr>
+              <tr><td>Consistent</td><td class="num">Large-sample (asymptotic) behavior</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 CONFIDENCE INTERVAL STRUCTURE
+    ========================================================== -->
+    <section class="section" id="sec-cistructure">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Confidence Interval Structure &amp; Interpretation</h2>
+          <p class="subhead">Every confidence interval in this module has exactly the same skeleton.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">The universal structure</div>
+            <div class="formula-body">Point estimate &nbsp;±&nbsp; Reliability factor &nbsp;×&nbsp; Standard error</div>
+          </div>
+
+          <p>The <strong>reliability factor</strong> depends on the assumed distribution of the point estimate and the desired degree of confidence, 1−α. The <strong>standard error</strong> is the standard deviation of the point estimate's own sampling distribution. Together, "reliability factor × standard error" is called the interval's <strong>precision</strong> — a wider precision means a less precise (less informative) estimate.</p>
+
+          <div class="definition">
+            <div class="label">Two interpretations of a 95% confidence interval</div>
+            <p style="margin-bottom:8px;"><strong>Probabilistic:</strong> if you repeated the sampling process many times and built a 95% CI from each sample, about 95% of those intervals would contain the true population mean.</p>
+            <p style="margin:0;"><strong>Practical:</strong> since you don't actually repeat the process, you instead say you're "95% confident" that this one interval contains the true mean — justified because you know 95% of all intervals built this way would.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>Common misreading:</strong> a 95% CI does not mean "there's a 95% chance the true mean falls in this specific range." The true mean is a fixed (if unknown) number — it's either in the interval or it isn't. The 95% describes the reliability of the <em>method</em>, not the probability attached to this one already-computed interval.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">Holding everything else fixed, what happens to a confidence interval's width as you increase the degree of confidence from 90% to 99%?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">It narrows</button>
+              <button class="opt-btn" data-correct="true">It widens</button>
+              <button class="opt-btn" data-correct="false">It stays exactly the same</button>
+            </div>
+            <div class="checkin-feedback">Correct — a higher degree of confidence requires a larger reliability factor, which widens the interval. You trade precision for confidence.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;">This module only covers <strong>two-sided</strong> confidence intervals — the kind with both a lower and an upper bound, symmetric around the point estimate.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 CI — KNOWN VARIANCE
+    ========================================================== -->
+    <section class="section" id="sec-ciknown">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Confidence Intervals — Known Population Variance</h2>
+          <p class="subhead">The cleanest, simplest case — and the one all the others are built from.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Sampling from a normal distribution with a known population variance σ², the reliability factor comes straight from the standard normal distribution. The notation z<sub>α</sub> means "the point beyond which α of the probability sits in the right tail."</p>
+
+          <div class="callout formula">
+            <div class="label">Confidence interval — known variance</div>
+            <div class="formula-body">X̄ ± z<sub>α/2</sub> · (σ / √n)</div>
+          </div>
+
+          <table class="exhibit" style="margin:14px 0;">
+            <tr><th>Confidence level</th><th>Reliability factor</th></tr>
+            <tr><td>90%</td><td class="num">z₀.₀₅ = 1.65</td></tr>
+            <tr><td>95%</td><td class="num">z₀.₀₂₅ = 1.96</td></tr>
+            <tr><td>99%</td><td class="num">z₀.₀₀₅ = 2.58</td></tr>
+          </table>
+
+          <div class="callout finance">
+            <div class="label">Worked example</div>
+            <p style="margin:0 0 8px;">A sample of n=100 from a normal population with known σ²=400 (σ=20) has X̄=25. Standard error = 20/√100 = 2.</p>
+            <p style="margin:0;">95% CI = 25 ± 1.96(2) = 25 ± 3.92 = <strong>[21.08, 28.92]</strong>.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">A sample of n=64 from a normal population with known σ=16 has X̄=50. What is the 90% confidence interval?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">[48.00, 52.00]</button>
+              <button class="opt-btn" data-correct="true">[46.70, 53.30]</button>
+              <button class="opt-btn" data-correct="false">[34.00, 66.00]</button>
+            </div>
+            <div class="checkin-feedback">Correct — standard error = 16/√64 = 2. CI = 50 ± 1.65(2) = 50 ± 3.30 = [46.70, 53.30].</div>
+          </div>
+        </div>
+        <div>
+          <div id="ciKnownLine" class="chart-card" style="margin-top:0;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 CI — UNKNOWN VARIANCE
+    ========================================================== -->
+    <section class="section" id="sec-ciunknown">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Confidence Intervals — Unknown Population Variance</h2>
+          <p class="subhead">The realistic case — in practice, you almost never actually know σ.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>With σ unknown, you estimate it with the sample standard deviation s instead. Two approaches are then available.</p>
+
+          <div class="callout formula">
+            <div class="label">The t-distribution approach (theoretically correct)</div>
+            <div class="formula-body">X̄ ± t<sub>α/2</sub> · (s / √n) &nbsp;&nbsp;<span style="font-size:.8rem; color:var(--ink-soft);">df = n−1</span></div>
+          </div>
+          <p>Valid whenever the sample is large, <em>or</em> the sample is small but the underlying population is (approximately) normal. It's the standard, most conservative choice in investment practice — even with a large sample, where the z-alternative below would technically be permitted, the t-distribution gives a wider, more cautious interval.</p>
+
+          <div class="callout formula">
+            <div class="label">The z-alternative (large sample only, n ≥ 30 as a rule of thumb)</div>
+            <div class="formula-body">X̄ ± z<sub>α/2</sub> · (s / √n)</div>
+          </div>
+          <p>Justified by the <strong>central limit theorem</strong>: with a large enough sample, the sampling distribution of X̄ is approximately normal <em>regardless of the shape of the underlying population</em> — so a z reliability factor is an acceptable approximation.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — Sharpe ratios, both approaches</div>
+            <p style="margin:0 0 8px;">n=100 mutual funds, X̄ = 0.45, s = 0.30. Standard error = 0.30/√100 = 0.03. For a 90% CI:</p>
+            <p style="margin:0 0 6px;"><strong>z-alternative:</strong> z₀.₀₅ = 1.65 → 0.45 ± 1.65(0.03) = 0.45 ± 0.0495 = [0.4005, 0.4995].</p>
+            <p style="margin:0;"><strong>t-distribution</strong> (df=99): t₀.₀₅ ≈ 1.66 → 0.45 ± 1.66(0.03) = 0.45 ± 0.0498 = [0.4002, 0.4998]. Nearly identical here, since with 99 degrees of freedom the t-distribution has already converged very close to the normal.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="ciFlowchart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">Which reliability factor to use, at a glance.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">You have a small sample (n=15) from a population whose variance is unknown and whose shape is unknown (not confirmed normal). What reliability factor should you use?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">z</button>
+              <button class="opt-btn" data-correct="false">t</button>
+              <button class="opt-btn" data-correct="true">Not available — neither is theoretically justified here</button>
+            </div>
+            <div class="checkin-feedback">Correct — with a small sample from a non-normal (or unconfirmed) distribution, neither the CLT (needs a large sample) nor the small-sample t-distribution (needs population normality) applies.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — universal confidence interval calculator</div>
+            <div class="radio-row">
+              <label><input type="radio" name="ciType" value="known" checked> Normal population, <b>known</b> variance (z, using σ)</label>
+              <label><input type="radio" name="ciType" value="zalt"> Unknown variance, <b>large sample</b> (z-alternative, using s)</label>
+              <label><input type="radio" name="ciType" value="t"> Unknown variance (<b>t-distribution</b>, using s, df=n−1)</label>
+            </div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>X̄ (sample mean)</label><input type="number" id="ciMean" value="0.45" step="0.01"></div>
+              <div class="tvm-field" id="ciSigmaField"><label>σ or s</label><input type="number" id="ciSigma" value="0.30" step="0.01"></div>
+              <div class="tvm-field"><label>n</label><input type="number" id="ciN" value="100" min="2" step="1"></div>
+              <div class="tvm-field"><label>Confidence %</label><input type="number" id="ciConf" value="90" min="1" max="99.9" step="1"></div>
+            </div>
+            <div class="tvm-result" id="ciResult">90% CI: [0.4002, 0.4998]</div>
+            <div class="calc-steps" id="ciSteps">t₀.₀₅(df=99) ≈ 1.660 · SE = 0.030 · 0.45 ± 0.0498</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 SELECTING SAMPLE SIZE
+    ========================================================== -->
+    <section class="section" id="sec-samplesize">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Selecting Sample Size</h2>
+          <p class="subhead">Bigger samples give narrower, more precise confidence intervals — but "bigger is always better" has real limits.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">Standard error shrinks with √n</div>
+            <div class="formula-body">Standard error of the mean = s / √n</div>
+          </div>
+
+          <p>Define E = Reliability factor × Standard error — half the width of the confidence interval. Solving for the sample size needed to hit a target precision E:</p>
+
+          <div class="callout formula">
+            <div class="label">Required sample size</div>
+            <div class="formula-body">n = [(reliability factor × s) / E]²</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — narrowing a fund-flow estimate</div>
+            <p style="margin:0 0 8px;">A money manager surveys clients about planned cash flows. With n=10 (df=9), X̄=5.5%, s=10%: 95% CI = 5.5% ± 2.262(3.162%) = <strong>[−1.65%, 12.65%]</strong>, a width of about 14.3 percentage points.</p>
+            <p style="margin:0;">Bump the sample to n=30 (same mean and s): 95% CI = 5.5% ± 2.045(1.826%) = <strong>[1.77%, 9.23%]</strong> — the width shrinks to about 52% of the original. Tripling the sample size roughly halved the interval's width, not a third of it, because precision scales with √n, not n.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:8px;">Why not always maximize sample size?</div>
+            <ul class="tight" style="margin:0; padding-left:18px; font-size:.9rem;">
+              <li><strong>Multiple populations:</strong> a larger sample may quietly pool together data that actually comes from more than one underlying population (different means or variances), muddying the estimate.</li>
+              <li><strong>Cost:</strong> collecting more data has real expense that may outweigh the value of extra precision.</li>
+            </ul>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">All else equal, if you increase the sample size from n to 4n, approximately how does the standard error change?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">It falls to 1/4 of its original value</button>
+              <button class="opt-btn" data-correct="true">It falls to 1/2 of its original value</button>
+              <button class="opt-btn" data-correct="false">It stays the same</button>
+            </div>
+            <div class="checkin-feedback">Correct — standard error scales with 1/√n, so quadrupling n halves the standard error: √(1/4) = 1/2.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — CI width vs. sample size</div>
+            <div id="sampleSizeChart"></div>
+            <div class="tvm-grid" style="margin-top:10px;">
+              <div class="tvm-field"><label>s (std dev)</label><input type="number" id="ssS" value="10" step="0.1"></div>
+              <div class="tvm-field"><label>Confidence %</label><input type="number" id="ssConf" value="95" min="1" max="99.9" step="1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         07 DATA SNOOPING BIAS
+    ========================================================== -->
+    <section class="section" id="sec-datasnooping">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <div>
+          <h2>Data Snooping Bias</h2>
+          <p class="subhead">If you torture the data long enough, it will confess to something — whether or not it's true.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Definition</div>
+            <p style="margin:0;">Data snooping is repeatedly searching the same dataset for statistically significant patterns until something appears to work — then reporting only that "discovery," without mentioning the many other patterns that were tried and failed.</p>
+          </div>
+
+          <p>With enough variables tested, <em>something</em> will look statistically significant purely by chance — that's a mathematical certainty, not evidence of a real effect. The standard defense is to split data into three parts:</p>
+
+          <table class="exhibit" style="margin:14px 0;">
+            <tr><th>Dataset</th><th>Purpose</th></tr>
+            <tr><td>Training</td><td>Build the model, fit its parameters</td></tr>
+            <tr><td>Validation</td><td>Tune the model while checking fit</td></tr>
+            <tr><td>Test</td><td>A genuine out-of-sample check on the final model</td></tr>
+          </table>
+
+          <p>A variable born from data snooping typically fails in genuine out-of-sample tests — the pattern doesn't repeat because it was never real, just noise. Even a strategy that <em>does</em> hold up out-of-sample isn't a guaranteed win: the ultimate test is future performance, and if the strategy becomes widely known, other investors may trade it away.</p>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:8px;">Two warning signs of data mining (McQueen &amp; Thorley)</div>
+            <p style="margin-bottom:8px;"><strong>Too much digging, too little confidence:</strong> phrases like "we noticed that…" hint the researcher tried many variables before finding one that worked.</p>
+            <p style="margin:0;"><strong>No story, no future:</strong> a significant variable with no plausible economic rationale behind it is unlikely to keep working — a story alone isn't sufficient either, but its total absence is a red flag.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c7">
+            <div class="label">Check yourself</div>
+            <div class="q">A published trading strategy performs well in-sample but is never tested on a separate out-of-sample dataset. This is most suggestive of:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Data snooping bias</button>
+              <button class="opt-btn" data-correct="false">Time-period bias</button>
+              <button class="opt-btn" data-correct="false">Look-ahead bias</button>
+            </div>
+            <div class="checkin-feedback">Correct — without an out-of-sample test, there's no way to distinguish a genuine pattern from one that was simply mined out of the training data by chance.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Intergenerational data mining:</strong> even researchers who don't personally over-test a dataset can fall victim by building on prior researchers' well-known findings from that same dataset — inheriting the bias secondhand.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         08 SAMPLE SELECTION & SURVIVORSHIP BIAS
+    ========================================================== -->
+    <section class="section" id="sec-selectionbias">
+      <div class="section-head">
+        <span class="section-tag">08</span>
+        <div>
+          <h2>Sample Selection &amp; Survivorship Bias</h2>
+          <p class="subhead">When data availability quietly decides who gets counted, the sample stops representing the population.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Sample selection bias</div>
+            <p style="margin:0;">Occurs whenever data availability causes certain securities, funds, or time periods to be systematically excluded from an analysis.</p>
+          </div>
+          <div class="definition">
+            <div class="label">Survivorship bias — the most common special case</div>
+            <p style="margin:0;">A database that only tracks currently-existing companies or funds silently drops everything that failed, delisted, or shut down — inflating the apparent average performance of "the market" or "the strategy," since only the winners are left to measure.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="survivorshipChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">A classic survivorship-bias pattern: among surviving stocks only, low P/B predicts higher returns (downward-sloping line). Add back the failed low-P/B stocks that got dropped from the database, and the relationship all but disappears (flat line).</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Where else this shows up</div>
+            <p style="margin:0;">Hedge fund databases are especially exposed: funds choose whether to report, so poor performers quietly stop reporting (self-selection), and databases often drop funds that close entirely (survivorship). A related issue, <strong>backfill bias</strong>, arises when a new fund's already-good historical track record gets retroactively added to an index right when it joins — inflating the index's apparent past performance.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c8">
+            <div class="label">Check yourself</div>
+            <div class="q">A study of "successful" mutual funds over the last 20 years uses a database that only includes funds still operating today. This is most likely to suffer from:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Survivorship bias</button>
+              <button class="opt-btn" data-correct="false">Time-period bias</button>
+              <button class="opt-btn" data-correct="false">Data snooping bias</button>
+            </div>
+            <div class="checkin-feedback">Correct — funds that closed or merged away are excluded simply because they no longer exist, inflating the average performance of the funds that remain.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Even "good" data isn't immune:</strong> stock exchanges with stricter listing requirements (like the NYSE) implicitly select for higher-quality companies — a subtler, less obvious version of the same underlying problem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         09 LOOK-AHEAD & TIME-PERIOD BIAS
+    ========================================================== -->
+    <section class="section" id="sec-lookahead">
+      <div class="section-head">
+        <span class="section-tag">09</span>
+        <div>
+          <h2>Look-Ahead Bias &amp; Time-Period Bias</h2>
+          <p class="subhead">Two more ways a backtest can quietly cheat — by using information from the future, or by choosing a window that flatters the result.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Look-ahead bias</div>
+            <p style="margin:0;">A test design uses information that would not actually have been available on the test date. Classic example: using a company's fiscal year-end book value to compute a P/B ratio "as of" year-end — even though that book value typically isn't publicly reported until well into the following quarter.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">The fix — point-in-time (PIT) data</div>
+            <p style="margin:0;">PIT data is stamped with the date it actually became publicly available (e.g., the filing date), not the date it conceptually describes — so a backtest only ever "sees" information a real investor could have seen on that date.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>A subtler version:</strong> normalizing data by subtracting the mean and dividing by the standard deviation of the <em>validation or test set itself</em> (rather than the training set) silently leaks future information into the normalization — a hidden form of look-ahead bias.</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Time-period bias</div>
+            <p style="margin:0;">Results are specific to the particular time period tested, rather than reflecting a persistent, general relationship. A short window risks period-specific noise; a long window risks straddling a structural break — a regime change in volatility or interest rates — that blends two genuinely different return distributions into one misleading average.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c9">
+            <div class="label">Check yourself</div>
+            <div class="q">A backtest ranks stocks each quarter using year-end book value figures that were, in reality, not publicly released until 10 weeks after year-end — but the backtest uses them as of the year-end date. This is:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Look-ahead bias</button>
+              <button class="opt-btn" data-correct="false">Survivorship bias</button>
+              <button class="opt-btn" data-correct="false">Data snooping bias</button>
+            </div>
+            <div class="checkin-feedback">Correct — the backtest is using information (the book value) before it was actually available to real investors, which is the definition of look-ahead bias.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Bias</th><th>Root cause</th></tr>
+              <tr><td>Data snooping</td><td class="num">Over-searching one dataset</td></tr>
+              <tr><td>Sample selection / survivorship</td><td class="num">Data availability excludes failures</td></tr>
+              <tr><td>Look-ahead</td><td class="num">Using info before it existed publicly</td></tr>
+              <tr><td>Time-period</td><td class="num">Window is too short or spans a regime change</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Built as a companion study tool for the CFA Program prerequisite Quantitative Methods reading on Sampling and Estimation. Work through it alongside your primary curriculum — this isn't a replacement for official CFA Institute materials.
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

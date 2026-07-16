@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basics of Hypothesis Testing — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">H₀ vs Hₐ</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Basics of<br>Hypothesis Testing</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">The Framework</div>
+    <ul class="toc">
+      <li><a href="#sec-intro" data-sec="sec-intro"><span class="num">01</span>Why Hypothesis Testing?</a></li>
+      <li><a href="#sec-process" data-sec="sec-process"><span class="num">02</span>Stating the Hypotheses</a></li>
+      <li><a href="#sec-teststat" data-sec="sec-teststat"><span class="num">03</span>Test Statistics</a></li>
+      <li><a href="#sec-significance" data-sec="sec-significance"><span class="num">04</span>Significance, Type I/II Errors &amp; Power</a></li>
+    </ul>
+
+    <div class="toc-group-label">Making the Call</div>
+    <ul class="toc">
+      <li><a href="#sec-decisionrule" data-sec="sec-decisionrule"><span class="num">05</span>Decision Rules &amp; Critical Values</a></li>
+      <li><a href="#sec-economic" data-sec="sec-economic"><span class="num">06</span>Statistical vs. Economic Significance</a></li>
+      <li><a href="#sec-pvalue" data-sec="sec-pvalue"><span class="num">07</span>The Role of p-Values</a></li>
+      <li><a href="#sec-multiple" data-sec="sec-multiple"><span class="num">08</span>Multiple Testing</a></li>
+    </ul>
+
+    <div class="toc-group-label">The Tests Themselves</div>
+    <ul class="toc">
+      <li><a href="#sec-singlemean" data-sec="sec-singlemean"><span class="num">09</span>A Single Mean</a></li>
+      <li><a href="#sec-indepmeans" data-sec="sec-indepmeans"><span class="num">10</span>Difference in Means — Independent</a></li>
+      <li><a href="#sec-pairedmeans" data-sec="sec-pairedmeans"><span class="num">11</span>Difference in Means — Paired</a></li>
+      <li><a href="#sec-variance" data-sec="sec-variance"><span class="num">12</span>Tests of Variance</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material</div>
+      <h1>A disciplined way to say "the data disagrees with you."</h1>
+      <p class="lede">Every quant module in this toolkit has been building toward this moment. Hypothesis testing is the formal machinery for asking: given what I've observed in a sample, should I believe a specific claim about the whole population — or does the evidence make that claim hard to sustain? This module builds the full six-step framework, then applies it to the five tests analysts reach for constantly.</p>
+    </header>
+
+    <!-- =========================================================
+         01 WHY HYPOTHESIS TESTING
+    ========================================================== -->
+    <section class="section" id="sec-intro">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Why Hypothesis Testing?</h2>
+          <p class="subhead">A picture of the data raises questions. Hypothesis testing is how you answer them rigorously.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Plot 33 years of returns for two investments and you'll see two wandering lines. But eyeballing a chart can't answer precise questions: Is Investment One's average return really different from 5%? Is Investment Two more volatile than Investment One? <strong>Hypothesis testing</strong> is the set of tools built specifically for making judgments like these about a population, using only a sample.</p>
+
+          <div class="callout example">
+            <div class="label">The core intuition — implications from a sampling distribution</div>
+            <p style="margin:0;">Imagine 1,000 historical returns with a true mean of 6% and standard deviation of 2%. Draw a random sample of 30 and you might get a sample mean of 6.13% — reassuringly close. Draw another sample of 30 and you might get 4.80% — a lot further away. Repeat this 100 times and you'll see sample means scattered anywhere from about 5.06% to 7.03%, purely from sampling variation, even though the true population mean never moved from 6%.</p>
+          </div>
+
+          <div class="chart-card">
+            <div id="samplingDistChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">100 sample means, each computed from a different random sample of 30 observations drawn from the same population (true mean 6%). The spread is real — and it's exactly what hypothesis testing has to account for.</p>
+          </div>
+
+          <p>That spread is the whole problem hypothesis testing solves: a sample mean of 4.80% doesn't <em>prove</em> the population mean isn't 6% — it might just be an unlucky draw. Hypothesis testing gives you an objective, probability-based rule for deciding when a sample result is surprising enough to doubt the claimed population value, and when it isn't.</p>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">Even when the true population mean is exactly 6%, why might a random sample of 30 observations produce a sample mean of 4.80%?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">It means the population mean has actually changed</button>
+              <button class="opt-btn" data-correct="true">Sampling variation — any one sample can land far from the true mean by chance</button>
+              <button class="opt-btn" data-correct="false">It means the sample was collected incorrectly</button>
+            </div>
+            <div class="checkin-feedback">Correct — every sample mean is a random variable with its own sampling distribution; a result this far from the truth is less likely, but entirely possible by chance alone.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Estimation vs. hypothesis testing:</strong> the previous module (Sampling &amp; Estimation) asked "what is this parameter's value?" This module instead asks "does the evidence support a specific claimed value?" — a sharper, more targeted question.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 STATING THE HYPOTHESES
+    ========================================================== -->
+    <section class="section" id="sec-process">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>The Process of Hypothesis Testing &amp; Stating the Hypotheses</h2>
+          <p class="subhead">Six steps, always in the same order — and the very first one shapes everything after it.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">The six-step process</div>
+            <p style="margin:0;">1. State the hypotheses &nbsp;→&nbsp; 2. Identify the test statistic &nbsp;→&nbsp; 3. Specify the significance level &nbsp;→&nbsp; 4. State the decision rule &nbsp;→&nbsp; 5. Collect data &amp; calculate the test statistic &nbsp;→&nbsp; 6. Make a decision.</p>
+          </div>
+
+          <p>Every test states two competing hypotheses. The <strong>null hypothesis (H₀)</strong> is the claim assumed true unless the sample gives convincing evidence otherwise — it's what you're actually trying to reject. The <strong>alternative hypothesis (Hₐ)</strong> is what you conclude if you do reject the null.</p>
+
+          <div class="definition">
+            <div class="label">Two-sided vs. one-sided tests</div>
+            <p style="margin-bottom:8px;"><strong>Two-sided:</strong> H₀: μ = μ₀ vs. Hₐ: μ ≠ μ₀ — asks only "is it different," in either direction.</p>
+            <p style="margin-bottom:8px;"><strong>One-sided (right):</strong> H₀: μ ≤ μ₀ vs. Hₐ: μ &gt; μ₀ — asks specifically "is it greater."</p>
+            <p style="margin:0;"><strong>One-sided (left):</strong> H₀: μ ≥ μ₀ vs. Hₐ: μ &lt; μ₀ — asks specifically "is it less."</p>
+          </div>
+
+          <p>Notice the null always includes the equality sign (≤, ≥, or =) — the null and alternative must be mutually exclusive and, together, cover every possibility. And however the hypotheses are framed, the actual calculation always tests at the point of equality, μ = μ₀ — if the evidence is strong enough to reject "equals," it's automatically strong enough to reject "less than or equal" too.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — choosing the right formulation</div>
+            <p style="margin:0 0 8px;">An analyst suspects excess stock returns have recently fallen <em>below</em> 5% and wants to test that specifically. Which formulation fits?</p>
+            <p style="margin:0;">H₀: μ ≥ 5 versus Hₐ: μ &lt; 5 — a one-sided (left) test. The alternative should state what the analyst actually suspects and wants evidence for; the null is what she's trying to reject. A common shortcut: write the alternative hypothesis first, since it usually reflects the belief being tested, then set the null as its complement.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">A researcher believes a risk premium is positive and wants strong evidence specifically for "greater than zero," not just "different from zero." Which hypotheses fit best?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">H₀: μ = 0 vs. Hₐ: μ ≠ 0</button>
+              <button class="opt-btn" data-correct="true">H₀: μ ≤ 0 vs. Hₐ: μ &gt; 0</button>
+              <button class="opt-btn" data-correct="false">H₀: μ &gt; 0 vs. Hₐ: μ ≤ 0</button>
+            </div>
+            <div class="checkin-feedback">Correct — a one-sided (right) test directly targets "greater than zero," matching the researcher's specific belief, with the null stated as its logical complement.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>You never "accept" a null hypothesis.</strong> The only two outcomes are "reject the null" or "fail to reject the null" — language that keeps you honest about the asymmetry: absence of evidence against H₀ isn't the same as proof that H₀ is true.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 TEST STATISTICS
+    ========================================================== -->
+    <section class="section" id="sec-teststat">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Identifying the Appropriate Test Statistic</h2>
+          <p class="subhead">Five questions, five formulas, five distributions — this table is the map for the rest of the module.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Definition</div>
+            <p style="margin:0;">A <strong>test statistic</strong> is a number calculated from the sample that, compared against a decision rule, determines whether to reject the null. Every test statistic in this module follows the same shape: (sample statistic − hypothesized value) / standard error.</p>
+          </div>
+
+          <table class="exhibit" style="margin:14px 0;">
+            <tr><th>Testing</th><th>Test statistic</th><th>Distribution</th><th>df</th></tr>
+            <tr><td>A single mean</td><td class="num">(X̄−μ₀)/(s/√n)</td><td>t</td><td class="num">n−1</td></tr>
+            <tr><td>Difference in means (indep.)</td><td class="num">[(X̄₁−X̄₂)−(μ₁−μ₂)]/SE</td><td>t</td><td class="num">n₁+n₂−2</td></tr>
+            <tr><td>Mean of differences (paired)</td><td class="num">(d̄−μd₀)/s_d̄</td><td>t</td><td class="num">n−1</td></tr>
+            <tr><td>A single variance</td><td class="num">(n−1)s²/σ₀²</td><td>Chi-square</td><td class="num">n−1</td></tr>
+            <tr><td>Difference in variances</td><td class="num">s₁²/s₂²</td><td>F</td><td class="num">n₁−1, n₂−1</td></tr>
+          </table>
+
+          <p>Every distribution in that table has already appeared in this toolkit — the t-distribution, chi-square, and F-distribution were all introduced in the Common Probability Distributions module, and they show up here doing real work: quantifying exactly how far a calculated test statistic needs to be from zero before it's "too far" to attribute to chance.</p>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">You want to test whether the standard deviation of a fund's monthly returns is different from a target value. Which distribution does the relevant test statistic follow?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">t-distribution</button>
+              <button class="opt-btn" data-correct="true">Chi-square distribution</button>
+              <button class="opt-btn" data-correct="false">F-distribution</button>
+            </div>
+            <div class="checkin-feedback">Correct — a test concerning a single variance uses the chi-square distributed test statistic (n−1)s²/σ₀².</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;">Once you can correctly match "what am I testing" to the right row of this table, the rest of hypothesis testing is mostly arithmetic — the conceptual heavy lifting is picking the right formula and distribution in the first place.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 SIGNIFICANCE, TYPE I/II ERRORS, POWER
+    ========================================================== -->
+    <section class="section" id="sec-significance">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Significance Level, Type I &amp; Type II Errors, and Power</h2>
+          <p class="subhead">Every hypothesis test can go wrong in exactly two ways. Naming them precisely is the first step to managing them.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Click a cell below to see which of the four possible outcomes it represents:</p>
+          <div class="errmatrix" id="errMatrix">
+            <div class="hdr"></div>
+            <div class="hdr">H₀ True</div>
+            <div class="hdr">H₀ False</div>
+            <div class="rowlabel">Fail to reject H₀</div>
+            <div class="cell" data-outcome="correct1">Click me</div>
+            <div class="cell" data-outcome="type2">Click me</div>
+            <div class="rowlabel">Reject H₀</div>
+            <div class="cell" data-outcome="type1">Click me</div>
+            <div class="cell" data-outcome="correct2">Click me</div>
+          </div>
+          <div class="callout" id="errExplain" style="margin-top:14px; display:none;"></div>
+
+          <div class="definition" style="margin-top:16px;">
+            <div class="label">The vocabulary</div>
+            <p style="margin-bottom:8px;"><strong>Significance level (α):</strong> the probability of a Type I error — rejecting a true null. Its complement, 1−α, is the confidence level.</p>
+            <p style="margin-bottom:8px;"><strong>Type II error probability (β):</strong> failing to reject a false null.</p>
+            <p style="margin:0;"><strong>Power of the test (1−β):</strong> the probability of correctly rejecting a false null — the complement of a Type II error.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>The unavoidable trade-off:</strong> shrinking α (say, from 5% to 1%) makes Type I errors rarer, but mechanically makes Type II errors <em>more</em> likely, since you'll reject the null less often — including when it's genuinely false. The only way to reduce both error rates simultaneously is to increase the sample size.</p>
+          </div>
+
+          <p>Because β is hard to pin down (there are countless different "false" values the true parameter might actually be), practice typically specifies only α up front — commonly 10%, 5%, or 1%, chosen <em>before</em> calculating the test statistic, precisely so the result itself can't quietly influence the choice.</p>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">All else equal, if an analyst lowers the significance level from 5% to 1%, what happens to the probability of a Type II error?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">It decreases</button>
+              <button class="opt-btn" data-correct="true">It increases</button>
+              <button class="opt-btn" data-correct="false">It is unaffected</button>
+            </div>
+            <div class="checkin-feedback">Correct — a stricter significance level means you reject the null less often, which raises the chance of failing to reject a false null — a Type II error.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th></th><th>H₀ True</th><th>H₀ False</th></tr>
+              <tr><td>Fail to reject</td><td class="num">1−α</td><td class="num">β</td></tr>
+              <tr><td>Reject</td><td class="num">α</td><td class="num">1−β (power)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 DECISION RULES & CRITICAL VALUES
+    ========================================================== -->
+    <section class="section" id="sec-decisionrule">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Decision Rules, Critical Values &amp; Confidence Intervals</h2>
+          <p class="subhead">Where exactly is "too far"? Critical values draw the line before you ever see the data.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>decision rule</strong> is set up in advance: reject H₀ if the test statistic falls beyond the <strong>critical value(s)</strong>. For a two-sided test at significance α, the critical values split α equally between both tails, denoted ±z<sub>α/2</sub> (or ±t<sub>α/2</sub>). For a one-sided test, there's a single critical value, z<sub>α</sub>, on the relevant side.</p>
+
+          <div class="chart-card">
+            <div id="rejectionRegionChart"></div>
+            <div class="test-tabs" id="rejectionTabs" style="margin-top:12px;">
+              <button class="test-tab active" data-side="two">Two-sided</button>
+              <button class="test-tab" data-side="right">One-sided (right)</button>
+              <button class="test-tab" data-side="left">One-sided (left)</button>
+            </div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Same question, two equivalent methods</div>
+            <p style="margin:0;">Testing H₀: μ = μ₀ at 95% confidence, you can either (1) compare the calculated test statistic to ±1.96, or (2) build a 95% confidence interval around X̄ and check whether μ₀ falls inside it. Both methods always agree: if μ₀ sits outside the confidence interval, the test statistic sits outside ±1.96, and the null is rejected either way.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Worked example</div>
+            <p style="margin:0;">Testing H₀: μ = 3 vs. Hₐ: μ ≠ 3, a sample produces a 95% CI of [2.75, 4.25]. Since the hypothesized value 3 falls comfortably inside that interval, the decision is to <strong>fail to reject</strong> the null — there's not enough evidence the mean differs from 3.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">Testing H₀: μ = 10 at the 95% confidence level, the sample's 95% confidence interval is [10.4, 12.1]. What's the decision?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Reject the null</button>
+              <button class="opt-btn" data-correct="false">Fail to reject the null</button>
+              <button class="opt-btn" data-correct="false">Accept the null</button>
+            </div>
+            <div class="checkin-feedback">Correct — the hypothesized value 10 falls outside the confidence interval [10.4, 12.1], so the null is rejected.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Data quality matters too:</strong> step 5 of the process — collecting data and calculating the test statistic — depends on a sample free of biases like sample selection or time-period bias (covered in the Sampling &amp; Estimation module), and on clean, error-checked data. A perfect statistical framework can't rescue a flawed sample.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 STATISTICAL VS ECONOMIC SIGNIFICANCE
+    ========================================================== -->
+    <section class="section" id="sec-economic">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Making a Decision — Statistical vs. Economic Significance</h2>
+          <p class="subhead">Rejecting the null is a statistical verdict. Whether that verdict is worth acting on is a separate question entirely.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>The <strong>statistical decision</strong> is mechanical: compare the test statistic to the critical value and reject or fail to reject. The <strong>economic decision</strong> layers judgment on top — does the result matter enough, after transaction costs, taxes, and risk, to actually change what you do?</p>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>Why the two can diverge:</strong> a test statistic's value depends heavily on the standard error, which shrinks as sample size grows. With a large enough sample, even a tiny, economically trivial difference from the hypothesized value can become statistically significant. Statistical significance is not the same thing as a result worth trading on.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example</div>
+            <p style="margin:0 0 8px;">Testing H₀: μ ≤ 0% vs. Hₐ: μ &gt; 0% for a trading strategy's risk-adjusted return: sample mean 0.7%, calculated t-statistic 2.428, critical t-value 2.345. Transaction costs run 0.3%.</p>
+            <p style="margin:0;">Statistically: 2.428 &gt; 2.345, so reject the null — the mean return is greater than zero. Economically: 0.7% − 0.3% = 0.4% net of costs, still positive — so the result is <strong>both statistically and economically significant</strong>. Had transaction costs instead been 0.8%, the same statistical conclusion would hold, but the strategy would no longer be worth pursuing.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">A massive sample (n=50,000) finds a trading strategy's mean return is statistically significantly different from zero, at 0.02% per trade. Transaction costs run 0.15% per trade. This result is most likely:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Both statistically and economically significant</button>
+              <button class="opt-btn" data-correct="true">Statistically significant but not economically significant</button>
+              <button class="opt-btn" data-correct="false">Neither statistically nor economically significant</button>
+            </div>
+            <div class="checkin-feedback">Correct — a huge sample can make even a razor-thin 0.02% edge statistically significant, but it doesn't come close to covering a 0.15% transaction cost, so the strategy isn't economically worth pursuing.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;">Even a result that clears both bars deserves one more question: is there a plausible economic <em>reason</em> this pattern should persist going forward? A hypothesis test can't answer that — it can only tell you what the past sample shows.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         07 THE ROLE OF P-VALUES
+    ========================================================== -->
+    <section class="section" id="sec-pvalue">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <div>
+          <h2>The Role of p-Values</h2>
+          <p class="subhead">One number that replaces "reject or not" with "exactly how much evidence is there."</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">Definition</div>
+            <p style="margin:0;">The <strong>p-value</strong> is the probability of the area in the distribution beyond the calculated test statistic — for a two-sided test, beyond ± the statistic; for a one-sided test, beyond it on the relevant side only. Equivalently, it's the smallest significance level at which the null could still be rejected.</p>
+          </div>
+
+          <p>The rule is simple: <strong>if the p-value is less than α, reject the null.</strong> A smaller p-value means stronger evidence against H₀.</p>
+
+          <div class="chart-card">
+            <div id="pvalueChart"></div>
+            <div class="tvm-grid" style="margin-top:10px; max-width:260px;">
+              <div class="tvm-field"><label>Calculated z-statistic</label><input type="number" id="pvZ" value="2.33" step="0.01"></div>
+            </div>
+            <div class="tvm-result" id="pvResult" style="margin-top:10px;">p-value = 1.98%</div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example</div>
+            <p style="margin:0;">A calculated z-statistic of 2.33 on a two-sided test gives a p-value of about 1.98% — the combined area beyond +2.33 and beyond −2.33. Since 1.98% &lt; 5%, the null is rejected at the 5% significance level. Note that this is a stricter statement than just "outside ±1.96" — the p-value tells you <em>exactly</em> how much evidence you have, not just whether you cleared the bar.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c7">
+            <div class="label">Check yourself</div>
+            <div class="q">A test produces a p-value of 3%. At which significance levels would you reject the null?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Only at 1%</button>
+              <button class="opt-btn" data-correct="true">At 5% and 10%, but not at 1%</button>
+              <button class="opt-btn" data-correct="false">At all common significance levels</button>
+            </div>
+            <div class="checkin-feedback">Correct — reject whenever α exceeds the p-value. 3% is less than both 5% and 10%, but greater than 1%, so the null is rejected at 5% and 10% but not at 1%.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>A useful mental model:</strong> if the true null hypothesis were repeatedly tested on many different random samples, the resulting p-values would be roughly uniformly spread between 0% and 100%. But if the null is actually false, p-values pile up sharply near 0% instead — the further the true value is from the hypothesized one, the more extreme that pile-up becomes, which is exactly what gives a test its power.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         08 MULTIPLE TESTING
+    ========================================================== -->
+    <section class="section" id="sec-multiple">
+      <div class="section-head">
+        <span class="section-tag">08</span>
+        <div>
+          <h2>Multiple Tests &amp; Significance Interpretation</h2>
+          <p class="subhead">Run enough tests, and pure chance will hand you "significant" results — even when nothing real is going on.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>At a 5% significance level, a true null hypothesis gets rejected by chance about 5% of the time — that's what α means. Run 100 independent tests on data where nothing is actually going on, and you'd expect roughly 5 "significant" results purely by luck. This is the <strong>multiple testing problem</strong>, and the resulting fraction of false "discoveries" is the <strong>false discovery rate (FDR)</strong>.</p>
+
+          <div class="definition">
+            <div class="label">The Benjamini-Hochberg (BH) correction</div>
+            <p style="margin:0;">Rank all p-values from smallest to largest. Starting from the smallest (rank i=1), check whether p₍ᵢ₎ ≤ α × (i / total number of tests). Find the <em>largest</em> rank k where this still holds — every test ranked at or below k is considered genuinely significant; everything ranked above k is not, regardless of its raw p-value.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — 20 samples, six lowest p-values</div>
+            <table class="exhibit" style="margin:10px 0;">
+              <tr><th>Rank (i)</th><th>p-value</th><th>α × i/20</th><th>Significant?</th></tr>
+              <tr><td>1</td><td class="num">0.0014</td><td class="num">0.0025</td><td>Yes</td></tr>
+              <tr><td>2</td><td class="num">0.0247</td><td class="num">0.0050</td><td>No</td></tr>
+              <tr><td>3</td><td class="num">0.0358</td><td class="num">0.0075</td><td>No</td></tr>
+              <tr><td>4</td><td class="num">0.0379</td><td class="num">0.0100</td><td>No</td></tr>
+            </table>
+            <p style="margin:0;">Naively using a flat 5% cutoff on each test individually would call all four of these "significant." Applying the BH correction, only rank 1 actually clears its adjusted bar — just <strong>one</strong> test survives as genuinely significant, not four.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:8px;">Four practical takeaways</div>
+            <ul class="tight" style="margin:0; padding-left:18px; font-size:.9rem;">
+              <li>A non-significant result isn't "wrong" — the null may genuinely be true.</li>
+              <li>Low power or a small sample raises the risk that any "significant" hit is a false positive.</li>
+              <li>Critical values assume the test is run <em>once</em> — repeatedly re-testing the same data risks data snooping.</li>
+              <li>With very large samples, nearly everything looks significant — checking whether a result replicates on a fresh, independent sample is the real test of robustness.</li>
+            </ul>
+          </div>
+
+          <div class="checkin" data-checkin="c8">
+            <div class="label">Check yourself</div>
+            <div class="q">A researcher runs 40 independent hypothesis tests at a 5% significance level on data where every null hypothesis is actually true. About how many "significant" results should she expect purely by chance?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">0</button>
+              <button class="opt-btn" data-correct="true">2</button>
+              <button class="opt-btn" data-correct="false">20</button>
+            </div>
+            <div class="checkin-feedback">Correct — 40 × 0.05 = 2 expected false positives, purely from running many tests at a 5% significance level.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;">Multiple testing and data snooping (from the Sampling &amp; Estimation module) are close cousins — both stem from the same root cause: searching hard enough through data will eventually turn up something that looks significant by pure chance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         09 TESTS CONCERNING A SINGLE MEAN
+    ========================================================== -->
+    <section class="section" id="sec-singlemean">
+      <div class="section-head">
+        <span class="section-tag">09</span>
+        <div>
+          <h2>Tests Concerning a Single Mean</h2>
+          <p class="subhead">The most common hypothesis test in investment practice.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">Test statistic (unknown variance — the usual case)</div>
+            <div class="formula-body">t = (X̄ − μ₀) / (s / √n) &nbsp;&nbsp;&nbsp; df = n−1</div>
+          </div>
+
+          <p>Since the population variance is almost never actually known, the t-distributed statistic is the theoretically correct default — and it's <strong>robust</strong> to moderate departures from normality, breaking down mainly with outliers or strong skewness. In the rare case σ is genuinely known, or as a large-sample approximation, a z-statistic can be used instead — with a large sample, the two give nearly identical answers anyway.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — Investment One's returns</div>
+            <p style="margin:0 0 8px;">Testing H₀: μ = 6 vs. Hₐ: μ ≠ 6 with n=33, X̄=5.2990%, s=1.4284%, at 5% significance (df=32, critical values ±2.037):</p>
+            <p style="margin:0;">t = (5.2990 − 6) / (1.4284/√33) = −0.7010 / 0.2487 = <strong>−2.819</strong>. Since −2.819 is beyond −2.037, <strong>reject</strong> the null — the mean return differs from 6%.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c9">
+            <div class="label">Check yourself</div>
+            <div class="q">Testing H₀: μ = 1.1% vs. Hₐ: μ ≠ 1.1% with n=24, X̄=1.5%, s=3.6%, the calculated t-statistic is 0.544, against critical values of ±2.069. What's the decision?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Reject the null</button>
+              <button class="opt-btn" data-correct="true">Fail to reject the null</button>
+            </div>
+            <div class="checkin-feedback">Correct — 0.544 falls well within ±2.069, so there's insufficient evidence the mean differs from 1.1%.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — test of a single mean</div>
+            <div class="radio-row">
+              <label><input type="radio" name="smSide" value="two" checked> Two-sided (μ ≠ μ₀)</label>
+              <label><input type="radio" name="smSide" value="right"> One-sided, right (μ &gt; μ₀)</label>
+              <label><input type="radio" name="smSide" value="left"> One-sided, left (μ &lt; μ₀)</label>
+            </div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>X̄</label><input type="number" id="smMean" value="5.299" step="0.001"></div>
+              <div class="tvm-field"><label>μ₀</label><input type="number" id="smMu0" value="6" step="0.1"></div>
+              <div class="tvm-field"><label>s</label><input type="number" id="smS" value="1.4284" step="0.001"></div>
+              <div class="tvm-field"><label>n</label><input type="number" id="smN" value="33" min="2" step="1"></div>
+              <div class="tvm-field"><label>α (%)</label><input type="number" id="smAlpha" value="5" min="1" max="50" step="1"></div>
+            </div>
+            <div class="calc-steps" id="smSteps">t = (5.299−6)/(1.4284/√33) = −2.819</div>
+            <div class="decision-banner reject" id="smDecision">REJECT the null</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         10 DIFFERENCE IN MEANS — INDEPENDENT SAMPLES
+    ========================================================== -->
+    <section class="section" id="sec-indepmeans">
+      <div class="section-head">
+        <span class="section-tag">10</span>
+        <div>
+          <h2>Test of Differences between Means — Independent Samples</h2>
+          <p class="subhead">Are two unrelated groups' averages actually different, or could the gap just be noise?</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>When two samples are independent (unrelated to each other) and drawn from approximately normal populations with equal variances, combine both samples into a <strong>pooled variance</strong> estimate before testing.</p>
+
+          <div class="callout formula">
+            <div class="label">Pooled variance &amp; test statistic</div>
+            <div class="formula-body" style="font-size:.85rem;">
+              s²ₚ = [(n₁−1)s₁² + (n₂−1)s₂²] / (n₁+n₂−2)<br><br>
+              t = [(X̄₁−X̄₂) − (μ₁−μ₂)] / √(s²ₚ/n₁ + s²ₚ/n₂) &nbsp;&nbsp; df = n₁+n₂−2
+            </div>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — two time periods of the same index</div>
+            <p style="margin:0 0 8px;">Period 1: n=445, X̄=0.01775%, s=0.31580%. Period 2: n=859, X̄=0.01134%, s=0.38760%. Testing H₀: μ₁=μ₂ at 5% (df=1,302, critical ±1.962):</p>
+            <p style="margin:0;">s²ₚ = 0.1330. t = (0.01775−0.01134) / √(0.1330/445 + 0.1330/859) = 0.0064/0.0213 = <strong>0.301</strong>. Well within ±1.962 — <strong>fail to reject</strong>; no evidence the two periods' mean returns differ.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c10">
+            <div class="label">Check yourself</div>
+            <div class="q">Testing the equality of two independent sample means with n₁=25 and n₂=25, how many degrees of freedom does the t-distributed test statistic have?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">25</button>
+              <button class="opt-btn" data-correct="true">48</button>
+              <button class="opt-btn" data-correct="false">50</button>
+            </div>
+            <div class="checkin-feedback">Correct — df = n₁+n₂−2 = 25+25−2 = 48.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — independent samples t-test</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>X̄₁</label><input type="number" id="imMean1" value="0.01775" step="0.001"></div>
+              <div class="tvm-field"><label>s₁</label><input type="number" id="imS1" value="0.31580" step="0.001"></div>
+              <div class="tvm-field"><label>n₁</label><input type="number" id="imN1" value="445" min="2" step="1"></div>
+              <div class="tvm-field"><label>X̄₂</label><input type="number" id="imMean2" value="0.01134" step="0.001"></div>
+              <div class="tvm-field"><label>s₂</label><input type="number" id="imS2" value="0.38760" step="0.001"></div>
+              <div class="tvm-field"><label>n₂</label><input type="number" id="imN2" value="859" min="2" step="1"></div>
+              <div class="tvm-field"><label>α (%)</label><input type="number" id="imAlpha" value="5" min="1" max="50" step="1"></div>
+            </div>
+            <div class="calc-steps" id="imSteps">s²ₚ=0.1330 · t=0.301</div>
+            <div class="decision-banner fail" id="imDecision">FAIL TO REJECT the null</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         11 DIFFERENCE IN MEANS — PAIRED SAMPLES
+    ========================================================== -->
+    <section class="section" id="sec-pairedmeans">
+      <div class="section-head">
+        <span class="section-tag">11</span>
+        <div>
+          <h2>Test of Differences between Means — Dependent (Paired) Samples</h2>
+          <p class="subhead">When the two samples share something in common, testing their differences directly is more powerful.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p><strong>Paired observations</strong> are linked — the same companies before and after a policy change, or two strategies' returns in the same months. Rather than treating them as two independent samples, collapse each pair into its difference dᵢ = X_Aᵢ − X_Bᵢ, and test whether the <em>mean difference</em> is zero (or some other hypothesized value).</p>
+
+          <div class="callout formula">
+            <div class="label">Test statistic</div>
+            <div class="formula-body">t = (d̄ − μ_d0) / s_d̄ &nbsp;&nbsp;&nbsp; where s_d̄ = s_d/√n, &nbsp; df = n−1</div>
+          </div>
+
+          <p>This test is <strong>more powerful</strong> than the independent-samples test whenever the pairing is genuine — by differencing out whatever the pairs share (the same time period, the same underlying risk factors), it strips away noise that would otherwise obscure the real difference.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — two precious-metals portfolios</div>
+            <p style="margin:0 0 8px;">12 quarterly return pairs for Portfolio A and Portfolio B give a mean difference d̄=4.401% and standard deviation of differences s_d=5.718%. Testing H₀: μd=0 at 10% (df=11, critical ±1.796):</p>
+            <p style="margin:0;">s_d̄ = 5.718/√12 = 1.651. t = 4.401/1.651 = <strong>2.662</strong>. Beyond 1.796 — <strong>reject</strong> the null; the two portfolios' mean returns genuinely differ.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c11">
+            <div class="label">Check yourself</div>
+            <div class="q">Two investment strategies' monthly returns, measured over the same 40 months, are best compared using:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">The independent-samples t-test</button>
+              <button class="opt-btn" data-correct="true">The paired (dependent-samples) t-test</button>
+              <button class="opt-btn" data-correct="false">The F-test</button>
+            </div>
+            <div class="checkin-feedback">Correct — both strategies' returns in the same months share underlying market risk factors, making them dependent, not independent — the paired test is the right, more powerful tool.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — paired-samples t-test</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>d̄ (mean diff.)</label><input type="number" id="pmDbar" value="4.40083" step="0.001"></div>
+              <div class="tvm-field"><label>s_d (std dev of diffs)</label><input type="number" id="pmSd" value="5.71776" step="0.001"></div>
+              <div class="tvm-field"><label>n (pairs)</label><input type="number" id="pmN" value="12" min="2" step="1"></div>
+              <div class="tvm-field"><label>μd₀</label><input type="number" id="pmMu0" value="0" step="0.1"></div>
+              <div class="tvm-field"><label>α (%)</label><input type="number" id="pmAlpha" value="10" min="1" max="50" step="1"></div>
+            </div>
+            <div class="calc-steps" id="pmSteps">s_d̄=1.651 · t=2.662</div>
+            <div class="decision-banner reject" id="pmDecision">REJECT the null</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         12 TESTS OF VARIANCE
+    ========================================================== -->
+    <section class="section" id="sec-variance">
+      <div class="section-head">
+        <span class="section-tag">12</span>
+        <div>
+          <h2>Tests Concerning Variances — Chi-Square &amp; F-Tests</h2>
+          <p class="subhead">Testing risk itself, not just returns — one variance against a target, or two variances against each other.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="callout formula">
+            <div class="label">Single variance — chi-square test</div>
+            <div class="formula-body">χ² = (n−1)s² / σ₀² &nbsp;&nbsp;&nbsp; df = n−1</div>
+          </div>
+          <p>Because the chi-square distribution is asymmetric and bounded at zero, a two-sided test needs two <em>different-looking</em> critical values (not a simple ±) — the lower one from the left tail, the upper one from the right.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a fund's return volatility</div>
+            <p style="margin:0 0 8px;">Sendar Equity Fund: n=24, s=3.60% (s²=12.96). Testing H₀: σ²=16 vs. Hₐ: σ²≠16 at 5% (df=23, critical values 11.689 and 38.076):</p>
+            <p style="margin:0;">χ² = 23(12.96)/16 = <strong>18.630</strong>. Between 11.689 and 38.076 — <strong>fail to reject</strong>; no evidence the variance differs from 16.</p>
+          </div>
+
+          <div class="callout formula">
+            <div class="label">Two variances — F-test</div>
+            <div class="formula-body">F = s₁² / s₂² &nbsp;&nbsp;&nbsp; df₁ = n₁−1, df₂ = n₂−1</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">Convention: put the larger sample variance in the numerator to keep the F-statistic ≥ 1, simplifying which critical value you need.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — comparing two investments' risk</div>
+            <p style="margin:0 0 8px;">Investment One: s=1.4284% (n=33). Investment Two: s=2.5914% (n=33). Testing whether the variances differ, at 5% (df 32,32; critical values 0.494 and 2.025):</p>
+            <p style="margin:0;">F = (2.5914)² / (1.4284)² = <strong>3.291</strong>. Beyond 2.025 — <strong>reject</strong> the null; Investment Two is genuinely more volatile.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c12">
+            <div class="label">Check yourself</div>
+            <div class="q">Why can't a chi-square or F-test's two-sided critical values simply be written as "±" some number, the way a z- or t-test's can?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Because both distributions are asymmetric and bounded below by zero</button>
+              <button class="opt-btn" data-correct="false">Because they only ever have one-sided alternatives</button>
+              <button class="opt-btn" data-correct="false">Because their degrees of freedom are always equal</button>
+            </div>
+            <div class="checkin-feedback">Correct — since chi-square and F distributions can't go negative and aren't symmetric, the two tails require two genuinely different critical values, not a mirrored ± pair.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — variance tests</div>
+            <div class="test-tabs" id="varTabs">
+              <button class="test-tab active" data-vartest="chisq">Single variance (χ²)</button>
+              <button class="test-tab" data-vartest="f">Two variances (F)</button>
+            </div>
+            <div id="chisqPanel">
+              <div class="tvm-grid">
+                <div class="tvm-field"><label>s</label><input type="number" id="csS" value="3.60" step="0.01"></div>
+                <div class="tvm-field"><label>σ₀ (hypothesized)</label><input type="number" id="csSigma0" value="4.00" step="0.01"></div>
+                <div class="tvm-field"><label>n</label><input type="number" id="csN" value="24" min="2" step="1"></div>
+                <div class="tvm-field"><label>α (%)</label><input type="number" id="csAlpha" value="5" min="1" max="50" step="1"></div>
+              </div>
+              <div class="calc-steps" id="csSteps">χ² = 23(12.96)/16 = 18.630</div>
+              <div class="decision-banner fail" id="csDecision">FAIL TO REJECT the null</div>
+            </div>
+            <div id="fPanel" style="display:none;">
+              <div class="tvm-grid">
+                <div class="tvm-field"><label>s₁</label><input type="number" id="fS1" value="2.5914" step="0.001"></div>
+                <div class="tvm-field"><label>n₁</label><input type="number" id="fN1" value="33" min="2" step="1"></div>
+                <div class="tvm-field"><label>s₂</label><input type="number" id="fS2" value="1.4284" step="0.001"></div>
+                <div class="tvm-field"><label>n₂</label><input type="number" id="fN2" value="33" min="2" step="1"></div>
+                <div class="tvm-field"><label>α (%)</label><input type="number" id="fAlpha" value="5" min="1" max="50" step="1"></div>
+              </div>
+              <div class="calc-steps" id="fSteps">F = 3.291</div>
+              <div class="decision-banner reject" id="fDecision">REJECT the null</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Built as a companion study tool for the CFA Program prerequisite Quantitative Methods reading on Basics of Hypothesis Testing. Work through it alongside your primary curriculum — this isn't a replacement for official CFA Institute materials.
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

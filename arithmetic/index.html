@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numbers &amp; Arithmetic — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">1, 2, 3 →</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Numbers &amp;<br>Arithmetic</span>
+    </a>
+    <div class="brand-sub">Module 00 · The Ground Floor</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Numbers</div>
+    <ul class="toc">
+      <li><a href="#sec-operations" data-sec="sec-operations"><span class="num">01</span>The Four Operations</a></li>
+      <li><a href="#sec-negatives" data-sec="sec-negatives"><span class="num">02</span>Negative Numbers</a></li>
+      <li><a href="#sec-fractions" data-sec="sec-fractions"><span class="num">03</span>Fractions, Decimals &amp; Percentages</a></li>
+    </ul>
+
+    <div class="toc-group-label">Putting It Together</div>
+    <ul class="toc">
+      <li><a href="#sec-bodmas" data-sec="sec-bodmas"><span class="num">04</span>Order of Operations (BODMAS)</a></li>
+      <li><a href="#sec-ratios" data-sec="sec-ratios"><span class="num">05</span>Ratios &amp; Proportions</a></li>
+      <li><a href="#sec-wordproblems" data-sec="sec-wordproblems"><span class="num">06</span>Turning Words Into Math</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">Module 00 · Before Module 0</div>
+      <h1>Every number here is a real thing, not a symbol to memorize.</h1>
+      <p class="lede">This module doesn't assume a strong school background — it assumes you're willing to look at numbers as things that describe the real world (money, weight, distance, time), and rebuilds arithmetic from that ground up. If a topic feels too slow, skip ahead; if a later module in this toolkit ever feels shaky, this is the place to come back to.</p>
+
+      <div class="study-tip">
+        <div class="label">How to study this — not by memorizing it</div>
+        <p style="margin:0 0 10px;">If school ever taught you math as steps to repeat rather than ideas to understand, that's not a personal failing — it's how many classrooms, in many countries, are forced to teach when time and resources are short. It just means a few habits are worth rebuilding on purpose:</p>
+        <ul style="margin:0; padding-left:20px;">
+          <li style="margin-bottom:6px;"><strong>Don't memorize a formula as symbols.</strong> Memorize what each symbol stands for in real life. "PRT/100" means nothing on its own — "principal × rate × time" describes an actual pile of money growing.</li>
+          <li style="margin-bottom:6px;"><strong>Before hunting for a formula, restate the question in plain words.</strong> "What number, added to itself twice, gives 30?" is a math problem even before you write a single symbol.</li>
+          <li style="margin-bottom:6px;"><strong>Use every calculator in this toolkit to break things on purpose.</strong> Change one input, watch what happens to the output. That's how real intuition gets built — repetition of the same worked example never quite does it.</li>
+          <li style="margin:0;"><strong>Getting an answer wrong while exploring is not failure.</strong> If exams punished mistakes, that doesn't mean mistakes are dangerous here. They're just data.</li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- =========================================================
+         01 THE FOUR OPERATIONS
+    ========================================================== -->
+    <section class="section" id="sec-operations">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Numbers &amp; the Four Operations</h2>
+          <p class="subhead">Addition, subtraction, multiplication, and division — what each one is actually doing, not just how to execute it.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">What each operation really means</div>
+            <p style="margin-bottom:8px;"><strong>Addition (+):</strong> combining two amounts into one total. 3 apples + 5 apples = 8 apples in one basket.</p>
+            <p style="margin-bottom:8px;"><strong>Subtraction (−):</strong> taking an amount away, or finding the gap between two amounts. If you have 8 apples and eat 3, subtraction tells you 5 remain.</p>
+            <p style="margin-bottom:8px;"><strong>Multiplication (×):</strong> repeated addition of the same amount. 4 × 3 means "four groups of three," or equivalently "three groups of four" — either way, 12.</p>
+            <p style="margin:0;"><strong>Division (÷):</strong> splitting a total into equal groups, or asking how many times one amount fits into another. 12 ÷ 4 asks "if I split 12 into 4 equal groups, how big is each group?" (3) — or equally, "how many groups of 4 fit inside 12?" (also 3).</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — a market stall</div>
+            <p style="margin:0;">A vendor sells mangoes at ₹15 each. Selling 8 mangoes: 15 × 8 = ₹120 — eight groups of fifteen rupees, added together. If a customer pays with a ₹200 note, subtraction finds the change: 200 − 120 = ₹80. Every rupee transaction you've ever handled was already this arithmetic — the symbols just formalize what your hands already know how to do.</p>
+          </div>
+
+          <div class="callout bridge">
+            <div class="label">You may already know this — the multiplication table trick</div>
+            <p style="margin:0;">Many schools teach multiplication tables purely by chanting them — "seven eights are fifty-six" — without ever showing why. Here's the why: 7 × 8 means seven groups of eight (or eight groups of seven), which is exactly 8+8+8+8+8+8+8 added seven times. The table isn't a separate fact to memorize for every pair of numbers — it's a shortcut for repeated addition, and you can always rebuild any forgotten entry by simply adding.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">What does 6 × 4 actually represent?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">6 added to 4</button>
+              <button class="opt-btn" data-correct="true">Six groups of four, added together</button>
+              <button class="opt-btn" data-correct="false">4 taken away from 6, six times</button>
+            </div>
+            <div class="checkin-feedback">Correct — 6 × 4 = 4+4+4+4+4+4 = 24, six groups of four added together (or equivalently, four groups of six).</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — see the repeated addition</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>Groups</label><input type="number" id="mulA" value="4" min="1" max="12" step="1"></div>
+              <div class="tvm-field"><label>Size of each group</label><input type="number" id="mulB" value="3" min="1" max="12" step="1"></div>
+            </div>
+            <div id="mulChart" style="margin:14px 0;"></div>
+            <div class="tvm-result" id="mulResult">4 × 3 = 12</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 NEGATIVE NUMBERS
+    ========================================================== -->
+    <section class="section" id="sec-negatives">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>Negative Numbers &amp; the Number Line</h2>
+          <p class="subhead">A negative number isn't a strange abstract idea — it's just "owing" instead of "having."</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Picture a horizontal line with 0 in the middle. Positive numbers sit to the right; negative numbers sit to the left, the same distance from zero, just mirrored. A negative number represents a deficit, a debt, a temperature below freezing, or a step backward — anything measured "in the opposite direction" from a positive amount.</p>
+
+          <div class="chart-card">
+            <div id="numberLineChart"></div>
+          </div>
+
+          <div class="definition">
+            <div class="label">The two rules that cause the most confusion</div>
+            <p style="margin-bottom:8px;"><strong>Subtracting a negative flips to adding:</strong> 5 − (−3) = 5 + 3 = 8. Taking away a debt is the same as gaining that amount.</p>
+            <p style="margin:0;"><strong>Multiplying two negatives gives a positive:</strong> (−4) × (−3) = 12. "Removing a debt, three times" leaves you better off, not worse — the two negatives cancel.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Outside example — a bank balance</div>
+            <p style="margin:0;">Your account shows −₹500 (you're overdrawn by ₹500). A friend repays a ₹500 debt they owed you, which you had recorded as −(−500) being removed from what you're owed... more simply: if a ₹700 deposit arrives, your new balance is −500 + 700 = ₹200. The negative number tracked the deficit perfectly the whole way through — no separate rules needed for "money you owe" versus "money you have," just one number line.</p>
+          </div>
+
+          <div class="callout bridge">
+            <div class="label">You may already know this — "minus of minus is plus"</div>
+            <p style="margin:0;">Most schools teach this as a chantable rule: "minus × minus = plus." It's correct — but here's why: think of a negative sign as "the opposite of." The opposite of the opposite of a number is the number itself. −(−5) flips 5's direction twice, landing right back on positive 5.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">A submarine is at −120 meters (120m below sea level) and rises 45 meters. What is its new depth?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">−165 meters</button>
+              <button class="opt-btn" data-correct="true">−75 meters</button>
+              <button class="opt-btn" data-correct="false">75 meters</button>
+            </div>
+            <div class="checkin-feedback">Correct — rising is adding toward zero: −120 + 45 = −75 meters, still below sea level but closer to the surface.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — number line calculator</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>Start at</label><input type="number" id="nlStart" value="-3" step="1"></div>
+              <div class="tvm-field"><label>Then add</label><input type="number" id="nlAdd" value="7" step="1"></div>
+            </div>
+            <div class="tvm-result" id="nlResult">−3 + 7 = 4</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 FRACTIONS, DECIMALS & PERCENTAGES
+    ========================================================== -->
+    <section class="section" id="sec-fractions">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Fractions, Decimals &amp; Percentages</h2>
+          <p class="subhead">Three different costumes for the exact same idea: a part of a whole. Nearly every number in the rest of this toolkit wears one of these three.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Cut a pizza into 4 equal slices and eat 1. You've eaten <strong>¼</strong> of the pizza (a fraction), which is exactly <strong>0.25</strong> of the pizza (a decimal), which is exactly <strong>25%</strong> of the pizza (a percentage — "per hundred"). All three numbers describe the identical amount of pizza; they're just three different notations for the same part-of-a-whole idea.</p>
+
+          <div class="chart-card">
+            <div id="pieChart"></div>
+          </div>
+
+          <div class="definition">
+            <div class="label">Converting between the three</div>
+            <p style="margin-bottom:8px;"><strong>Fraction → decimal:</strong> divide the top number by the bottom number. 3/4 → 3 ÷ 4 = 0.75.</p>
+            <p style="margin-bottom:8px;"><strong>Decimal → percentage:</strong> multiply by 100 (shift the decimal point two places right). 0.75 → 75%.</p>
+            <p style="margin:0;"><strong>Percentage → decimal:</strong> divide by 100 (shift the decimal point two places left). 75% → 0.75.</p>
+          </div>
+
+          <div class="callout bridge">
+            <div class="label">You may already know this — the "find 10%, then adjust" trick</div>
+            <p style="margin:0 0 8px;">A very common shortcut for finding 15% of a number: find 10% (just move the decimal point one place left), then add half of that again. For 15% of 240: 10% of 240 = 24, half of 24 is 12, so 15% = 24 + 12 = 36.</p>
+            <p style="margin:0;">Why it works: 15% is exactly 10% + 5%, and 5% is exactly half of 10%. The trick isn't a special case — it's ordinary percentage arithmetic, broken into two easier pieces and added back together. Once you see that, you can build a shortcut for <em>any</em> percentage the same way — 20% is double 10%; 30% is triple 10%; 12% is 10% plus a fifth of 10%.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Why this matters immediately — every rate in this toolkit</div>
+            <p style="margin:0;">An interest rate of 8%, a P/E ratio's earnings yield, a probability of 0.35, a confidence level of 95% — every single one is a percentage or decimal wearing different clothes for a different context. There is no separate "finance math" here; it's this same conversion, applied over and over to money, chances, and proportions instead of pizza.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">What is 3/8 written as a percentage?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">3.8%</button>
+              <button class="opt-btn" data-correct="true">37.5%</button>
+              <button class="opt-btn" data-correct="false">38%</button>
+            </div>
+            <div class="checkin-feedback">Correct — 3 ÷ 8 = 0.375, and 0.375 × 100 = 37.5%.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — fraction / decimal / % converter</div>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>Numerator</label><input type="number" id="fracNum" value="3" step="1"></div>
+              <div class="tvm-field"><label>Denominator</label><input type="number" id="fracDen" value="8" step="1" min="1"></div>
+            </div>
+            <div class="stat-readout-row" id="fracOut">
+              <div class="stat-readout"><div class="k">Fraction</div><div class="v">3/8</div></div>
+              <div class="stat-readout"><div class="k">Decimal</div><div class="v">0.375</div></div>
+              <div class="stat-readout"><div class="k">Percentage</div><div class="v">37.5%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 ORDER OF OPERATIONS (BODMAS)
+    ========================================================== -->
+    <section class="section" id="sec-bodmas">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Order of Operations — BODMAS</h2>
+          <p class="subhead">When a calculation has several operations mixed together, everyone needs to agree on which one happens first — otherwise the same expression gives different answers to different people.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>2 + 3 × 4 — is that (2+3)×4 = 20, or 2+(3×4) = 14? Without an agreed order, both readings are equally reasonable, and that's a real problem. <strong>BODMAS</strong> (sometimes taught elsewhere as PEMDAS) is that agreement — the fixed order every calculation follows, everywhere, without exception.</p>
+
+          <div class="callout formula">
+            <div class="label">BODMAS</div>
+            <div class="formula-body" style="font-size:.92rem;">
+              <strong>B</strong>rackets — solve inside ( ) first<br>
+              <strong>O</strong>rders — powers and roots (like x² or √x) next<br>
+              <strong>D</strong>ivision and <strong>M</strong>ultiplication — left to right, same priority<br>
+              <strong>A</strong>ddition and <strong>S</strong>ubtraction — left to right, same priority
+            </div>
+          </div>
+
+          <p>So 2 + 3 × 4 must be read as 2 + (3×4), since multiplication outranks addition: 2 + 12 = <strong>14</strong>. The answer 20 would only be correct if the expression had actually been written (2+3) × 4, with explicit brackets forcing the addition to happen first.</p>
+
+          <div class="callout example">
+            <div class="label">Worked example — a longer expression</div>
+            <p style="margin:0 0 8px;">Evaluate: 5 + (8 − 3) × 2²</p>
+            <p style="margin:0;"><strong>Brackets</strong> first: (8−3) = 5, giving 5 + 5 × 2². <strong>Orders</strong> next: 2² = 4, giving 5 + 5 × 4. <strong>Multiplication</strong>: 5 × 4 = 20, giving 5 + 20. <strong>Addition</strong> last: 5 + 20 = <strong>25</strong>.</p>
+          </div>
+
+          <div class="callout bridge">
+            <div class="label">You may already know this — as "BODMAS" or "PEMDAS"</div>
+            <p style="margin:0;">Indian schools typically teach this as BODMAS; American schools typically teach it as PEMDAS (Parentheses, Exponents, Multiplication/Division, Addition/Subtraction). They're the identical rule, just packaged with different starting letters for memorization — brackets and parentheses are the same thing, orders and exponents are the same thing. If you learned one acronym, you already know the other.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.92rem;"><strong>A common trap:</strong> Division and Multiplication are <em>not</em> "D always before M" — they share equal priority and are done strictly left to right, whichever comes first in the expression. Same for Addition and Subtraction. 12 ÷ 3 × 2 is (12÷3)×2 = 8, not 12÷(3×2) = 2.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">Evaluate: 10 − 2 × 3 + 1</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">25</button>
+              <button class="opt-btn" data-correct="true">5</button>
+              <button class="opt-btn" data-correct="false">7</button>
+            </div>
+            <div class="checkin-feedback">Correct — multiplication first: 2×3=6, giving 10−6+1. Then left to right: 10−6=4, then 4+1=5.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — BODMAS step-by-step</div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:0 0 10px;">Enter an expression using +, −, *, /, ^, and parentheses.</p>
+            <input type="text" id="bodmasInput" value="5 + (8 - 3) * 2^2" style="width:100%; font-family:var(--font-mono); font-size:.95rem; padding:8px 10px; border:1.5px solid var(--line); border-radius:8px; background:var(--paper-dim);">
+            <div class="calc-out" style="margin-top:10px;">
+              <div class="calc-result" id="bodmasResult">= 25</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 RATIOS & PROPORTIONS
+    ========================================================== -->
+    <section class="section" id="sec-ratios">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Ratios &amp; Proportions</h2>
+          <p class="subhead">A ratio compares two amounts. A proportion says two ratios are equal — and that single idea solves an enormous range of everyday problems.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>If a recipe needs 2 cups of flour for every 1 cup of sugar, the ratio of flour to sugar is 2:1. Double the recipe, and you need 4 cups of flour to 2 cups of sugar — a different pair of numbers, but the <em>same ratio</em>, because 4:2 simplifies back down to 2:1. A <strong>proportion</strong> is exactly this statement: two ratios, equal to each other, even though the actual numbers differ.</p>
+
+          <div class="callout formula">
+            <div class="label">Solving a proportion</div>
+            <div class="formula-body">a/b = c/d &nbsp;&nbsp;→&nbsp;&nbsp; a × d = b × c</div>
+            <p style="margin:10px 0 0; font-size:.85rem; color:var(--ink-soft);">Cross-multiply: the product of one ratio's top-and-bottom-opposite equals the other's.</p>
+          </div>
+
+          <div class="callout bridge">
+            <div class="label">You may already know this — the unitary method</div>
+            <p style="margin:0 0 8px;">Many schools teach ratio word problems through the "unitary method": first find the value of <em>one unit</em>, then scale up. "If 5 pens cost ₹60, what do 8 pens cost?" → first find 1 pen: 60÷5 = ₹12. Then find 8 pens: 12×8 = ₹96.</p>
+            <p style="margin:0;">That's not a separate technique from proportions — it's the exact same relationship, solved one specific way. As a proportion: 5/60 = 8/x, and cross-multiplying gives 5x = 480, so x = 96. Same answer, same underlying idea, just reached by a different path. Once both feel natural, you can pick whichever is faster for a given problem.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Where this shows up ahead — weighted averages</div>
+            <p style="margin:0;">A portfolio that's 70% stocks and 30% bonds is a ratio, 70:30, simplified from whatever the actual dollar amounts are. The Summarizing Data module's weighted mean formula is built entirely on this idea — each component's proportion of the whole determines how much it should count.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">If 3 workers can complete a job in 12 days, using proportional reasoning, roughly how long would 6 workers take (assuming equal work rates)?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">24 days</button>
+              <button class="opt-btn" data-correct="true">6 days</button>
+              <button class="opt-btn" data-correct="false">12 days</button>
+            </div>
+            <div class="checkin-feedback">Correct — doubling the workers halves the time needed, since the total amount of work stays the same: 6 days.</div>
+          </div>
+        </div>
+        <div>
+          <div class="dist-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — solve a proportion</div>
+            <p style="font-size:.85rem; color:var(--ink-soft); margin:0 0 10px;">a/b = c/x — solve for x</p>
+            <div class="tvm-grid">
+              <div class="tvm-field"><label>a</label><input type="number" id="propA" value="5" step="0.1"></div>
+              <div class="tvm-field"><label>b</label><input type="number" id="propB" value="60" step="0.1"></div>
+              <div class="tvm-field"><label>c</label><input type="number" id="propC" value="8" step="0.1"></div>
+            </div>
+            <div class="tvm-result" id="propResult">x = 96</div>
+            <div class="calc-steps" id="propSteps">5/60 = 8/x → 5x = 480 → x = 96</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 TURNING WORDS INTO MATH
+    ========================================================== -->
+    <section class="section" id="sec-wordproblems">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Turning Words Into Math</h2>
+          <p class="subhead">The single skill rote learning skips most often — and the one this whole toolkit depends on constantly.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>Textbook drills often repeat the same phrasing so many times that the phrasing itself becomes the memorized cue — "of" means multiply, "per" means divide. That works right up until a question is worded differently, and the whole strategy collapses. The actual skill underneath is simpler and far more durable: read slowly, identify what's known, identify what's asked, and build the relationship between them in plain language before reaching for any symbol.</p>
+
+          <div class="definition">
+            <div class="label">A few phrases and what they usually mean</div>
+            <p style="margin-bottom:6px;"><strong>"X% of Y"</strong> → (X/100) × Y</p>
+            <p style="margin-bottom:6px;"><strong>"how much more/less"</strong> → subtraction</p>
+            <p style="margin-bottom:6px;"><strong>"for every… / per…"</strong> → a ratio or rate</p>
+            <p style="margin:0;"><strong>"total / altogether / combined"</strong> → addition</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.9rem;"><strong>But treat that list as a starting hint, not a rule to trust blindly</strong> — the real skill is checking whether the sentence actually means that here. "20% more than last year's ₹50,000" isn't just 20% of 50,000; it's 50,000 <em>plus</em> 20% of 50,000. Reading comprehension always outranks keyword-spotting.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">The same underlying problem, phrased four different ways</div>
+            <p style="margin-bottom:8px;">All four of these ask exactly the same question — notice how differently they're worded:</p>
+            <p style="margin-bottom:4px;">1. "A shirt costs ₹800. During a sale, the price drops by 25%. What's the new price?"</p>
+            <p style="margin-bottom:4px;">2. "A shirt originally priced at ₹800 is discounted 25%. Find the sale price."</p>
+            <p style="margin-bottom:4px;">3. "After a 25% reduction, what does a ₹800 shirt cost?"</p>
+            <p style="margin:0 0 8px;">4. "A ₹800 shirt now sells for only 75% of its original price. What's the new price?"</p>
+            <p style="margin:0;">All four: find 25% of 800 (= 200), then subtract from 800: <strong>₹600</strong>. Or, spotting the shortcut in phrasing 4 directly: 75% of 800 = <strong>₹600</strong> in one step. Different sentences, identical arithmetic — training yourself to notice that sameness is the actual goal of this section.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">"A company's revenue grew from ₹2,00,000 to ₹2,50,000." What single operation finds the percentage increase?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">250,000 / 200,000, expressed as a percentage</button>
+              <button class="opt-btn" data-correct="true">(250,000 − 200,000) / 200,000, expressed as a percentage</button>
+              <button class="opt-btn" data-correct="false">250,000 − 200,000, expressed as a percentage</button>
+            </div>
+            <div class="checkin-feedback">Correct — percentage increase is always the change divided by the original (starting) value: (250,000−200,000)/200,000 = 50,000/200,000 = 25%.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>A habit worth building:</strong> after solving any word problem, say the answer back in a full sentence — "the shirt now costs ₹600" — and check it feels reasonable. A sale price higher than the original, or a percentage increase over 1000% from a modest change, is usually a sign a step got flipped somewhere.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Module 00 — the true ground floor beneath the CFA Prerequisite Quantitative Methods readings. When this feels solid, move on to <a href="../foundations/index.html" style="color:var(--indigo);">Module 0: Math Foundations for CFA Quant →</a>
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>

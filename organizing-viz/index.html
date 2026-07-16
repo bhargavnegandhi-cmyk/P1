@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organizing &amp; Visualizing Data (Part 1) — CFA Prerequisite Quant Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-bar">
+  <strong style="font-family:var(--font-display)">Data → Chart</strong>
+  <button id="sidebarToggle">Menu</button>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Organizing &amp;<br>Visualizing Data</span>
+    </a>
+    <div class="brand-sub">CFA Prerequisite · Quantitative Methods · Part 1 of 2</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="toc-group-label">Getting Data Ready</div>
+    <ul class="toc">
+      <li><a href="#sec-types" data-sec="sec-types"><span class="num">01</span>Data Types</a></li>
+      <li><a href="#sec-organizing" data-sec="sec-organizing"><span class="num">02</span>Organizing Data</a></li>
+      <li><a href="#sec-frequency" data-sec="sec-frequency"><span class="num">03</span>Frequency Distributions</a></li>
+      <li><a href="#sec-contingency" data-sec="sec-contingency"><span class="num">04</span>Contingency Tables</a></li>
+    </ul>
+
+    <div class="toc-group-label">Visualizing Numerical Data</div>
+    <ul class="toc">
+      <li><a href="#sec-histogram" data-sec="sec-histogram"><span class="num">05</span>Histograms &amp; Frequency Polygons</a></li>
+      <li><a href="#sec-linescatter" data-sec="sec-linescatter"><span class="num">06</span>Line &amp; Bubble Line Charts</a></li>
+      <li><a href="#sec-scatter" data-sec="sec-scatter"><span class="num">07</span>Scatter Plots &amp; Matrices</a></li>
+    </ul>
+
+    <div class="toc-group-label">Visualizing Categorical &amp; Text Data</div>
+    <ul class="toc">
+      <li><a href="#sec-barcharts" data-sec="sec-barcharts"><span class="num">08</span>Bar Charts</a></li>
+      <li><a href="#sec-treewords" data-sec="sec-treewords"><span class="num">09</span>Tree-Maps &amp; Word Clouds</a></li>
+      <li><a href="#sec-heatguide" data-sec="sec-heatguide"><span class="num">10</span>Heat Maps &amp; Choosing Charts</a></li>
+    </ul>
+
+    <div class="toc-group-label">Check Yourself</div>
+    <ul class="toc">
+      <li><a href="#sec-quiz" data-sec="sec-quiz"><span class="num">Q</span>Practice Quiz (20)</a></li>
+    </ul>
+
+    <div class="toc-group-label">This Module</div>
+    <ul class="toc">
+      <li><a href="../summarizing-data/index.html" style="color:#C9C2EE;"><span class="num">▸</span>Part 2: Summarizing Data</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main id="top">
+
+    <header class="hero">
+      <div class="eyebrow">CFA Program · Prerequisite Study Material · Part 1 of 2</div>
+      <h1>Turn a pile of numbers into an insight.</h1>
+      <p class="lede">Part 1 of this module covers the first half of the journey: classifying data, organizing it, counting it, and charting it — using one real, worked dataset after another, from a portfolio of 1,000 stocks to five years of index returns. Part 2 picks up from here and covers boiling that organized data down into honest summary numbers.</p>
+    </header>
+
+    <!-- =========================================================
+         01 DATA TYPES
+    ========================================================== -->
+    <section class="section" id="sec-types">
+      <div class="section-head">
+        <span class="section-tag">01</span>
+        <div>
+          <h2>Data Types</h2>
+          <p class="subhead">Before you can choose the right chart or the right statistic, you need to know what kind of data you're holding.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <p>The same underlying fact — "this company is in the energy sector" — behaves very differently in a spreadsheet than "this company's EPS is $7.50." Analysts sort data along three independent axes, and each one changes what you're allowed to do with the numbers.</p>
+
+          <div class="definition">
+            <div class="label">Axis 1 — Numerical vs. Categorical</div>
+            <p style="margin-bottom:8px;"><strong>Numerical (quantitative)</strong> data are measured or counted amounts you can do arithmetic on. They split further into <strong>continuous</strong> (can take any value in a range — a stock's price return) and <strong>discrete</strong> (counted, finite values — the number of coupon payments left on a bond).</p>
+            <p style="margin:0;"><strong>Categorical (qualitative)</strong> data are labels describing a quality. <strong>Nominal</strong> categories have no natural order (GICS sector: Energy, Financials…). <strong>Ordinal</strong> categories can be ranked, but the gaps between ranks aren't necessarily equal (a 5-star Morningstar rating, or a bond's letter credit rating).</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <p style="margin:0; font-size:.92rem;"><strong>The rule of thumb that resolves most edge cases:</strong> meaningful arithmetic can be performed on numerical data but not on categorical data — even when categories are coded as numbers. GICS sector code 10 (Energy) isn't "less than" sector code 60 (Real Estate); the numbers are just labels.</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Axis 2 — Cross-Sectional vs. Time-Series vs. Panel</div>
+            <p style="margin-bottom:8px;"><strong>Cross-sectional</strong> data: one variable, many units, one point in time — January inflation for every country in the Eurozone.</p>
+            <p style="margin-bottom:8px;"><strong>Time-series</strong> data: one variable, one unit, many points in time — a single stock's daily closing price over a month.</p>
+            <p style="margin:0;"><strong>Panel</strong> data: a mix of both — quarterly EPS for three different companies, across four quarters. Read down a column and it's a time series for one company; read across a row and it's a cross-section of all three companies in one quarter.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — panel data</div>
+            <table class="exhibit" style="margin:10px 0 0;">
+              <tr><th>Quarter</th><th>Company A</th><th>Company B</th><th>Company C</th></tr>
+              <tr><td>Q1</td><td class="num">€13.53</td><td class="num">€0.84</td><td class="num">−€0.34</td></tr>
+              <tr><td>Q2</td><td class="num">€4.36</td><td class="num">€0.96</td><td class="num">€0.08</td></tr>
+              <tr><td>Q3</td><td class="num">€13.16</td><td class="num">€0.79</td><td class="num">−€2.72</td></tr>
+              <tr><td>Q4</td><td class="num">€12.95</td><td class="num">€0.19</td><td class="num">€0.09</td></tr>
+            </table>
+            <p style="margin:10px 0 0; font-size:.9rem;">Each <em>column</em> is a time series (Company A's EPS across the year); each <em>row</em> is a cross-section (all three companies' EPS in one quarter). Together, it's panel data.</p>
+          </div>
+
+          <div class="definition">
+            <div class="label">Axis 3 — Structured vs. Unstructured</div>
+            <p style="margin:0;"><strong>Structured</strong> data are pre-organized into rows and columns — market prices, financial-statement line items. <strong>Unstructured</strong> data don't follow a fixed layout — earnings-call transcripts, news articles, satellite imagery, social media posts. Unstructured data often carry unique insight, but a model can't consume them directly; they have to be transformed into structured form first.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c1">
+            <div class="label">Check yourself</div>
+            <div class="q">A corporate bond's credit rating (AAA, AA, A, BBB, …) is what kind of data?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Nominal</button>
+              <button class="opt-btn" data-correct="true">Ordinal</button>
+              <button class="opt-btn" data-correct="false">Continuous</button>
+            </div>
+            <div class="checkin-feedback">Correct — ratings can be ranked from best to worst credit quality, but the "distance" between AAA and AA isn't necessarily the same as between B and CCC. That's ordinal data.</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Example</th><th>Type</th></tr>
+              <tr><td>Number of bond coupon payments</td><td class="num">Discrete</td></tr>
+              <tr><td>Dividend per share ($)</td><td class="num">Continuous</td></tr>
+              <tr><td>Credit rating (AAA…D)</td><td class="num">Ordinal</td></tr>
+              <tr><td>Hedge fund strategy type</td><td class="num">Nominal</td></tr>
+            </table>
+          </div>
+          <div class="callout formula">
+            <div class="label">GICS sectors — nominal data example</div>
+            <p style="margin:0; font-size:.88rem;">Energy · Materials · Industrials · Consumer Discretionary · Consumer Staples · Health Care · Financials · Information Technology · Communication Services · Utilities · Real Estate — 11 labels, no inherent order, sometimes coded 10–60 for convenience. The codes are not a ranking.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         02 ORGANIZING DATA
+    ========================================================== -->
+    <section class="section" id="sec-organizing">
+      <div class="section-head">
+        <span class="section-tag">02</span>
+        <div>
+          <h2>Organizing Data for Quantitative Analysis</h2>
+          <p class="subhead">Raw data pulled from a website or a filing almost never arrives ready to analyze. Two simple structures fix that.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <div class="definition">
+            <div class="label">One-dimensional array</div>
+            <p style="margin:0;">A single column of values for one variable, most often in time order. New observations simply extend the array — nothing else has to change.</p>
+          </div>
+          <div class="callout example">
+            <div class="label">Example — ABC Inc.'s first 10 trading days</div>
+            <p style="margin:0 0 10px;">A one-dimensional array of daily closing prices after ABC's IPO:</p>
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Day</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+              <tr><td>Price ($)</td><td class="num">57.21</td><td class="num">58.26</td><td class="num">58.64</td><td class="num">56.19</td><td class="num">54.78</td><td class="num">54.26</td><td class="num">56.88</td><td class="num">54.74</td><td class="num">52.42</td><td class="num">50.14</td></tr>
+            </table>
+          </div>
+
+          <div class="definition">
+            <div class="label">Two-dimensional rectangular array (a "data table")</div>
+            <p style="margin:0;">Columns represent variables, rows represent observations in time order — like an Excel sheet. This is the standard shape models and computers expect.</p>
+          </div>
+          <div class="callout finance">
+            <div class="label">Worked example — building a data table</div>
+            <p style="margin:0 0 10px;">ABC Inc.'s raw quarterly filings arrive grouped awkwardly by fiscal year. Reorganized into a proper data table (one row per quarter, one column per metric):</p>
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Quarter</th><th>Revenue ($M)</th><th>EPS ($)</th><th>DPS ($)</th></tr>
+              <tr><td>Q1 Yr 1</td><td class="num">3,784</td><td class="num">1.37</td><td class="num">0</td></tr>
+              <tr><td>Q2 Yr 1</td><td class="num">4,236</td><td class="num">1.78</td><td class="num">0</td></tr>
+              <tr><td>Q3 Yr 1</td><td class="num">4,187</td><td class="num">−3.38</td><td class="num">0</td></tr>
+              <tr><td>Q4 Yr 1</td><td class="num">3,889</td><td class="num">−8.66</td><td class="num">0</td></tr>
+              <tr><td>Q1 Yr 2</td><td class="num">4,097</td><td class="num">−0.34</td><td class="num">0</td></tr>
+              <tr><td>Q2 Yr 2</td><td class="num">5,905</td><td class="num">3.89</td><td class="num">0.25</td></tr>
+              <tr><td>Q3 Yr 2</td><td class="num">4,997</td><td class="num">−2.88</td><td class="num">0.25</td></tr>
+              <tr><td>Q4 Yr 2</td><td class="num">4,389</td><td class="num">−3.98</td><td class="num">0.25</td></tr>
+            </table>
+            <p style="margin:10px 0 0; font-size:.88rem; color:var(--ink-soft);">Note DPS = 0 for the first five quarters — ABC simply hadn't started paying dividends yet, so zero is the correct, meaningful value. Contrast that with a genuinely <em>missing</em> data point (say, a data-vendor outage), which should never be silently filled with zero — that would misrepresent the truth. Better options are the latest available value or an interpolated estimate.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c2">
+            <div class="label">Check yourself</div>
+            <div class="q">You have monthly inflation rates for 15 different countries recorded every month across three years. What best describes the resulting dataset once organized into a full data table?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Cross-sectional data</button>
+              <button class="opt-btn" data-correct="false">A one-dimensional array</button>
+              <button class="opt-btn" data-correct="true">Panel data</button>
+            </div>
+            <div class="checkin-feedback">Correct — many countries (cross-section) observed repeatedly over time (time series) together form panel data, naturally organized as a two-dimensional data table.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Structure</th><th>Shape</th><th>Use</th></tr>
+              <tr><td>1-D array</td><td class="num">1 column</td><td>Single variable, time-ordered</td></tr>
+              <tr><td>Data table</td><td class="num">rows × cols</td><td>Multiple variables, multiple observations</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         03 FREQUENCY DISTRIBUTIONS
+    ========================================================== -->
+    <section class="section" id="sec-frequency">
+      <div class="section-head">
+        <span class="section-tag">03</span>
+        <div>
+          <h2>Summarizing Data Using Frequency Distributions</h2>
+          <p class="subhead">Count how often things happen, and a wall of numbers turns into a story.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>frequency distribution</strong> (also called a one-way table) tallies observations into groups. For categorical data it's simple: count occurrences of each unique value — the number of stocks in each GICS sector, for instance. For numerical data, you first need to build non-overlapping <strong>bins</strong>.</p>
+
+          <div class="definition">
+            <div class="label">The seven-step procedure for numerical data</div>
+            <p style="margin:0;">1. Sort the data ascending. 2. Compute Range = Max − Min. 3. Choose the number of bins, k. 4. Bin width = Range / k (round up). 5. Build each bin by successively adding the bin width. 6. Count observations in each bin (last bin includes the maximum). 7. Tabulate.</p>
+          </div>
+
+          <div class="callout finance">
+            <div class="label">Worked example — 18 countries' equity index returns</div>
+            <p style="margin:0 0 8px;">Range = 9.9% − 5.5% = 4.4%. Choosing k = 5 bins gives a bin width of 4.4/5 = 0.88%, rounded up to 1.0%. Starting at the nearest whole number below the minimum (5.0%):</p>
+            <table class="exhibit" style="margin:0 0 10px;">
+              <tr><th>Bin</th><th>Absolute Freq.</th><th>Relative Freq.</th><th>Cumulative Rel. Freq.</th></tr>
+              <tr><td>5.0 – 6.0%</td><td class="num">1</td><td class="num">5.56%</td><td class="num">5.56%</td></tr>
+              <tr><td>6.0 – 7.0%</td><td class="num">4</td><td class="num">22.22%</td><td class="num">27.78%</td></tr>
+              <tr><td>7.0 – 8.0%</td><td class="num">6</td><td class="num">33.33%</td><td class="num">61.11%</td></tr>
+              <tr><td>8.0 – 9.0%</td><td class="num">4</td><td class="num">22.22%</td><td class="num">83.33%</td></tr>
+              <tr><td>9.0 – 10.0%</td><td class="num">3</td><td class="num">16.67%</td><td class="num">100.00%</td></tr>
+            </table>
+            <p style="margin:0; font-size:.9rem;">A third of the countries land in the 7–8% bin — the modal bin. Reading down the cumulative column, you instantly see that roughly 61% of countries returned 8% or less.</p>
+          </div>
+
+          <p><strong>Relative frequency</strong> = a bin's count ÷ total observations — it lets you compare datasets of very different sizes. <strong>Cumulative</strong> frequency (absolute or relative) running-totals as you move through the bins, so the last bin's cumulative relative frequency is always 100%.</p>
+
+          <div class="callout example">
+            <div class="label">Categorical frequency distributions work the same way</div>
+            <p style="margin:0;">No binning needed — just count. Among a 1,000-stock portfolio, if Health Care holds 435 stocks, its relative frequency is 435/1,000 = 43.5%. Line every sector up from most to least common, and you have a categorical frequency distribution — exactly the data behind the bar chart and tree-map you'll build later in this module.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c3">
+            <div class="label">Check yourself</div>
+            <div class="q">A dataset of 200 observations has a minimum of 10 and a maximum of 90. If you build a frequency distribution with k = 8 bins, what is the bin width?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">8</button>
+              <button class="opt-btn" data-correct="true">10</button>
+              <button class="opt-btn" data-correct="false">25</button>
+            </div>
+            <div class="checkin-feedback">Correct — Range = 90 − 10 = 80. Bin width = 80 / 8 = 10 exactly.</div>
+          </div>
+        </div>
+        <div>
+          <div class="calc-card" style="margin-top:0;">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:12px;">Try it — bin width builder</div>
+            <div class="conv-row"><label for="fdMin">Min =</label><input type="number" id="fdMin" value="-4.1" step="0.1"></div>
+            <div class="conv-row"><label for="fdMax">Max =</label><input type="number" id="fdMax" value="5.0" step="0.1"></div>
+            <div class="conv-row"><label for="fdK">k bins =</label><input type="number" id="fdK" value="9" min="1" step="1"></div>
+            <div class="calc-out">
+              <div class="calc-result" id="fdResult">Bin width ≈ 1.01</div>
+              <div class="calc-steps" id="fdSteps">Range = 9.1 → 9.1/9 = 1.01, round up as needed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         04 CONTINGENCY TABLES
+    ========================================================== -->
+    <section class="section" id="sec-contingency">
+      <div class="section-head">
+        <span class="section-tag">04</span>
+        <div>
+          <h2>Summarizing Data Using a Contingency Table</h2>
+          <p class="subhead">A frequency distribution handles one variable. A contingency table handles two, at the same time.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>contingency table</strong> (or two-way table) lists one variable's categories as rows and another's as columns. An R-row, C-column table is called an "R × C table." The counts inside the cells are <strong>joint frequencies</strong>; the row and column totals are <strong>marginal frequencies</strong>.</p>
+
+          <div class="callout finance">
+            <div class="label">Worked example — a 1,000-stock portfolio by sector &amp; market cap</div>
+            <table class="exhibit" style="margin:0 0 10px;">
+              <tr><th>Sector</th><th>Small</th><th>Mid</th><th>Large</th><th>Total</th></tr>
+              <tr><td>Communication Svcs</td><td class="num">55</td><td class="num">35</td><td class="num">20</td><td class="num">110</td></tr>
+              <tr><td>Consumer Staples</td><td class="num">50</td><td class="num">30</td><td class="num">30</td><td class="num">110</td></tr>
+              <tr><td>Energy</td><td class="num">175</td><td class="num">95</td><td class="num">20</td><td class="num">290</td></tr>
+              <tr><td>Health Care</td><td class="num">275</td><td class="num">105</td><td class="num">55</td><td class="num">435</td></tr>
+              <tr><td>Utilities</td><td class="num">20</td><td class="num">25</td><td class="num">10</td><td class="num">55</td></tr>
+              <tr><td><strong>Total</strong></td><td class="num"><strong>575</strong></td><td class="num"><strong>290</strong></td><td class="num"><strong>135</strong></td><td class="num"><strong>1,000</strong></td></tr>
+            </table>
+            <p style="margin:0; font-size:.9rem;">275 small-cap health care stocks is the single largest joint frequency in the table — over a quarter of the entire portfolio in one cell. Summing across a row (435 total health care stocks) or down a column (575 total small-cap stocks) gives the marginal frequencies — literally the frequency distribution for that one variable alone.</p>
+          </div>
+
+          <p>The same joint frequencies can be expressed as a percentage three different ways — and each answers a genuinely different question. Toggle between them below, using the exact same portfolio data:</p>
+
+          <div class="chart-card">
+            <div class="freq-toggle-row" id="freqToggleRow">
+              <button class="calc-tab active" data-freqmode="overall">% of overall total</button>
+              <button class="calc-tab" data-freqmode="row">% of row (sector) total</button>
+              <button class="calc-tab" data-freqmode="col">% of column (cap) total</button>
+            </div>
+            <div id="freqTable"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;" id="freqCaption">Every cell as a share of the full 1,000-stock portfolio.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Reading the three views</div>
+            <p style="margin:0;"><strong>% of overall total</strong> answers "how much of my whole portfolio is this?" (27.5% is small-cap health care). <strong>% of row total</strong> answers "within this sector, how is it split by size?" (63.2% of health care holdings are small-cap). <strong>% of column total</strong> answers "within this cap size, which sectors dominate?" (47.8% of all small-cap holdings are health care). Same 20 numbers, three different stories.</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--indigo);">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--indigo); font-weight:700; margin-bottom:8px;">A special case — the confusion matrix</div>
+            <p style="margin:0 0 8px;">When one variable is a model's prediction and the other is the actual outcome, a 2×2 contingency table is called a <strong>confusion matrix</strong>. For a model predicting bond defaults across 2,000 non-investment-grade bonds:</p>
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Predicted \ Actual</th><th>Default</th><th>No Default</th><th>Total</th></tr>
+              <tr><td>Default</td><td class="num">300</td><td class="num">40</td><td class="num">340</td></tr>
+              <tr><td>No Default</td><td class="num">10</td><td class="num">1,650</td><td class="num">1,660</td></tr>
+              <tr><td><strong>Total</strong></td><td class="num"><strong>310</strong></td><td class="num"><strong>1,690</strong></td><td class="num"><strong>2,000</strong></td></tr>
+            </table>
+            <p style="margin:10px 0 0; font-size:.9rem;">The model correctly flags 300 real defaults and 1,650 real non-defaults (the diagonal), but wrongly predicts default 40 times and wrongly predicts safety 10 times (off-diagonal). A contingency table like this is also how analysts informally check whether two categorical variables seem related at all — here, sector and market cap are clearly <em>not</em> independent, given how heavily small-cap health care and energy dominate the table.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c4">
+            <div class="label">Check yourself</div>
+            <div class="q">In the portfolio contingency table above, what's the marginal frequency of energy-sector stocks?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">175</button>
+              <button class="opt-btn" data-correct="true">290</button>
+              <button class="opt-btn" data-correct="false">1,000</button>
+            </div>
+            <div class="checkin-feedback">Correct — sum across the Energy row: 175 + 95 + 20 = 290.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Reading direction matters.</strong> Dividing by the overall total tells you "% of the whole portfolio." Dividing by a row total tells you "within this sector, how is it split by cap size?" Dividing by a column total tells you "within this cap size, how is it split by sector?" Same table, three different questions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         05 HISTOGRAM & FREQUENCY POLYGON
+    ========================================================== -->
+    <section class="section" id="sec-histogram">
+      <div class="section-head">
+        <span class="section-tag">05</span>
+        <div>
+          <h2>Histograms &amp; Frequency Polygons</h2>
+          <p class="subhead">The chart version of a frequency distribution table — and the fastest way to see a distribution's shape, center, and spread at a glance.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>histogram</strong> uses bar height to show each bin's frequency. Bins sit on the x-axis; frequency (absolute or relative) sits on the y-axis. Below is the actual histogram for five years of daily returns (1,258 observations) on a fictitious EAA Equity Index, using 1% bins.</p>
+
+          <div class="chart-card">
+            <div id="histogramChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">Hover a bar for its exact count. Notice the shape: roughly bell-shaped, but taller on the positive side — consistent with 54% of daily returns being positive.</p>
+          </div>
+
+          <p style="margin-top:18px;">A <strong>frequency polygon</strong> plots each bin's midpoint against its frequency and connects the dots with straight lines — the same information as a histogram, but as an outline instead of bars, which makes it easy to overlay several distributions on one chart for comparison.</p>
+
+          <p>A close cousin, the <strong>cumulative frequency distribution chart</strong>, plots cumulative (not per-bin) frequency against each bin's upper limit. Its slope tells you where observations are dense: a steep slope means a lot of observations packed into that stretch, a flat slope means very few.</p>
+
+          <div class="callout example">
+            <div class="label">Reading the shape</div>
+            <p style="margin:0;">The modal bin here — 0.0% to 1.0% — holds 555 of the 1,258 observations (44%). Because 81.5% of all daily returns fall within just the two central bins (−1% to 1%), the cumulative-frequency curve is nearly flat at the extremes and very steep through the middle — a classic signature of returns clustering tightly around a small positive average.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c5">
+            <div class="label">Check yourself</div>
+            <div class="q">On a cumulative relative frequency chart, a very steep section of the curve tells you that region has:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Very few observations</button>
+              <button class="opt-btn" data-correct="true">A large concentration of observations</button>
+              <button class="opt-btn" data-correct="false">All negative values</button>
+            </div>
+            <div class="checkin-feedback">Correct — a steep slope means the cumulative count is climbing fast, i.e., many observations are packed into that stretch of bins.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout formula">
+            <div class="label">Reading a histogram</div>
+            <p style="margin:0; font-size:.9rem;">Tallest bar = modal bin. Symmetric shape around the tallest bar = roughly balanced distribution. Bars trailing off further on one side than the other = skewed distribution — a concept Part 2 of this module returns to when comparing the mean and median.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         06 LINE & BUBBLE LINE CHARTS
+    ========================================================== -->
+    <section class="section" id="sec-linescatter">
+      <div class="section-head">
+        <span class="section-tag">06</span>
+        <div>
+          <h2>Line Charts &amp; Bubble Line Charts</h2>
+          <p class="subhead">How a variable changes over time — and how to add a second and third dimension to that same picture.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>line chart</strong> plots ordered observations and connects them — the natural choice for time series. Below, ABC Inc.'s first 10 days of trading (the same one-dimensional array from Module 02):</p>
+          <div class="chart-card">
+            <div id="lineChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">The price peaks on Day 3, drifts lower, has a brief Day 7 recovery, then falls steeply toward $50 by Day 10 — a pattern the raw data table alone doesn't convey nearly as quickly.</p>
+          </div>
+          <p style="margin-top:14px;">Add a second data series (say, ABC's sector index) with its own color and often its own secondary y-axis, and a line chart becomes a comparison tool — did the stock move for company-specific reasons, or because the whole sector moved?</p>
+
+          <p style="margin-top:18px;">Sometimes there's a <em>third</em> variable worth showing on the same chart. A <strong>bubble line chart</strong> replaces each line-chart marker with a circular bubble sized by a third variable — and often colored to encode a fourth piece of information.</p>
+
+          <div class="chart-card">
+            <div id="bubbleLineChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">ABC Inc.'s eight quarters of revenue (the line) with bubble size representing the magnitude of EPS that quarter, colored green for a profit and red for a loss. Q3–Q4 of Year 1 show shrinking revenue <em>and</em> a swing into large losses — a bubble line chart shows both stories in a single glance that two separate charts couldn't deliver as immediately.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c6">
+            <div class="label">Check yourself</div>
+            <div class="q">You want one chart showing a company's quarterly revenue trend over time, while also indicating whether each quarter's earnings per share was a profit or a loss and by roughly how much. The best fit is a:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Simple line chart</button>
+              <button class="opt-btn" data-correct="true">Bubble line chart</button>
+              <button class="opt-btn" data-correct="false">Bar chart</button>
+            </div>
+            <div class="checkin-feedback">Correct — a bubble line chart adds a third dimension (bubble size) and often a fourth (color) on top of a standard two-dimensional line chart, exactly fitting this need.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Don't overload it:</strong> a bubble line chart is powerful precisely because it's still reading as one coherent picture. Push past three or four dimensions crammed into one chart and it stops being readable — at that point, separate charts (or a scatter plot matrix, next) usually communicate better.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         07 SCATTER PLOTS & MATRICES
+    ========================================================== -->
+    <section class="section" id="sec-scatter">
+      <div class="section-head">
+        <span class="section-tag">07</span>
+        <div>
+          <h2>Scatter Plots &amp; Scatter Plot Matrices</h2>
+          <p class="subhead">Does one variable move with another? A scatter plot is built to answer exactly that question.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>scatter plot</strong> puts one numerical variable on each axis and plots a dot per observation. A tight, upward-sloping cloud of points signals a strong positive relationship; a formless cloud signals no relationship at all.</p>
+          <div class="chart-card">
+            <div class="calc-tabs">
+              <button class="calc-tab active" data-scatter="it">IT Sector vs. S&amp;P 500</button>
+              <button class="calc-tab" data-scatter="util">Utilities vs. S&amp;P 500</button>
+            </div>
+            <div id="scatterChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;" id="scatterCaption">IT sector returns cluster tightly along a rising line with the broad market — a strong positive relationship, with one flagged outlier month.</p>
+          </div>
+
+          <div class="callout example">
+            <div class="label">Reading a scatter plot</div>
+            <p style="margin:0;">Three things to look for: (1) direction — does the cloud slope up, down, or go nowhere? (2) tightness — how closely do points hug an imaginary line (tighter = stronger relationship)? (3) outliers — any points far from the main cloud, worth investigating separately.</p>
+          </div>
+
+          <p style="margin-top:18px;">Need to inspect pairwise relationships among <em>more</em> than two variables at once? A <strong>scatter plot matrix</strong> arranges every pairwise scatter plot into a grid — variable i's row against variable j's column — with each variable's own histogram often placed along the diagonal where a self-comparison would otherwise sit.</p>
+
+          <div class="callout finance">
+            <div class="label">Where this shows up in practice</div>
+            <p style="margin:0;">Before building a multi-factor model, analysts often scan a scatter plot matrix of every candidate factor against every other — it's a fast way to spot which pairs of factors are suspiciously correlated with each other (a warning sign for multicollinearity) before any formal statistics are run.</p>
+          </div>
+
+          <div class="checkin" data-checkin="c7">
+            <div class="label">Check yourself</div>
+            <div class="q">A scatter plot of two variables shows points scattered with no discernible pattern across the whole chart. This suggests:</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">A strong positive relationship</button>
+              <button class="opt-btn" data-correct="false">A strong negative relationship</button>
+              <button class="opt-btn" data-correct="true">No clear relationship between the variables</button>
+            </div>
+            <div class="checkin-feedback">Correct — a formless cloud of points is the visual signature of little or no linear relationship.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <p style="margin:0; font-size:.9rem;"><strong>Scatter plot matrices scale quickly:</strong> with v variables, a full matrix has v² panels (v(v−1) off-diagonal comparisons plus v histograms) — useful up to maybe 6–8 variables before it becomes too dense to read at a glance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         08 BAR CHARTS
+    ========================================================== -->
+    <section class="section" id="sec-barcharts">
+      <div class="section-head">
+        <span class="section-tag">08</span>
+        <div>
+          <h2>Bar Charts</h2>
+          <p class="subhead">The default tool for comparing categories — with two ways to handle a second categorical variable.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>bar chart</strong> compares categories using bar length. Below: the same 1,000-stock portfolio's marginal sector frequencies from Module 04, this time drawn from a different, slightly more granular 479-stock sample so you can see the full sector breakdown.</p>
+          <div class="chart-card">
+            <div id="barChart"></div>
+          </div>
+          <p style="margin-top:14px;">With <em>two</em> categorical variables, a plain bar chart isn't enough. A <strong>grouped (clustered) bar chart</strong> places sub-group bars side by side within each category; a <strong>stacked bar chart</strong> instead piles the sub-groups on top of each other so the total bar height shows the marginal frequency directly. Toggle between the two below using the same sector-by-cap data from Module 04:</p>
+          <div class="chart-card">
+            <div class="calc-tabs">
+              <button class="calc-tab active" data-mode="grouped">Grouped</button>
+              <button class="calc-tab" data-mode="stacked">Stacked</button>
+            </div>
+            <div id="groupedStackedChart"></div>
+          </div>
+
+          <div class="checkin" data-checkin="c8">
+            <div class="label">Check yourself</div>
+            <div class="q">You want a chart where the total bar height for each sector immediately shows you that sector's overall (marginal) frequency, while still breaking each bar down by market cap. Which chart type?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Grouped bar chart</button>
+              <button class="opt-btn" data-correct="true">Stacked bar chart</button>
+              <button class="opt-btn" data-correct="false">Line chart</button>
+            </div>
+            <div class="checkin-feedback">Correct — a stacked bar chart's total bar height equals the marginal frequency for that category, since the sub-group segments are piled on top of each other.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Chart</th><th>Best for</th></tr>
+              <tr><td>Bar chart</td><td class="num">1 categorical variable</td></tr>
+              <tr><td>Grouped bar</td><td class="num">2 vars, compare sub-groups</td></tr>
+              <tr><td>Stacked bar</td><td class="num">2 vars, show totals too</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         09 TREE-MAPS & WORD CLOUDS
+    ========================================================== -->
+    <section class="section" id="sec-treewords">
+      <div class="section-head">
+        <span class="section-tag">09</span>
+        <div>
+          <h2>Tree-Maps &amp; Word Clouds</h2>
+          <p class="subhead">Two more ways to visualize categories — one built for relative size, the other built for unstructured text.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>tree-map</strong> uses rectangle <em>area</em> (not bar length) to represent magnitude — useful when you want the eye to compare relative size at a glance rather than read precise values.</p>
+          <div class="chart-card">
+            <div class="treemap" id="treemapChart"></div>
+            <p style="font-size:.82rem; color:var(--ink-soft); margin:10px 0 0;">Same sector data as the bar chart in the previous module — Health Care's rectangle visibly dominates because it holds 43.5% of the portfolio.</p>
+          </div>
+          <div class="callout" style="border-left-color:var(--red); margin-top:14px;">
+            <p style="margin:0; font-size:.9rem;"><strong>Caveat:</strong> tree-maps become hard to read once you nest more than about three levels of hierarchy (e.g., sector → market cap → individual stock).</p>
+          </div>
+
+          <p style="margin-top:18px;">A <strong>word cloud</strong> sizes words by how often they appear in a body of text — a way to visualize unstructured text data. Below, a stylized word cloud built from a company's quarterly filing, sized by frequency (green tends to mark growth/positive terms, red marks cost/negative terms):</p>
+          <div class="chart-card">
+            <div class="wordcloud" id="wordCloud"></div>
+          </div>
+
+          <div class="checkin" data-checkin="c9">
+            <div class="label">Check yourself</div>
+            <div class="q">Which visualization is best suited to representing unstructured text data, like an earnings call transcript?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="true">Word cloud</button>
+              <button class="opt-btn" data-correct="false">Scatter plot</button>
+              <button class="opt-btn" data-correct="false">Tree-map</button>
+            </div>
+            <div class="checkin-feedback">Correct — a word cloud sizes words by frequency of appearance, making it the standard tool for visualizing unstructured text.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Chart</th><th>Best for</th></tr>
+              <tr><td>Tree-map</td><td class="num">Relative size at a glance</td></tr>
+              <tr><td>Word cloud</td><td class="num">Unstructured text</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         10 HEAT MAPS & CHOOSING VISUALIZATIONS
+    ========================================================== -->
+    <section class="section" id="sec-heatguide">
+      <div class="section-head">
+        <span class="section-tag">10</span>
+        <div>
+          <h2>Heat Maps &amp; a Guide to Choosing Charts</h2>
+          <p class="subhead">Color as data — and how to decide which of these seven chart types actually fits your question.</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <div>
+          <p>A <strong>heat map</strong> represents a table of values using a color spectrum instead of (or alongside) the raw numbers — darker or more saturated cells mean larger values. Below, the same sector-by-cap portfolio data, but this time as counts of stocks in an independent, more granular sample:</p>
+          <div class="chart-card">
+            <div id="heatMap"></div>
+          </div>
+          <p style="margin-top:10px;">Heat maps are also a standard way to visualize a <strong>correlation matrix</strong> — the strength of the linear relationship between every pair of variables in a dataset, all in one glance.</p>
+
+          <div class="definition" style="margin-top:20px;">
+            <div class="label">Choosing among chart types</div>
+            <p style="margin:0;">Start from your purpose. Exploring or presenting a <strong>distribution</strong>? → histogram, frequency polygon, or cumulative distribution chart for numerical data; word cloud for unstructured text. Exploring a <strong>relationship</strong> between two variables? → scatter plot (or a scatter matrix for several). Making a <strong>comparison among categories</strong>? → bar chart, tree-map, or heat map. Comparing something <strong>over time</strong>? → line chart (or a bubble line chart for a third dimension).</p>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--red);">
+            <div class="label" style="font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:8px;">Four ways charts mislead</div>
+            <ul class="tight" style="margin:0; padding-left:18px; font-size:.9rem;">
+              <li><strong>Wrong chart type</strong> for the question — e.g., two separate line charts instead of a scatter plot to inspect correlation.</li>
+              <li><strong>Truncated axis</strong> — a y-axis that doesn't start at zero exaggerates differences in bar height.</li>
+              <li><strong>Inconsistent scales</strong> across charts being compared side by side.</li>
+              <li><strong>Cherry-picked time window</strong> that flatters or exaggerates a trend.</li>
+            </ul>
+          </div>
+
+          <div class="checkin" data-checkin="c10">
+            <div class="label">Check yourself</div>
+            <div class="q">A vertical bar chart shows five years of sales; the first four bars look nearly identical in height, and the fifth looks roughly three times as tall. Before concluding sales tripled in year five, what should you check first?</div>
+            <div class="opt-list">
+              <button class="opt-btn" data-correct="false">Whether the bars are the same color</button>
+              <button class="opt-btn" data-correct="true">Whether the y-axis starts at zero</button>
+              <button class="opt-btn" data-correct="false">Whether it should be a line chart instead</button>
+            </div>
+            <div class="checkin-feedback">Correct — bar height is only proportional to value when the y-axis starts at zero. A truncated axis can make a modest change look dramatic.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout" style="margin-top:0;">
+            <table class="exhibit" style="margin:0;">
+              <tr><th>Goal</th><th>Chart</th></tr>
+              <tr><td>Distribution (numerical)</td><td class="num">Histogram</td></tr>
+              <tr><td>Distribution (text)</td><td class="num">Word cloud</td></tr>
+              <tr><td>Relationship, 2 vars</td><td class="num">Scatter plot</td></tr>
+              <tr><td>Relationship, many vars</td><td class="num">Scatter matrix / heat map</td></tr>
+              <tr><td>Comparison among categories</td><td class="num">Bar / tree-map</td></tr>
+              <tr><td>Change over time</td><td class="num">Line / bubble line chart</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         QUIZ
+    ========================================================== -->
+    <section class="section" id="sec-quiz" style="max-width:900px;">
+      <div class="section-head">
+        <span class="section-tag">Q</span>
+        <div>
+          <h2>Practice Quiz</h2>
+          <p class="subhead">20 questions across everything above. Answer, get instant feedback, and see your score at the end.</p>
+        </div>
+      </div>
+
+      <div class="quiz-shell" id="quizShell">
+        <!-- populated by JS -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      Part 1 of 2 for the CFA Program prerequisite Quantitative Methods reading on Organizing, Visualizing, and Describing Data. <a href="../summarizing-data/index.html" style="color:var(--indigo);">Continue to Part 2: Summarizing Data →</a>
+    </footer>
+
+  </main>
+</div>
+
+<script src="../diagnostics.js"></script>
+<script src="script.js"></script>
+<script src="../accessibility.js"></script>
+</body>
+</html>
